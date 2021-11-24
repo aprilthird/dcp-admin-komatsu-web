@@ -1,0 +1,350 @@
+<div class="flex flex-col flex-auto min-w-0">
+  <div
+    class="
+      flex flex-col
+      sm:flex-row
+      flex-0
+      sm:items-center sm:justify-between
+      p-6
+      sm:py-8 sm:px-10
+      border-b
+      bg-card
+      dark:bg-transparent
+    "
+  >
+    <div class="flex-1 min-w-0">
+      <div class="flex flex-wrap items-center font-medium">
+        <div>
+          <a class="whitespace-nowrap text-primary-500">Actividades</a>
+        </div>
+        <div class="flex items-center ml-1 whitespace-nowrap">
+          <mat-icon
+            class="icon-size-5 text-secondary"
+            [svgIcon]="'heroicons_solid:chevron-right'"
+          ></mat-icon>
+          <a class="ml-1 text-primary-500">Ver informe</a>
+        </div>
+        <div class="flex items-center ml-1 whitespace-nowrap">
+          <mat-icon
+            class="icon-size-5 text-secondary"
+            [svgIcon]="'heroicons_solid:chevron-right'"
+          ></mat-icon>
+          <span class="ml-1 text-secondary">ID 3333</span>
+        </div>
+      </div>
+      <div class="mt-2">
+        <h2
+          class="
+            text-3xl
+            md:text-4xl
+            font-extrabold
+            tracking-tight
+            leading-7
+            sm:leading-10
+            truncate
+          "
+        >
+          Preventivo
+        </h2>
+      </div>
+    </div>
+  </div>
+  <mat-drawer-container class="flex-auto h-full min-h-70">
+    <!-- Drawer -->
+    <mat-drawer
+      class="w-60 dark:bg-gray-900"
+      [autoFocus]="false"
+      [mode]="drawerMode"
+      [opened]="drawerOpened"
+      #matDrawer
+    >
+      <fuse-vertical-navigation
+        [navigation]="menuData"
+        [inner]="true"
+        [mode]="'side'"
+        [name]="'docs-core-features-navigation'"
+        [opened]="true"
+      ></fuse-vertical-navigation>
+
+      <div class="p-4 mb-2 flex justify-center items-center">
+        <button
+          class="text-white"
+          mat-raised-button
+          [color]="'primary'"
+          disabled
+        >
+          <mat-icon
+            class="text-white mr-1"
+            svgIcon="heroicons_outline:check-circle"
+          ></mat-icon>
+
+          Validar informe
+        </button>
+      </div>
+    </mat-drawer>
+
+    <!-- Drawer content -->
+    <mat-drawer-content class="flex flex-col settings-users" fuseScrollReset>
+      <!-- Main -->
+
+      <router-outlet></router-outlet>
+
+      <div
+        class="
+          sm:inset-0
+          flex flex-col flex-auto
+          min-w-0
+          sm:overflow-hidden
+          bg-card
+          dark:bg-transparent
+        "
+      >
+        <!-- Header -->
+        <div
+          class="
+            relative
+            flex flex-col
+            sm:flex-row
+            flex-0
+            sm:items-center sm:justify-between
+            py-8
+            px-6
+            md:px-8
+            border-b
+          "
+        >
+          <!-- Loader -->
+          <div class="absolute inset-x-0 bottom-0">
+            <!--<mat-progress-bar [mode]="'indeterminate'"></mat-progress-bar>-->
+          </div>
+          <!-- Title -->
+          <div class="flex flex-row justify-between items-center w-full">
+            <div class="flex flex-col activities-container">
+              <div class="text-4xl font-extrabold tracking-tight">
+                <span>Seccion 1</span>
+                <mat-icon
+                  class="text-green-600 ml-2"
+                  svgIcon="heroicons_outline:check-circle"
+                ></mat-icon>
+
+                <mat-icon
+                  class="text-yellow-600 ml-2"
+                  svgIcon="warning_amber"
+                ></mat-icon>
+              </div>
+            </div>
+
+            <button
+              mat-raised-button
+              [color]="'secondary'"
+              class="text-green-600"
+              (click)="validate()"
+            >
+              <mat-icon svgIcon="heroicons_outline:check-circle"></mat-icon>
+              <span class="ml-2 mr-1">Validar sección</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Main -->
+        <div class="flex flex-auto overflow-hidden">
+          <!-- Products list -->
+          <div
+            class="
+              flex flex-col flex-auto
+              overflow-hidden
+              sm:overflow-y-auto
+              bg-gray-100
+            "
+          >
+            <div
+              class="
+                sm:col-span-2
+                md:col-span-4
+                flex
+                justify-start
+                gap-5
+                flex-wrap
+                p-6
+                bg-card
+                shadow
+                rounded-2xl
+                overflow-hidden
+                m-5
+              "
+            >
+              <div class="flex justify-between items-center w-full mb-5">
+                <span class="text-2xl font-semibold"
+                  >Mantenimiento frontal</span
+                >
+                <div class="flex gap-5 items-center justify-end">
+                  <button mat-raised-button [color]="'secondary'">
+                    <mat-icon svgIcon="heroicons_outline:pencil"></mat-icon>
+                    <span class="ml-2 mr-1">Editar</span>
+                  </button>
+
+                  <div class="flex gap-1">
+                    <mat-checkbox></mat-checkbox>
+                    <span>Observar</span>
+                  </div>
+                </div>
+              </div>
+              <mat-form-field class="w-1/4">
+                <mat-label class="font-semibold"
+                  >Dato (creado por jlecca)</mat-label
+                >
+                <input matInput value="Herramienta" disabled />
+              </mat-form-field>
+
+              <mat-form-field class="w-1/4">
+                <mat-label class="font-semibold"
+                  >Dato 1 (creado por jlecca)</mat-label
+                >
+                <input matInput value="Herramienta 2" disabled />
+              </mat-form-field>
+
+              <mat-form-field class="w-1/4">
+                <mat-label class="font-semibold"
+                  >Fecha de reparación (creado por jlecca)</mat-label
+                >
+                <input matInput value="12/04/2021" disabled />
+              </mat-form-field>
+
+              <mat-form-field class="w-1/4">
+                <mat-label class="font-semibold"
+                  >Dato (creado por jlecca)</mat-label
+                >
+                <input matInput value="Herramienta" disabled />
+              </mat-form-field>
+
+              <mat-form-field class="w-1/4">
+                <mat-label class="font-semibold"
+                  >Dato 1 (creado por jlecca)</mat-label
+                >
+                <input matInput value="Herramienta 2" disabled />
+              </mat-form-field>
+
+              <mat-form-field class="w-1/4">
+                <mat-label class="font-semibold"
+                  >Fecha de reparación (creado por jlecca)</mat-label
+                >
+                <input matInput value="12/04/2021" disabled />
+              </mat-form-field>
+              <div class="flex justify-end w-full">
+                <button
+                  *ngIf="!commented"
+                  mat-raised-button
+                  [color]="'secondary'"
+                  class="flex justify-end"
+                  (click)="addComment()"
+                >
+                  <mat-icon svgIcon="heroicons_outline:plus"></mat-icon>
+                  <span class="ml-2 mr-1">Agregar comentario</span>
+                </button>
+                <div *ngIf="commented" class="flex w-full justify-between">
+                  <div>
+                    <span class="font-bold">Comentario:</span>
+                    dfdfgsdgsdgfdsgdsfgdsgdg
+                  </div>
+                  <button
+                    mat-raised-button
+                    [color]="'secondary'"
+                    class="flex justify-end"
+                    (click)="deleteComment()"
+                  >
+                    <mat-icon svgIcon="heroicons_outline:trash"></mat-icon>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div
+              class="
+                sm:col-span-2
+                md:col-span-4
+                flex
+                justify-start
+                gap-5
+                flex-wrap
+                p-6
+                bg-card
+                shadow
+                rounded-2xl
+                overflow-hidden
+                m-5
+              "
+            >
+              <div class="flex justify-between items-center w-full mb-5">
+                <span class="text-2xl font-semibold">Cambio de cuchillas</span>
+                <div class="flex gap-5 items-center justify-end">
+                  <button mat-raised-button [color]="'secondary'">
+                    <mat-icon svgIcon="heroicons_outline:pencil"></mat-icon>
+                    <span class="ml-2 mr-1">Editar</span>
+                  </button>
+
+                  <div class="flex gap-1">
+                    <mat-checkbox></mat-checkbox>
+                    <span>Observar</span>
+                  </div>
+                </div>
+              </div>
+              <mat-form-field class="w-1/4">
+                <mat-label class="font-semibold"
+                  >Tipo de cuchilla (creado por jlecca)</mat-label
+                >
+                <input matInput value="Herramienta" disabled />
+              </mat-form-field>
+
+              <mat-form-field class="w-1/4">
+                <mat-label class="font-semibold"
+                  >Dato 1 (creado por jlecca)</mat-label
+                >
+                <input matInput value="Herramienta 2" disabled />
+              </mat-form-field>
+
+              <mat-form-field class="w-1/4">
+                <mat-label class="font-semibold"
+                  >Fecha de reparación (creado por jlecca)</mat-label
+                >
+                <input matInput value="12/04/2021" disabled />
+              </mat-form-field>
+
+              <mat-form-field class="w-1/4">
+                <mat-label class="font-semibold"
+                  >Tipo de cuchilla(creado por jlecca)</mat-label
+                >
+                <input matInput value="Herramienta" disabled />
+              </mat-form-field>
+
+              <mat-form-field class="w-1/4">
+                <mat-label class="font-semibold"
+                  >Dato 1 (creado por jlecca)</mat-label
+                >
+                <input matInput value="Herramienta 2" disabled />
+              </mat-form-field>
+
+              <mat-form-field class="w-1/4">
+                <mat-label class="font-semibold"
+                  >Fecha de reparación (creado por jlecca)</mat-label
+                >
+                <input matInput value="12/04/2021" disabled />
+              </mat-form-field>
+
+              <div class="flex justify-end w-full">
+                <button
+                  mat-raised-button
+                  [color]="'secondary'"
+                  class="flex justify-end"
+                  (click)="addComment()"
+                >
+                  <mat-icon svgIcon="heroicons_outline:plus"></mat-icon>
+                  <span class="ml-2 mr-1">Agregar comentario</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </mat-drawer-content>
+  </mat-drawer-container>
+</div>

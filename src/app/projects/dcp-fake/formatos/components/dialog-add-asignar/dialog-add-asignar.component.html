@@ -1,0 +1,53 @@
+<div mat-dialog-title class="flex justify-between items-center">
+  <h4>Asignar un formato</h4>
+  <button mat-icon-button type="button" (click)="dialogRef.close()">
+    <mat-icon [svgIcon]="'heroicons_outline:x'"></mat-icon>
+  </button>
+</div>
+<div mat-dialog-content class="pb-6">
+  <div class="flex flex-col w-full justify-space">
+    <!-- Alerta -->
+    <div class="w-full mb-6" *ngIf="alert">
+      <fuse-alert
+        [appearance]="'soft'"
+        *ngIf="alert"
+        [type]="alert?.type"
+        [showIcon]="false"
+      >
+        {{ alert.message }}
+      </fuse-alert>
+    </div>
+    <div class="w-full">
+      <p class="text-gray-700">¿Seguro quiere asignar el formato al usuario?</p>
+    </div>
+  </div>
+</div>
+
+<div mat-dialog-actions class="flex justify-end px-6 bg-gray-100">
+  <button
+    mat-button
+    class="
+      ml-4
+      bg-gray-50
+      border-solid border border-accent-300
+      text-gray-700
+      shadow-none
+    "
+    (click)="dialogRef.close()"
+  >
+    Cancelar
+  </button>
+  <button
+    mat-raised-button
+    [color]="'primary'"
+    class="w-24"
+    (click)="onSubmit()"
+  >
+    <span *ngIf="!loading"> Sí, asignar </span>
+    <mat-progress-spinner
+      *ngIf="loading"
+      [diameter]="24"
+      [mode]="'indeterminate'"
+    ></mat-progress-spinner>
+  </button>
+</div>

@@ -1,0 +1,76 @@
+<form [formGroup]="form" class="">
+  <div mat-dialog-title class="flex justify-between items-center">
+    <h4>Agregar dispositivo</h4>
+    <button mat-icon-button type="button" (click)="matdialigRef.close()">
+      <mat-icon [svgIcon]="'heroicons_outline:x'"></mat-icon>
+    </button>
+  </div>
+  <div mat-dialog-content class="pb-6">
+    <div class="flex flex-col w-full">
+      <!-- Nombre -->
+
+      <mat-form-field floatLabel="always" class="w-100-p">
+        <mat-label>Dispositivo</mat-label>
+        <input
+          matInput
+          type="text"
+          formControlName="dispositivo"
+          placeholder="Ingrese nombre"
+        />
+        <mat-error *ngIf="form.controls['dispositivo'].invalid">{{
+          matErrorMsg
+        }}</mat-error>
+      </mat-form-field>
+
+      <mat-form-field floatLabel="always" class="w-100-p">
+        <mat-label>Bahía asignada</mat-label>
+        <input
+          matInput
+          type="text"
+          formControlName="bahia_asignada"
+          placeholder="Ingrese Ubicación/Dirección"
+        />
+        <mat-error *ngIf="form.controls['bahia_asignada'].invalid">{{
+          matErrorMsg
+        }}</mat-error>
+      </mat-form-field>
+
+      <mat-form-field floatLabel="always" class="w-100-p">
+        <mat-label>Fecha de creación</mat-label>
+        <input
+          matInput
+          type="text"
+          formControlName="fecha_creacion"
+          placeholder="Ingrese Ubicación/Dirección"
+        />
+        <mat-error *ngIf="form.controls['fecha_creacion'].invalid">{{
+          matErrorMsg
+        }}</mat-error>
+      </mat-form-field>
+    </div>
+  </div>
+  <div mat-dialog-actions class="flex justify-center px-6 gap-5">
+    <button
+      (click)="matdialigRef.close()"
+      mat-button
+      class="
+        ml-4
+        bg-gray-50
+        border-solid border border-accent-300
+        text-gray-700
+        shadow-none
+      "
+    >
+      Cancelar
+    </button>
+    <button
+      mat-raised-button
+      [color]="'primary'"
+      class="w-32"
+      (click)="submit()"
+      [disabled]="form.invalid"
+    >
+      <span>Crear</span>
+    </button>
+  </div>
+</form>

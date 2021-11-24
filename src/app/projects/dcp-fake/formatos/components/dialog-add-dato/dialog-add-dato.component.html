@@ -1,0 +1,123 @@
+<form [formGroup]="form" >
+  <div mat-dialog-title class="flex justify-between items-center">
+    <h4>{{ edit ? "Editar" : "Agregar" }} formato</h4>
+    <button mat-icon-button type="button" (click)="dialogRef.close()">
+      <mat-icon [svgIcon]="'heroicons_outline:x'"></mat-icon>
+    </button>
+  </div>
+  <div mat-dialog-content class="pb-6">
+    <div class="flex flex-col md:flex-row w-full justify-space">
+      <!-- Nombre -->
+      <mat-form-field class="w-full md:w-1/3 md:pr-2">
+        <mat-label>Tipo de dato</mat-label>
+        <mat-select formControlName="idParametro">
+          <ng-container *ngFor="let dato of tiposDatos">
+            <mat-option [value]="dato.id"> {{ dato.label }} </mat-option>
+          </ng-container>
+        </mat-select>
+        <mat-error> {{ getErrorMessage("idParametro") }} </mat-error>
+      </mat-form-field>
+
+      <!-- Nombre -->
+      <mat-form-field class="w-full md:w-1/3 md:px-1">
+        <mat-label>Placeholder</mat-label>
+        <input matInput formControlName="placeholder" />
+        <mat-error> {{ getErrorMessage("placeholder") }} </mat-error>
+      </mat-form-field>
+      <!-- Nombre -->
+      <mat-form-field class="w-full md:w-1/3 md:pl-2">
+        <mat-label>Nombre</mat-label>
+        <input matInput formControlName="label" />
+        <mat-error> {{ getErrorMessage("label") }} </mat-error>
+      </mat-form-field>
+    </div>
+    <div class="flex flex-col md:flex-row w-full justify-space">
+      <!-- Mínimo de caracteres -->
+      <div class="flex flex-col w-full mb-3 md:w-1/3 md:pr-2">
+        <mat-label>Visible</mat-label>
+        <mat-slide-toggle [color]="'primary'" formControlName="visible">{{
+          form.get("visible").value ? "Sí" : "No"
+        }}</mat-slide-toggle>
+      </div>
+      <!-- Mínimo de caracteres -->
+      <div class="flex flex-col w-full mb-3 md:w-1/3 md:px-1">
+        <mat-label>Obligatorio</mat-label>
+        <mat-slide-toggle [color]="'primary'" formControlName="obligatorio">{{
+          form.get("obligatorio").value ? "Sí" : "No"
+        }}</mat-slide-toggle>
+      </div>
+      <!-- Mínimo de caracteres -->
+      <div class="flex flex-col w-full mb-3 md:w-1/3 md:pl-2">
+        <mat-label>Editable</mat-label>
+        <mat-slide-toggle [color]="'primary'" formControlName="editable">{{
+          form.get("editable").value ? "Sí" : "No"
+        }}</mat-slide-toggle>
+      </div>
+    </div>
+    <div class="flex flex-col md:flex-row w-full justify-space">
+      <!-- Mínimo de caracteres -->
+      <mat-form-field class="w-full md:w-1/3 md:pr-2">
+        <mat-label>Mínimo de caracteres</mat-label>
+        <input matInput formControlName="minCaracteres" />
+        <mat-error> {{ getErrorMessage("minCaracteres") }} </mat-error>
+      </mat-form-field>
+
+      <!-- Máximo de caracteres -->
+      <mat-form-field class="w-full md:w-1/3 md:px-1">
+        <mat-label>Máximo de caracteres</mat-label>
+        <input matInput formControlName="maxCaracteres" />
+        <mat-error> {{ getErrorMessage("maxCaracteres") }} </mat-error>
+      </mat-form-field>
+      <!-- Regex -->
+      <mat-form-field class="w-full md:w-1/3 md:pl-2">
+        <mat-label>Regex</mat-label>
+        <input matInput formControlName="regex" />
+        <mat-error> {{ getErrorMessage("regex") }} </mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="flex flex-col md:flex-row w-full justify-space">
+      <!-- Mínimo de caracteres -->
+      <mat-form-field class="w-full md:w-1/3 md:pr-2">
+        <mat-label>Fila</mat-label>
+        <input matInput formControlName="fila" />
+        <mat-error> {{ getErrorMessage("fila") }} </mat-error>
+      </mat-form-field>
+
+      <!-- Máximo de caracteres -->
+      <mat-form-field class="w-full md:w-1/3 md:px-1">
+        <mat-label>Columna</mat-label>
+        <input matInput formControlName="columna" />
+        <mat-error> {{ getErrorMessage("columna") }} </mat-error>
+      </mat-form-field>
+    </div>
+  </div>
+  <div mat-dialog-actions class="flex justify-end px-6 bg-gray-100">
+    <button
+      mat-button
+      class="
+        ml-4
+        bg-gray-50
+        border-solid border border-accent-300
+        text-gray-700
+        shadow-none
+      "
+      (click)="dialogRef.close()"
+    >
+      Cancelar
+    </button>
+    <button
+      mat-raised-button
+      [color]="'primary'"
+      class="w-24"
+      (click)="onSubmit()"
+    >
+      <span *ngIf="!loading"> {{ edit ? "Editar" : "Crear" }} </span>
+      <mat-progress-spinner
+        *ngIf="loading"
+        [diameter]="24"
+        [mode]="'indeterminate'"
+      ></mat-progress-spinner>
+    </button>
+  </div>
+</form>

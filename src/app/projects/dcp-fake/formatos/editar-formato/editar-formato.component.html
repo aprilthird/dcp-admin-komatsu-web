@@ -1,0 +1,194 @@
+<div class="absolute inset-0 flex flex-col min-w-0 overflow-hidden">
+  <mat-drawer-container class="flex-auto h-full">
+    <mat-drawer
+      class="w-60 dark:bg-gray-900"
+      [autoFocus]="false"
+      [mode]="drawerMode"
+      [opened]="drawerOpened"
+      #matDrawer
+    >
+      <!-- Menu-->
+      <div class="flex flex-col p-3 pb-0 form-title">
+        <div class="d-flex items-center form-title__text">
+          Formato: {{ formato$ | async }}
+        </div>
+        <div class="d-flex items-center form-title__text">Secciones</div>
+      </div>
+
+      <div class="flex flex-col section p-3 pt-1" id="items">
+        <a
+          class="flex items-center justify-between section__menu h-10 mb-0.5"
+          *ngFor="let menu of menuData"
+          routerLinkActive="active"
+          routerLink="{{ menu.link }}"
+        >
+          <span>{{ menu.title }}</span>
+
+          <mat-icon [svgIcon]="'heroicons_outline:menu'"></mat-icon>
+        </a>
+      </div>
+      <mat-divider></mat-divider>
+
+      <div class="p-4">
+        <button mat-button color="primary" (click)="clickNewSeccion()">
+          <mat-icon [svgIcon]="'heroicons_solid:plus'"></mat-icon>
+          Agregar Inspección
+        </button>
+      </div>
+    </mat-drawer>
+    <!-- Drawer content -->
+    <mat-drawer-content class="flex flex-col" fuseScrollReset>
+      <!-- Main -->
+      <div class="flex-auto">
+        <div class="flex flex-col relative flex-auto min-w-0">
+          <div class="absolute inset-x-0 top-0" *ngIf="loading">
+            <mat-progress-bar [mode]="'indeterminate'"></mat-progress-bar>
+          </div>
+          <!-- Header -->
+          <div
+            class="
+              flex flex-col
+              sm:flex-row
+              flex-0
+              sm:items-center sm:justify-between
+              p-6
+              sm:py-8 sm:px-10
+              h-30
+              border-b
+              bg-card
+              dark:bg-transparent
+            "
+          >
+            <ng-container *ngIf="!loading || currentSeccion">
+              <div class="flex-1 min-w-0">
+                <!-- Breadcrumbs -->
+                <div class="flex w-full justify-between">
+                  <div class="flex flex-wrap items-center font-medium">
+                    <div>
+                      <a class="whitespace-nowrap text-primary-500"
+                        >Formato: {{ formato$ | async }}</a
+                      >
+                    </div>
+                    <div class="flex items-center ml-1 whitespace-nowrap">
+                      <mat-icon
+                        class="icon-size-5 text-secondary"
+                        [svgIcon]="'heroicons_solid:chevron-right'"
+                      ></mat-icon>
+                      <a class="ml-1 text-primary-500">Sección</a>
+                    </div>
+                    <div
+                      class="flex items-center ml-1 whitespace-nowrap"
+                      *ngIf="menuData.length > 0"
+                    >
+                      <mat-icon
+                        class="icon-size-5 text-secondary"
+                        [svgIcon]="'heroicons_solid:chevron-right'"
+                      ></mat-icon>
+                      <a class="ml-1 text-primary-500">{{ currentSeccion }}</a>
+                    </div>
+                  </div>
+                  <div class="flex w-auto items-center">
+                    <mat-icon
+                      class="icon-size-5 text-gray-700"
+                      [svgIcon]="'heroicons_outline:check-circle'"
+                    ></mat-icon>
+                    <h6 class="ml-1 text-base font-medium text-gray-700">
+                      Guardado automáticamente
+                    </h6>
+                  </div>
+                </div>
+                <!-- Title -->
+                <div class="flex w-full justify-between mt-2">
+                  <h2
+                    class="
+                      text-3xl
+                      md:text-4xl
+                      font-extrabold
+                      tracking-tight
+                      leading-7
+                      sm:leading-10
+                      truncate
+                    "
+                  >
+                    {{ currentSeccion }}
+                  </h2>
+                  <button
+                    class="sm:ml-0 mb-2 sm:mb-0 order-first sm:order-last"
+                    mat-raised-button
+                    [color]="'primary'"
+                    (click)="clickPrevisualizar()"
+                  >
+                    <mat-icon [svgIcon]="'heroicons_outline:eye'"></mat-icon>
+                    <span class="ml-3">Previsualizar</span>
+                  </button>
+                </div>
+              </div>
+            </ng-container>
+          </div>
+
+          <div class="flex-auto w-full p-6 sm:p-10 groups" *ngIf="!loading">
+            <h3
+              class="
+                text-3xl
+                md:text-3xl
+                font-extrabold
+                tracking-tight
+                leading-7
+                sm:leading-10
+                truncate
+              "
+              *ngIf="grupos.length === 0 && menuData.length > 0"
+            >
+              No existen grupos aún
+            </h3>
+
+            <h3
+              class="
+                text-3xl
+                md:text-3xl
+                font-extrabold
+                tracking-tight
+                leading-7
+                sm:leading-10
+                truncate
+              "
+              *ngIf="menuData.length === 0"
+            >
+              No existen secciones aún
+            </h3>
+            <ng-container *ngIf="grupos.length > 0">
+              <app-grupos
+                *ngFor="let grupo of grupos"
+                [data]="grupo"
+              ></app-grupos>
+            </ng-container>
+          </div>
+        </div>
+        <!-- Footer -->
+      </div>
+      <div
+        class="
+          relative
+          flex flex-0
+          items-center
+          justify-end
+          w-full
+          h-16
+          px-4
+          z-49
+          border-t
+          bg-card
+          dark:bg-transparent
+          print:hidden
+        "
+      >
+        <span class="font-medium text-secondary">
+          <button mat-button color="primary" (click)="clickNewGrupo()">
+            <mat-icon [svgIcon]="'heroicons_solid:plus'"></mat-icon>
+            Agregar grupo
+          </button>
+        </span>
+      </div>
+    </mat-drawer-content>
+  </mat-drawer-container>
+</div>

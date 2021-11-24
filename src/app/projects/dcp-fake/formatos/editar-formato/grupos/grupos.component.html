@@ -1,0 +1,95 @@
+<mat-expansion-panel hideToggle class="mb-5">
+  <mat-expansion-panel-header>
+    <mat-panel-title>
+      Grupo: {{ data.nombre }} - &nbsp;
+      <span *ngIf="data?.pos">
+        {{ data.pos === "h" ? "Horizontal" : "Vertical" }}
+      </span>
+    </mat-panel-title>
+  </mat-expansion-panel-header>
+  <div class="flex flex-col p-0 overflow-x-auto lg:overflow-hidden">
+    <mat-divider></mat-divider>
+
+    <h4
+      class="
+        text-3xl
+        md:text-xl
+        font-extrabold
+        tracking-tight
+        leading-7
+        sm:leading-10
+        truncate
+        px-6
+        py-5
+      "
+      *ngIf="data.parametros.length === 0"
+    >
+      No existen datos aún
+    </h4>
+    <div
+      class="
+        inventory-grid
+        grid
+        items-center
+        gap-3
+        py-5
+        md:px-8
+        justify-between
+        mb-1
+      "
+      *ngFor="let parametro of data.parametros"
+    >
+      <!-- Nombres -->
+      <div class="flex flex-col truncate">
+        <span class="font-medium">Tipo de dato</span>
+        <span>{{ getTipo(parametro.tipo) }}</span>
+      </div>
+      <div class="flex flex-col truncate">
+        <span class="font-medium">Nombre</span>
+        <span>{{ parametro.label }}</span>
+      </div>
+      <div class="flex flex-col truncate">
+        <span class="font-medium">Fila</span>
+        <span>{{ parametro.fila }}</span>
+      </div>
+      <div class="flex flex-col truncate">
+        <span class="font-medium">Columna</span>
+        <span>{{ parametro.columna }}</span>
+      </div>
+
+      <div class="flex truncate justify-center">
+        <button
+          class="min-w-7 w-7 min-h-7 h-7 mr-1"
+          mat-icon-button
+          matTooltip="Editar"
+          (click)="clickEditDato(parametro)"
+        >
+          <mat-icon
+            class="icon-size-5 text-primary-500"
+            [svgIcon]="'heroicons_outline:pencil'"
+          ></mat-icon>
+        </button>
+      </div>
+    </div>
+  </div>
+  <mat-divider></mat-divider>
+  <div
+    class="
+      flex flex-row
+      items-center
+      justify-end
+      w-full
+      px-6
+      bottom-0
+      left-0
+      bottom-0
+      left-0
+      h-18
+    "
+  >
+    <button mat-button color="primary" (click)="clickNewDato()">
+      <mat-icon [svgIcon]="'heroicons_solid:plus'"></mat-icon>
+      Agregar dato
+    </button>
+  </div>
+</mat-expansion-panel>

@@ -1,0 +1,93 @@
+<form [formGroup]="form" class="">
+  <div mat-dialog-title class="flex justify-between items-center">
+    <h4>Agregar tipo de mantenimiento</h4>
+    <button mat-icon-button type="button" (click)="matdialigRef.close()">
+      <mat-icon [svgIcon]="'heroicons_outline:x'"></mat-icon>
+    </button>
+  </div>
+  <div mat-dialog-content class="pb-6">
+    <div class="flex flex-col w-full">
+      <!-- Nombre -->
+
+      <mat-form-field floatLabel="always" class="w-100-p">
+        <mat-label>Código</mat-label>
+        <input
+          matInput
+          type="text"
+          formControlName="codigo"
+          placeholder="Ingrese nombre"
+        />
+        <mat-error *ngIf="form.controls['codigo'].invalid">{{
+          matErrorMsg
+        }}</mat-error>
+      </mat-form-field>
+
+      <mat-form-field floatLabel="always" class="w-100-p">
+        <mat-label>Descripcion</mat-label>
+        <input
+          matInput
+          type="text"
+          formControlName="descripcion"
+          placeholder="Ingrese nombre"
+        />
+        <mat-error *ngIf="form.controls['descripcion'].invalid">{{
+          matErrorMsg
+        }}</mat-error>
+      </mat-form-field>
+
+      <mat-slide-toggle
+        color="primary"
+        (change)="check($event)"
+        [checked]="form.controls['estado'].value === 1 ? true : false"
+      >
+        Estado
+      </mat-slide-toggle>
+    </div>
+  </div>
+  <div mat-dialog-actions class="flex justify-center px-6 gap-5">
+    <button
+      (click)="matdialigRef.close()"
+      mat-button
+      class="
+        ml-4
+        bg-gray-50
+        border-solid border border-accent-300
+        text-gray-700
+        shadow-none
+      "
+    >
+      Cancelar
+    </button>
+    <button
+      *ngIf="!isEdit"
+      mat-raised-button
+      [color]="'primary'"
+      class="w-32"
+      (click)="submit()"
+      [disabled]="form.invalid"
+    >
+      <mat-progress-spinner
+        *ngIf="isLoading"
+        [diameter]="24"
+        [mode]="'indeterminate'"
+      ></mat-progress-spinner>
+      <span>Crear</span>
+    </button>
+
+    <button
+      *ngIf="isEdit"
+      mat-raised-button
+      [color]="'primary'"
+      class="w-32"
+      (click)="submit()"
+      [disabled]="form.invalid"
+    >
+      <mat-progress-spinner
+        *ngIf="isLoading"
+        [diameter]="24"
+        [mode]="'indeterminate'"
+      ></mat-progress-spinner>
+      <span>Editar</span>
+    </button>
+  </div>
+</form>

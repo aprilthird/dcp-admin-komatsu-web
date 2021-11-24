@@ -1,0 +1,268 @@
+<!-- Drawer content -->
+<div class="flex-auto">
+  <div class="flex flex-col flex-auto min-w-0">
+    <!-- Header -->
+    <div
+      class="
+        flex flex-col
+        sm:flex-row
+        flex-0
+        sm:items-center sm:justify-between
+        p-6
+        sm:py-8 sm:px-10
+        border-b
+        bg-card
+        dark:bg-transparent
+      "
+    >
+      <div
+        class="
+          flex flex-col
+          sm:flex-row
+          w-full
+          justify-between
+          items-center
+          min-w-0
+        "
+      >
+        <!-- Loader -->
+        <div class="absolute inset-x-0 top-0" *ngIf="isLoading">
+          <mat-progress-bar [mode]="'indeterminate'"></mat-progress-bar>
+        </div>
+        <!-- Title -->
+        <div class="w-1/4">
+          <h2
+            class="
+              text-3xl
+              md:text-4xl
+              font-extrabold
+              tracking-tight
+              leading-7
+              sm:leading-10
+            "
+          >
+            Clase de actividad
+          </h2>
+        </div>
+        <div class="flex w-2/4 justify-end master-filter gap-5">
+          <app-inner-header
+            [type]="'clase_actividades'"
+            (isLoading)="setLoading($event)"
+          ></app-inner-header>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main -->
+    <div class="flex flex-auto w-full overflow-hidden">
+      <!-- Usuarios list -->
+      <div
+        class="
+          flex flex-col flex-auto
+          overflow-hidden
+          sm:overflow-y-auto
+          bg-white
+        "
+      >
+        <ng-container *ngIf="clase_actividades$ | async as clase_actividades">
+          <ng-container *ngIf="clase_actividades.length > 0; else empty">
+            <div class="grid overflow-x-auto cont-scroll-y">
+              <!-- Header -->
+              <div
+                class="
+                  inventory-grid
+                  z-10
+                  sticky
+                  top-0
+                  grid
+                  gap-4
+                  py-4
+                  px-6
+                  md:px-8
+                  shadow
+                  text-md
+                  font-semibold
+                  text-secondary
+                  bg-gray-50
+                  dark:bg-black dark:bg-opacity-5
+                  justify-between
+                "
+                matSort
+                matSortDisableClear
+              >
+                <div>Nombre</div>
+                <div class="">Estado</div>
+                <div>Acciones</div>
+              </div>
+
+              <!-- Rows -->
+              <ng-container
+                *ngIf="clase_actividades$ | async as clase_actividades"
+              >
+                <ng-container
+                  *ngFor="
+                    let clase_actividad of clase_actividades;
+                    trackBy: trackByFn
+                  "
+                >
+                  <div
+                    class="
+                      inventory-grid
+                      grid
+                      items-center
+                      gap-4
+                      py-3
+                      px-6
+                      md:px-8
+                      border-b
+                      justify-between
+                    "
+                  >
+                    <!-- Usuario -->
+                    <div class="truncate">
+                      {{ clase_actividad.nombre }}
+                    </div>
+
+                    <div class="truncate">
+                      {{ clase_actividad?.nestado }}
+                    </div>
+
+                    <div>
+                      <!-- Acciones -->
+                      <a
+                        class="min-w-7 w-7 min-h-7 h-7 mr-3"
+                        mat-icon-button
+                        matTooltip="Editar"
+                        (click)="edit(clase_actividad)"
+                      >
+                        <mat-icon
+                          class="icon-size-5 text-primary-500"
+                          [svgIcon]="'heroicons_outline:pencil'"
+                        ></mat-icon>
+                      </a>
+                      <button
+                        class="min-w-10 min-h-7 h-7 px-2 leading-6"
+                        mat-stroked-button
+                        (click)="toggleDetails(clase_actividad)"
+                      >
+                        <mat-icon
+                          class="icon-size-5"
+                          [svgIcon]="
+                            selectedActivity?.nombre === clase_actividad.nombre
+                              ? 'heroicons_solid:chevron-up'
+                              : 'heroicons_solid:chevron-down'
+                          "
+                        ></mat-icon>
+                      </button>
+                    </div>
+                  </div>
+                  <ng-container
+                    *ngIf="selectedActivity?.nombre === clase_actividad.nombre"
+                  >
+                    <ng-container
+                      *ngTemplateOutlet="
+                        rowDetailsTemplate;
+                        context: { $implicit: clase_actividad }
+                      "
+                    >
+                    </ng-container
+                  ></ng-container>
+                </ng-container>
+              </ng-container>
+            </div>
+            <mat-paginator
+              class="
+                sm:inset-x-0 sm:bottom-0
+                border-b
+                sm:border-t sm:border-b-0
+                z-10
+                bg-gray-50
+                dark:bg-transparent
+              "
+              [ngClass]="{ 'pointer-events-none': isLoading }"
+              [length]="(pagination$ | async).length"
+              [pageIndex]="(pagination$ | async).page"
+              [pageSize]="(pagination$ | async)?.size || 10"
+              [pageSizeOptions]="[5, 10, 25, 100]"
+              [showFirstLastButtons]="true"
+              (page)="changePage($event)"
+            ></mat-paginator>
+            <div
+              class="
+                absolute
+                flex flex-0
+                items-center
+                justify-end
+                h-16
+                px-4
+                bottom-0
+                z-49
+                right-0
+                dark:bg-transparent
+                print:hidden
+              "
+            >
+              <span class="font-medium text-secondary">
+                <a mat-button color="primary" (click)="createClaseActividad()">
+                  <mat-icon [svgIcon]="'heroicons_solid:plus'"></mat-icon>
+                  Nueva clase de actividad
+                </a>
+              </span>
+            </div>
+          </ng-container>
+        </ng-container>
+        <ng-template #rowDetailsTemplate>
+          <div
+            class="
+              flex flex-col
+              min-w-max
+              items-center
+              justify-center
+              px-4
+              bottom-0
+              z-49
+              dark:bg-transparent
+              print:hidden
+            "
+          >
+            <ng-container *ngIf="tipoMttos.length > 0">
+              <div
+                *ngFor="let tipoMtto of tipoMttos"
+                class="flex justify-between w-full px-5"
+              >
+                <div class="w-1/4 mb-5">
+                  <div class="mt-4 text-lg font-medium">Nombre</div>
+                  <div class="mt-0.5 line-clamp-2 text-secondary">
+                    {{ tipoMtto?.nombre }}
+                  </div>
+                </div>
+
+                <div class="w-1/4 mb-5">
+                  <div class="mt-4 text-lg font-medium">Descripción</div>
+                  <div class="mt-0.5 line-clamp-2 text-secondary">
+                    {{ tipoMtto?.descripcion }}
+                  </div>
+                </div>
+
+                <div class="w-1/4 mb-5">
+                  <div class="mt-4 text-lg font-medium">estado</div>
+                  <div class="mt-0.5 line-clamp-2 text-secondary">
+                    {{ tipoMtto?.nestado }}
+                  </div>
+                </div>
+              </div>
+            </ng-container>
+            <span
+              class="font-medium text-secondary flex justify-end w-full mt-5"
+            >
+              <a mat-button color="primary" (click)="createTipoMantenimeinto()">
+                <mat-icon [svgIcon]="'heroicons_solid:plus'"></mat-icon>
+                Crear tipo de mantenimeinto
+              </a>
+            </span>
+          </div>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,490 @@
+{
+  "users": [
+    {
+      "id": "6127be641e3df3a721a55ccb",
+      "cargo": "Tecnico1",
+      "nombre": "Gregory",
+      "apellidos": "Moran"
+    },
+    {
+      "id": "6127be64b5e38463c837d49d",
+      "cargo": "Tecnico 2",
+      "nombre": "Beard",
+      "apellidos": "Mendoza"
+    },
+    {
+      "id": "6127be64859ca4acf8daeb0f",
+      "cargo": "Tecnico 2",
+      "nombre": "Walker",
+      "apellidos": "Kelley"
+    },
+    {
+      "id": "6127be6418516cf783826603",
+      "cargo": "Tecnico 2",
+      "nombre": "Sloan",
+      "apellidos": "Grimes"
+    },
+    {
+      "id": "6127be64cbe74c2c55c9e095",
+      "cargo": "Tecnico 2",
+      "nombre": "Kinney",
+      "apellidos": "Meyer"
+    },
+    {
+      "id": "6127be64e5581bd1ab1a7820",
+      "cargo": "Tecnico1",
+      "nombre": "Conner",
+      "apellidos": "Love"
+    },
+    {
+      "id": "6127be647fd329286c1c6182",
+      "cargo": "Tecnico 2",
+      "nombre": "Gonzales",
+      "apellidos": "Miles"
+    },
+    {
+      "id": "6127be644b786cb4401bf139",
+      "cargo": "Tecnico1",
+      "nombre": "Ryan",
+      "apellidos": "Knowles"
+    },
+    {
+      "id": "6127be645011d5d1b8c0689d",
+      "cargo": "Tecnico 2",
+      "nombre": "Buckley",
+      "apellidos": "Wynn"
+    },
+    {
+      "id": "6127be64316cc2e8e90d7fc2",
+      "cargo": "Tecnico 2",
+      "nombre": "Suarez",
+      "apellidos": "Bartlett"
+    },
+    {
+      "id": "6127be646af1c39c06d20024",
+      "cargo": "Tecnico 2",
+      "nombre": "Morales",
+      "apellidos": "Parks"
+    },
+    {
+      "id": "6127be64336b0d11ca352e63",
+      "cargo": "Tecnico1",
+      "nombre": "Nona",
+      "apellidos": "Dillard"
+    },
+    {
+      "id": "6127be64c2f3b3becbc58d85",
+      "cargo": "Tecnico 2",
+      "nombre": "Colon",
+      "apellidos": "Long"
+    },
+    {
+      "id": "6127be647f50d15ffc22b939",
+      "cargo": "Tecnico1",
+      "nombre": "Fern",
+      "apellidos": "Ashley"
+    },
+    {
+      "id": "6127be64561cfdde179f8a7a",
+      "cargo": "Tecnico 2",
+      "nombre": "Sanford",
+      "apellidos": "Roberts"
+    },
+    {
+      "id": "6127be64dcacd0b4dbca09a6",
+      "cargo": "Tecnico1",
+      "nombre": "Neva",
+      "apellidos": "Aguilar"
+    },
+    {
+      "id": "6127be64b344a853d27883dc",
+      "cargo": "Tecnico 2",
+      "nombre": "Curry",
+      "apellidos": "Jarvis"
+    },
+    {
+      "id": "6127be6404c0b7309e303e0a",
+      "cargo": "Tecnico 2",
+      "nombre": "Maxine",
+      "apellidos": "Kirkland"
+    },
+    {
+      "id": "6127be64b58754154785908b",
+      "cargo": "Tecnico1",
+      "nombre": "Myers",
+      "apellidos": "Hoover"
+    },
+    {
+      "id": "6127be64afb69eefe3f3c4e9",
+      "cargo": "Tecnico1",
+      "nombre": "Kendra",
+      "apellidos": "Kline"
+    },
+    {
+      "id": "6127be64e0293282aa7f1ee6",
+      "cargo": "Tecnico 2",
+      "nombre": "Florence",
+      "apellidos": "Washington"
+    },
+    {
+      "id": "6127be64290e04d593ecdb0e",
+      "cargo": "Tecnico 2",
+      "nombre": "Barnett",
+      "apellidos": "Wolfe"
+    },
+    {
+      "id": "6127be646a9d2363c2328ae0",
+      "cargo": "Tecnico1",
+      "nombre": "Fitzgerald",
+      "apellidos": "Copeland"
+    },
+    {
+      "id": "6127be649cca788932129ecc",
+      "cargo": "Tecnico1",
+      "nombre": "Milagros",
+      "apellidos": "Valdez"
+    },
+    {
+      "id": "6127be647ac94942a9dd615e",
+      "cargo": "Tecnico 2",
+      "nombre": "Chrystal",
+      "apellidos": "Lawrence"
+    },
+    {
+      "id": "6127be64c9d0d1e3e100ef68",
+      "cargo": "Tecnico 2",
+      "nombre": "Keller",
+      "apellidos": "Dudley"
+    },
+    {
+      "id": "6127be645b834f58dd2f40ea",
+      "cargo": "Tecnico1",
+      "nombre": "Sherri",
+      "apellidos": "Bullock"
+    },
+    {
+      "id": "6127be6492d2d7c293cfbb0e",
+      "cargo": "Tecnico1",
+      "nombre": "Ella",
+      "apellidos": "Sargent"
+    },
+    {
+      "id": "6127be640e09e6a3c2b9f5d4",
+      "cargo": "Tecnico 2",
+      "nombre": "Eaton",
+      "apellidos": "Hernandez"
+    },
+    {
+      "id": "6127be6403f4945d9a74b143",
+      "cargo": "Tecnico1",
+      "nombre": "Willis",
+      "apellidos": "Wood"
+    },
+    {
+      "id": "6127be64c026b50e986f8539",
+      "cargo": "Tecnico 2",
+      "nombre": "Judy",
+      "apellidos": "Baldwin"
+    },
+    {
+      "id": "6127be642e10fae6fdae56f2",
+      "cargo": "Tecnico 2",
+      "nombre": "Brooke",
+      "apellidos": "Glenn"
+    },
+    {
+      "id": "6127be64c1506776fe9e1bb9",
+      "cargo": "Tecnico1",
+      "nombre": "Theresa",
+      "apellidos": "Griffith"
+    },
+    {
+      "id": "6127be6456139b6da6516c70",
+      "cargo": "Tecnico1",
+      "nombre": "Contreras",
+      "apellidos": "Kelly"
+    },
+    {
+      "id": "6127be64c34cc9a202ab580f",
+      "cargo": "Tecnico1",
+      "nombre": "Celeste",
+      "apellidos": "Velez"
+    },
+    {
+      "id": "6127be64fdead4c62209bfc0",
+      "cargo": "Tecnico 2",
+      "nombre": "Guzman",
+      "apellidos": "Sanchez"
+    },
+    {
+      "id": "6127be64f4a2989dbdf4dc35",
+      "cargo": "Tecnico 2",
+      "nombre": "Brenda",
+      "apellidos": "Dawson"
+    },
+    {
+      "id": "6127be648ab951c7bf37905a",
+      "cargo": "Tecnico1",
+      "nombre": "Evelyn",
+      "apellidos": "Salazar"
+    },
+    {
+      "id": "6127be647e225880cac3c39b",
+      "cargo": "Tecnico 2",
+      "nombre": "Perry",
+      "apellidos": "Hurst"
+    },
+    {
+      "id": "6127be64ff8d418e883744e3",
+      "cargo": "Tecnico1",
+      "nombre": "Eloise",
+      "apellidos": "Sampson"
+    },
+    {
+      "id": "6127be648133f4347a3c02be",
+      "cargo": "Tecnico1",
+      "nombre": "Alexander",
+      "apellidos": "Trevino"
+    },
+    {
+      "id": "6127be646d3324fd9fa0a8bc",
+      "cargo": "Tecnico1",
+      "nombre": "Santos",
+      "apellidos": "Monroe"
+    },
+    {
+      "id": "6127be64b8971eea6b73ff65",
+      "cargo": "Tecnico 2",
+      "nombre": "Sallie",
+      "apellidos": "Grant"
+    },
+    {
+      "id": "6127be64e1be886820ed8764",
+      "cargo": "Tecnico 2",
+      "nombre": "Irwin",
+      "apellidos": "Carey"
+    },
+    {
+      "id": "6127be64a83cd0216f652b50",
+      "cargo": "Tecnico 2",
+      "nombre": "Edith",
+      "apellidos": "Greer"
+    },
+    {
+      "id": "6127be64289e0499e1a4968b",
+      "cargo": "Tecnico1",
+      "nombre": "Webb",
+      "apellidos": "Best"
+    },
+    {
+      "id": "6127be64fd22ccbe26a14902",
+      "cargo": "Tecnico1",
+      "nombre": "Tracy",
+      "apellidos": "Ochoa"
+    },
+    {
+      "id": "6127be647c5020bda98b9b87",
+      "cargo": "Tecnico 2",
+      "nombre": "Paulette",
+      "apellidos": "Battle"
+    },
+    {
+      "id": "6127be64cfb002c67bae5af7",
+      "cargo": "Tecnico1",
+      "nombre": "Figueroa",
+      "apellidos": "Hawkins"
+    },
+    {
+      "id": "6127be64f413d721a040a71c",
+      "cargo": "Tecnico 2",
+      "nombre": "Yang",
+      "apellidos": "Doyle"
+    },
+    {
+      "id": "6127be6413792f52a236bfe1",
+      "cargo": "Tecnico1",
+      "nombre": "Hardy",
+      "apellidos": "Todd"
+    },
+    {
+      "id": "6127be649fce30fbc0bad25c",
+      "cargo": "Tecnico 2",
+      "nombre": "Francisca",
+      "apellidos": "Robles"
+    },
+    {
+      "id": "6127be64c92450d47330ca99",
+      "cargo": "Tecnico 2",
+      "nombre": "Dunlap",
+      "apellidos": "Taylor"
+    },
+    {
+      "id": "6127be64041c325789d0a151",
+      "cargo": "Tecnico1",
+      "nombre": "Hyde",
+      "apellidos": "Palmer"
+    },
+    {
+      "id": "6127be64791ab287161db966",
+      "cargo": "Tecnico 2",
+      "nombre": "Maria",
+      "apellidos": "Mayo"
+    },
+    {
+      "id": "6127be643b22e0c003f212c2",
+      "cargo": "Tecnico 2",
+      "nombre": "Elaine",
+      "apellidos": "Dorsey"
+    },
+    {
+      "id": "6127be64f972b93fb70e79f9",
+      "cargo": "Tecnico 2",
+      "nombre": "Richmond",
+      "apellidos": "Pruitt"
+    },
+    {
+      "id": "6127be64dff6b62a0db96de0",
+      "cargo": "Tecnico1",
+      "nombre": "Carlson",
+      "apellidos": "Moses"
+    },
+    {
+      "id": "6127be64bace85860ef15e5e",
+      "cargo": "Tecnico1",
+      "nombre": "Vincent",
+      "apellidos": "Rhodes"
+    },
+    {
+      "id": "6127be64b9e82e75f5d60b92",
+      "cargo": "Tecnico1",
+      "nombre": "Lynne",
+      "apellidos": "Barker"
+    },
+    {
+      "id": "6127be6456118a07716e93b9",
+      "cargo": "Tecnico 2",
+      "nombre": "Darlene",
+      "apellidos": "Marshall"
+    },
+    {
+      "id": "6127be646a8bf1e1e8110111",
+      "cargo": "Tecnico 2",
+      "nombre": "Serena",
+      "apellidos": "Mooney"
+    },
+    {
+      "id": "6127be6499176fc2582e990b",
+      "cargo": "Tecnico 2",
+      "nombre": "Barnes",
+      "apellidos": "Burnett"
+    },
+    {
+      "id": "6127be64e05e0cf145b20225",
+      "cargo": "Tecnico1",
+      "nombre": "Katie",
+      "apellidos": "Hunt"
+    },
+    {
+      "id": "6127be6494d73868783c56c0",
+      "cargo": "Tecnico 2",
+      "nombre": "Blankenship",
+      "apellidos": "Cotton"
+    },
+    {
+      "id": "6127be649ba5776e44a62d21",
+      "cargo": "Tecnico1",
+      "nombre": "Serrano",
+      "apellidos": "Nicholson"
+    },
+    {
+      "id": "6127be64c3cf9f0377e644d3",
+      "cargo": "Tecnico 2",
+      "nombre": "Harper",
+      "apellidos": "Mcclure"
+    },
+    {
+      "id": "6127be646a3401137a24a009",
+      "cargo": "Tecnico1",
+      "nombre": "Bridgett",
+      "apellidos": "Richard"
+    },
+    {
+      "id": "6127be644993b349a6081fd3",
+      "cargo": "Tecnico1",
+      "nombre": "Sharlene",
+      "apellidos": "Reyes"
+    },
+    {
+      "id": "6127be64ba8541c5b47ce25b",
+      "cargo": "Tecnico1",
+      "nombre": "Jacobs",
+      "apellidos": "Nieves"
+    },
+    {
+      "id": "6127be64938e98b1c317893a",
+      "cargo": "Tecnico 2",
+      "nombre": "Sharpe",
+      "apellidos": "Velasquez"
+    },
+    {
+      "id": "6127be64eef728a8121bd7df",
+      "cargo": "Tecnico 2",
+      "nombre": "Tyler",
+      "apellidos": "Navarro"
+    },
+    {
+      "id": "6127be64a411b23ce826a70e",
+      "cargo": "Tecnico 2",
+      "nombre": "Beulah",
+      "apellidos": "Farley"
+    },
+    {
+      "id": "6127be644f752bfc0081f53b",
+      "cargo": "Tecnico 2",
+      "nombre": "Chapman",
+      "apellidos": "Morse"
+    },
+    {
+      "id": "6127be648ba9cf504571bdc7",
+      "cargo": "Tecnico 2",
+      "nombre": "Hess",
+      "apellidos": "Acosta"
+    },
+    {
+      "id": "6127be64e83451022e165391",
+      "cargo": "Tecnico1",
+      "nombre": "Kidd",
+      "apellidos": "Jordan"
+    },
+    {
+      "id": "6127be6400b2e3894eea3b74",
+      "cargo": "Tecnico 2",
+      "nombre": "Margret",
+      "apellidos": "Vance"
+    },
+    {
+      "id": "6127be64d3c9bed495c0a830",
+      "cargo": "Tecnico 2",
+      "nombre": "Mcfarland",
+      "apellidos": "Jensen"
+    },
+    {
+      "id": "6127be643665a0440a2841c6",
+      "cargo": "Tecnico1",
+      "nombre": "Josephine",
+      "apellidos": "Kirk"
+    },
+    {
+      "id": "6127be64f4d1e8d9610ddc4f",
+      "cargo": "Tecnico1",
+      "nombre": "Holly",
+      "apellidos": "Waller"
+    },
+    {
+      "id": "6127be645a98452504ca6574",
+      "cargo": "Tecnico1",
+      "nombre": "Lou",
+      "apellidos": "Powell"
+    }
+  ]
+}

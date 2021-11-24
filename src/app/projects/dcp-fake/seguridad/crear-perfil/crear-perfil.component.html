@@ -1,0 +1,167 @@
+<div
+  class="
+    sm:absolute sm:inset-0
+    flex flex-col flex-auto
+    min-w-0
+    sm:overflow-hidden
+    bg-card
+  "
+>
+  <!-- Header -->
+  <div
+    class="
+      relative
+      flex flex-col
+      sm:flex-row
+      flex-0
+      sm:items-center sm:justify-between
+      py-8
+      px-6
+      md:px-8
+      border-b
+    "
+  >
+    <!-- Title -->
+    <div class="text-4xl font-extrabold tracking-tight">Editar perfil</div>
+  </div>
+  <!-- Main -->
+  <div class="flex flex-auto overflow-hidden bg-gray-100 py-8 px-6">
+    <!-- Products list -->
+    <div
+      class="
+        flex flex-col flex-auto
+        overflow-hidden
+        sm:overflow-y-auto
+        py-8
+        px-6
+        md:px-3
+        border-radius-1
+        bg-white
+        rounded-lg
+        relative
+        pb-18
+      "
+    >
+      <form [formGroup]="form" novalidate>
+        <div class="flex flex-auto flex-wrap">
+          <!-- Alerta -->
+          <div class="w-full mb-8 px-8" *ngIf="alert">
+            <fuse-alert
+              [appearance]="'soft'"
+              *ngIf="alert"
+              [type]="alert?.type"
+              [showIcon]="false"
+              [dis]
+            >
+              {{ alert.message }}
+            </fuse-alert>
+          </div>
+          <div class="flex flex-col md:flex-row w-full">
+            <!-- Usuario -->
+            <mat-form-field class="w-full md:w-1/4 md:pl-8">
+              <mat-label>Nombre</mat-label>
+              <input matInput formControlName="nombre" />
+              <mat-error> {{ getErrorMessage("nombre") }} </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="hidden md:block px-8 py-4">
+          <mat-divider></mat-divider>
+        </div>
+        <div class="flex flex-auto flex-wrap">
+          <div class="flex flex-col md:flex-row w-full md:pl-8">
+            <div class="font-semibold mb-2">Permisos</div>
+          </div>
+          <div
+            class="
+              flex flex-col
+              md:flex-row
+              w-full
+              md:pl-8
+              h-80
+              overflow-y-auto
+            "
+          >
+            <ul>
+              <ng-container
+                *ngTemplateOutlet="recursiveListTmpl; context: { list: list }"
+              ></ng-container>
+            </ul>
+
+            <ng-template #recursiveListTmpl let-list="list">
+              <li *ngFor="let item of list"
+              [ngStyle]="{ 'margin-bottom.px': item.level === 1 ? 24 : 8, 'margin-top.px': 8 }"
+              >
+                <mat-checkbox [color]="'primary'" [checked]="item.activo"
+                (change)="clickCheckbox(item)"
+                >
+                  {{ item.title }}
+                </mat-checkbox>
+                <ul
+                  *ngIf="item.children.length > 0"
+                  [ngStyle]="{ 'padding-left.px': 20, 'margin-botom.px': 8 }"
+                >
+                  <ng-container
+                    *ngTemplateOutlet="
+                      recursiveListTmpl;
+                      context: { list: item.children }
+                    "
+                  ></ng-container>
+                </ul>
+              </li>
+            </ng-template>
+          </div>
+        </div>
+      </form>
+
+      <!-- Footer -->
+      <div
+        class="
+          flex flex-row
+          justify-end
+          items-center
+          w-full
+          px-6
+          absolute
+          bottom-0
+          left-0
+          absolute
+          bottom-0
+          left-0
+          h-18
+          bg-gray-50
+        "
+      >
+        <a
+          mat-raised-button
+          class="
+            ml-4
+            bg-gray-50
+            border-solid border border-accent-300
+            text-gray-700
+            shadow-none
+          "
+          routerLink="/admin/seguridad/perfiles"
+        >
+          <span class="ml-1 mr-1">Cancelar</span>
+        </a>
+
+        <button
+          class="ml-4"
+          mat-flat-button
+          [color]="'primary'"
+          (click)="onSubmit()"
+        >
+          <mat-progress-spinner
+            *ngIf="loading"
+            [diameter]="24"
+            [mode]="'indeterminate'"
+          ></mat-progress-spinner>
+          <span class="ml-2 mr-1" *ngIf="!(loading)">{{
+            isEdit ? "Editar" : "Crear"
+          }}</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

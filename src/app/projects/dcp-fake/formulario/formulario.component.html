@@ -1,0 +1,46 @@
+<div class="absolute inset-0 flex flex-col min-w-0 overflow-hidden">
+  <mat-drawer-container class="flex-auto h-full">
+    <!-- Drawer -->
+    <mat-drawer
+      class="w-60 dark:bg-gray-900"
+      [autoFocus]="false"
+      [mode]="drawerMode"
+      [opened]="drawerOpened"
+      #matDrawer
+    >
+      <fuse-vertical-navigation
+        [navigation]="menuData"
+        [inner]="true"
+        [mode]="'side'"
+        [name]="'docs-common-components-navigation'"
+        [opened]="true"
+      ></fuse-vertical-navigation>
+      <mat-divider></mat-divider>
+
+      <div class="p-4">
+        <button mat-button color="primary">
+          <mat-icon
+          [svgIcon]="'heroicons_solid:plus'"></mat-icon>
+          Agregar sección
+        </button>
+      </div>
+    </mat-drawer>
+    <!-- Drawer content -->
+    <mat-drawer-content class="flex flex-col" fuseScrollReset>
+      <!-- Main -->
+      <div class="flex-auto">
+        <router-outlet></router-outlet>
+        <!-- Footer -->
+      </div>
+      <div class="relative flex flex-0 items-center justify-end w-full h-16 px-4  z-49 border-t bg-card dark:bg-transparent print:hidden">
+        <span class="font-medium text-secondary">
+          <button mat-button color="primary">
+            <mat-icon
+            [svgIcon]="'heroicons_solid:plus'"></mat-icon>
+            Agregar grupo
+          </button>
+        </span>
+    </div>
+    </mat-drawer-content>
+  </mat-drawer-container>
+</div>

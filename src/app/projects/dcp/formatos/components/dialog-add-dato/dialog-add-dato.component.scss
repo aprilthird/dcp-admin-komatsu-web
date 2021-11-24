@@ -1,0 +1,80 @@
+mat-label {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.add-dato {
+  .example-chip-list {
+    width: 100%;
+  }
+
+  .remove-chip {
+    margin-top: 5px;
+  }
+}
+
+.img-container {
+  display: flex; 
+  flex-direction: column; 
+  width: 33.3%;
+
+  .upload-image-add-dato {
+    align-self: center; 
+    margin-left: 1%; 
+    width: 100%;
+    margin-top: 7%;
+  }
+
+  .mat-error-margin {
+    margin-left: 2%;
+  }
+}
+
+.dialog-divider {
+  margin: 1rem 0;
+}
+
+.dialog-flex-separator {
+  gap: 4rem;
+}
+
+//CHIPS
+::ng-deep .mat-chip-list-wrapper {
+  flex-wrap: unset!important;
+  overflow-x: auto;
+}
+
+::ng-deep .mat-chip-remove.mat-chip-trailing-icon.ng-star-inserted {
+  margin-top: -8px;
+}
+
+//SCROLL
+::ng-deep .option-add .svg-inline--fa {
+  font-size: 30px; 
+  opacity: 0.5
+}
+
+
+::ng-deep ::-webkit-scrollbar
+{
+  width: 12px;
+  height: 12px;
+  background-color: rgba(0, 0, 0, 0);
+}
+
+::ng-deep ::-webkit-scrollbar:hover {
+  background-color: rgba(0, 0, 0, 0.12);
+}
+
+::ng-deep ::-webkit-scrollbar-thumb
+ {
+  border: 2px solid transparent;
+  box-shadow: inset 0 0 0 12px rgba(0, 0, 0, 0.37);
+  border-radius: 12px;
+}
+
+::ng-deep ::-webkit-scrollbar-thumb:active {
+  box-shadow: inset 0 0 0 12px rgba(0, 0, 0, 0.54);
+  border-radius: 12px;
+}
+

@@ -1,0 +1,256 @@
+<form [formGroup]="form" class="add-dato">
+  <div mat-dialog-title class="flex justify-between items-center">
+    <h4>{{ edit ? "Editar" : "Agregar" }} dato</h4>
+    <button mat-icon-button type="button" (click)="dialogRef.close()">
+      <mat-icon [svgIcon]="'heroicons_outline:x'"></mat-icon>
+    </button>
+  </div>
+  <div mat-dialog-content class="pb-6">
+    <fuse-alert
+      class="mb-4"
+      *ngIf="alert.type === 'error'"
+      [appearance]="'outline'"
+      [showIcon]="false"
+      [type]="alert.type"
+      [@shake]="alert.type === 'error'"
+    >
+      {{ alert.message }}
+    </fuse-alert>
+    <div class="flex flex-col w-full justify-space">
+      <div class="flex w-full justify-space dialog-flex-separator">
+        <mat-form-field class="w-full md:w-1/3 md:pl-2">
+          <mat-label>Titulo</mat-label>
+          <input matInput formControlName="label" />
+          <mat-error> {{ getErrorMessage("label") }} </mat-error>
+        </mat-form-field>
+
+        <mat-form-field class="w-full md:w-1/3 md:pl-2">
+          <mat-label>Regex</mat-label>
+          <input matInput formControlName="regex" />
+          <mat-icon
+            matTooltip="Patrón de caracteres permitidos en el campo"
+            svgIcon="heroicons_outline:information-circle"
+          ></mat-icon>
+
+          <mat-error> {{ getErrorMessage("regex") }} </mat-error>
+        </mat-form-field>
+      </div>
+      <div class="flex w-full justify-space md:pl-2 dialog-flex-separator">
+        <div class="flex flex-col w-full mb-3 md:w-1/3">
+          <span>Desea que este título sea visible para el formulario</span>
+          <mat-label class="pt-2">Visible</mat-label>
+          <mat-slide-toggle [color]="'primary'" formControlName="visible">{{
+            form.get("visible").value ? "Sí" : "No"
+          }}</mat-slide-toggle>
+        </div>
+      </div>
+    </div>
+    <hr class="dialog-divider" />
+    <div class="flex flex-col w-full justify-space">
+      <div class="flex w-full justify-space dialog-flex-separator">
+        <mat-form-field class="w-full md:w-1/3 md:pr-2">
+          <mat-label>Tipo de dato</mat-label>
+          <mat-select
+            formControlName="idParametro"
+            (selectionChange)="onChageParametro()"
+          >
+            <ng-container *ngFor="let dato of tiposDatos">
+              <mat-option [value]="dato.id"> {{ dato.label }} </mat-option>
+            </ng-container>
+          </mat-select>
+          <mat-error> {{ getErrorMessage("idParametro") }} </mat-error>
+        </mat-form-field>
+
+        <!-- Nombre -->
+
+        <mat-form-field
+          class="w-full md:w-1/3 md:px-1"
+          *ngIf="
+            form.get('idParametro').value !== 10 &&
+            form.get('idParametro').value !== 6 &&
+            form.get('idParametro').value !== 7
+          "
+        >
+          <mat-label>Placeholder</mat-label>
+          <input matInput formControlName="placeholder" />
+          <mat-error> {{ getErrorMessage("placeholder") }} </mat-error>
+        </mat-form-field>
+        <!-- Nombre -->
+
+        <!--Imagen-->
+        <div
+          class="img-container"
+          *ngIf="
+            form.get('idParametro').value === 6 ||
+            form.get('idParametro').value === 7
+          "
+        >
+          <ui-upload-file
+            class="upload-image-add-dato"
+            [required]="false"
+            [close]="true"
+            [editable]="true"
+            [type]="form.get('idParametro').value === 6 ? 'imagen' : 'firma'"
+            [loading]="imageLoading"
+            [image]="image"
+            (sourceFile)="onChageFile($event)"
+          ></ui-upload-file>
+          <mat-error
+            class="mat-error-margin"
+            *ngIf="
+              image === '' &&
+              (form.get('idParametro').value === 6 ||
+                form.get('idParametro').value === 7) &&
+              (form.get('dato').value === null || form.get('dato').value === '')
+            "
+            >Campo requerido</mat-error
+          >
+        </div>
+        <!--SELECTION-->
+        <div
+          class="w-full md:w-1/3 md:pr-2"
+          *ngIf="form.get('idParametro').value === 10"
+        >
+          <mat-label class="mb-1">Agregar opción</mat-label>
+
+          <div class="flex">
+            <mat-form-field class="example-chip-list" appearance="fill">
+              <mat-chip-list #chipList aria-label="Option selection">
+                <mat-chip
+                  class="flex"
+                  *ngFor="let option of options"
+                  [selectable]="selectable"
+                  [removable]="removable"
+                  (removed)="removeOption(option)"
+                >
+                  {{ option.name }}
+                  <button matChipRemove *ngIf="removable">
+                    <mat-icon>cancel</mat-icon>
+                  </button>
+                </mat-chip>
+                <input
+                  placeholder="Nueva opción"
+                  [matChipInputFor]="chipList"
+                  [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                  [matChipInputAddOnBlur]="addOnBlur"
+                  (matChipInputTokenEnd)="addOption($event)"
+                />
+              </mat-chip-list>
+            </mat-form-field>
+            <button mat-icon-button type="button" class="remove-chip">
+              <mat-icon svgIcon="heroicons_outline:plus-circle"></mat-icon>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex w-full justify-space dialog-flex-separator">
+        <div class="flex flex-col w-full mb-3 md:w-1/3 md:px-1">
+          <mat-label>Obligatorio</mat-label>
+          <mat-slide-toggle [color]="'primary'" formControlName="obligatorio">{{
+            form.get("obligatorio").value ? "Sí" : "No"
+          }}</mat-slide-toggle>
+        </div>
+        <!-- Mínimo de caracteres -->
+        <div class="flex flex-col w-full mb-3 md:w-1/3 md:pl-2">
+          <mat-label>Editable</mat-label>
+          <mat-slide-toggle [color]="'primary'" formControlName="editable">{{
+            form.get("editable").value ? "Sí" : "No"
+          }}</mat-slide-toggle>
+        </div>
+      </div>
+    </div>
+    <hr class="dialog-divider" />
+    <div class="flex flex-col w-full justify-space">
+      <div class="flex w-full justify-space dialog-flex-separator">
+        <!-- Mínimo de caracteres -->
+        <mat-form-field class="w-full md:w-1/3 md:pr-2">
+          <mat-label>Mínimo de caracteres</mat-label>
+          <input
+            min="0"
+            matInput
+            type="number"
+            formControlName="minCaracteres"
+            (keydown)="onkeyDownEvent($event)"
+          />
+          <mat-error>Ingrese un número mayor a 0 </mat-error>
+        </mat-form-field>
+
+        <!-- Máximo de caracteres -->
+        <mat-form-field class="w-full md:w-1/3 md:px-1">
+          <mat-label>Máximo de caracteres</mat-label>
+          <input
+            min="0"
+            matInput
+            type="number"
+            formControlName="maxCaracteres"
+            (keydown)="onkeyDownEvent($event)"
+          />
+          <mat-error>Ingrese un número mayor a 0 </mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="flex w-full justify-space dialog-flex-separator">
+        <mat-form-field class="w-full md:w-1/3 md:pr-2">
+          <mat-label>Fila</mat-label>
+          <input
+            min="0"
+            matInput
+            type="number"
+            formControlName="fila"
+            (keydown)="onkeyDownEvent($event)"
+          />
+          <mat-error>Ingrese un número mayor a 0 </mat-error>
+        </mat-form-field>
+
+        <!-- Máximo de caracteres -->
+        <mat-form-field class="w-full md:w-1/3 md:px-1">
+          <mat-label>Columna</mat-label>
+          <input
+            min="0"
+            matInput
+            type="number"
+            formControlName="columna"
+            (keydown)="onkeyDownEvent($event)"
+          />
+          <mat-error>Ingrese un número mayor a 0 </mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+  </div>
+  <div mat-dialog-actions class="flex justify-end px-6 bg-gray-100">
+    <button
+      mat-button
+      class="
+        ml-4
+        bg-gray-50
+        border-solid border border-accent-300
+        text-gray-700
+        shadow-none
+      "
+      (click)="dialogRef.close()"
+    >
+      Cancelar
+    </button>
+    <button
+      mat-raised-button
+      [color]="'primary'"
+      class="w-24"
+      (click)="onSubmit()"
+      [disabled]="
+        (image === '' &&
+          (form.get('idParametro').value === 6 ||
+            form.get('idParametro').value === 7) &&
+          (form.get('dato').value === null || form.get('dato').value === '')) ||
+        form.invalid
+      "
+    >
+      <span *ngIf="!loading"> {{ edit ? "Editar" : "Crear" }} </span>
+      <mat-progress-spinner
+        *ngIf="loading"
+        [diameter]="24"
+        [mode]="'indeterminate'"
+      ></mat-progress-spinner>
+    </button>
+  </div>
+</form>

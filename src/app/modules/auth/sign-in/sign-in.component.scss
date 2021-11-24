@@ -1,0 +1,14 @@
+.logo {
+  &.dcp {
+
+  }
+  &.kmmp {
+    width: 130px;
+  }
+}
+
+.bg-image {
+  background-image: url('/assets/images/fondo.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
+}

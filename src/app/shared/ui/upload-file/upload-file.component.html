@@ -1,0 +1,60 @@
+<div class="ui-upload-file">
+  <ng-container>
+    <div *ngIf="image === ''; else placeholder">
+      <div class="option-add" (click)="fileInput.click()" [disabled]="preview">
+        <div *ngIf="!loading; else spinner" class="img-placeholder">
+          <mat-icon
+            [svgIcon]="'heroicons_outline:photograph'"
+            class="block"
+          ></mat-icon>
+          <span class="secondary-text">Adjuntar {{ type }}</span>
+        </div>
+
+        <ng-template #spinner>
+          <mat-progress-spinner
+            class="spinner"
+            [diameter]="24"
+            [mode]="'indeterminate'"
+          ></mat-progress-spinner>
+        </ng-template>
+      </div>
+      <input
+        [disabled]="preview"
+        type="file"
+        class="image"
+        #fileInput
+        hidden
+        (change)="onFileChange($event)"
+      />
+    </div>
+    <ng-template #placeholder>
+      <div class="img-container">
+        <img
+          [src]="image"
+          alt="image"
+          [@rotatedState]="state"
+          [ngStyle]="{ 'margin-left': dynamicFitImage, width: dinamycWidth }"
+        />
+        <button
+          *ngIf="!preview && editable"
+          mat-icon-button
+          (click)="removePicture()"
+        >
+          <span class="mat-button-wrapper">
+            <mat-icon [svgIcon]="'heroicons_outline:x'"></mat-icon>
+          </span>
+        </button>
+      </div>
+    </ng-template>
+  </ng-container>
+</div>
+<button
+  *ngIf="image !== ''"
+  mat-icon-button
+  type="button"
+  style="margin-left: 93%"
+  (click)="rotate()"
+  [matTooltip]="'Rotar a la derecha'"
+>
+  <mat-icon svgIcon="rotate_right"></mat-icon>
+</button>

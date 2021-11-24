@@ -1,0 +1,209 @@
+<!-- Drawer content -->
+<div class="flex-auto">
+  <div class="flex flex-col flex-auto min-w-0">
+    <!-- Header -->
+    <div
+      class="
+        flex flex-col
+        sm:flex-row
+        flex-0
+        sm:items-center sm:justify-between
+        p-6
+        sm:py-8 sm:px-10
+        border-b
+        bg-card
+        dark:bg-transparent
+      "
+    >
+      <div
+        class="
+          flex flex-col
+          sm:flex-row
+          w-full
+          justify-between
+          items-center
+          min-w-0
+        "
+      >
+        <!-- Loader -->
+        <div class="absolute inset-x-0 top-0" *ngIf="isLoading">
+          <mat-progress-bar [mode]="'indeterminate'"></mat-progress-bar>
+        </div>
+        <!-- Title -->
+        <div class="w-1/4">
+          <h2
+            class="
+              text-3xl
+              md:text-4xl
+              font-extrabold
+              tracking-tight
+              leading-7
+              sm:leading-10
+            "
+          >
+            Equipos
+          </h2>
+        </div>
+        <div class="flex w-2/4 justify-end master-filter gap-5">
+          <app-inner-header
+            [type]="'equipos'"
+            (isLoading)="setLoading($event)"
+          ></app-inner-header>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main -->
+    <div class="flex flex-auto w-full overflow-hidden">
+      <!-- Usuarios list -->
+      <div
+        class="
+          flex flex-col flex-auto
+          overflow-hidden
+          sm:overflow-y-auto
+          bg-white
+        "
+      >
+        <ng-container *ngIf="equipos$ | async as equipos">
+          <ng-container *ngIf="equipos.length > 0; else empty">
+            <div class="grid overflow-x-auto cont-scroll-y">
+              <!-- Header -->
+              <div
+                class="
+                  inventory-grid
+                  z-10
+                  sticky
+                  top-0
+                  grid
+                  gap-4
+                  py-4
+                  px-6
+                  md:px-8
+                  shadow
+                  text-md
+                  font-semibold
+                  text-secondary
+                  bg-gray-50
+                  dark:bg-black dark:bg-opacity-5
+                  justify-between
+                "
+                matSort
+                matSortDisableClear
+              >
+                <div>Nombre</div>
+                <div class="">TAG</div>
+                <div class="">Modelo</div>
+                <div class="">Flota</div>
+                <div class="">Cliente</div>
+                <div class="">Horómetro</div>
+                <div class="">Estado</div>
+                <div>Acciones</div>
+              </div>
+
+              <!-- Rows -->
+              <ng-container *ngIf="equipos$ | async as equipos">
+                <ng-container
+                  *ngFor="let equipo of equipos; trackBy: trackByFn"
+                >
+                  <div
+                    class="
+                      inventory-grid
+                      grid
+                      items-center
+                      gap-4
+                      py-3
+                      px-6
+                      md:px-8
+                      border-b
+                      justify-between
+                    "
+                  >
+                    <!-- Usuario -->
+                    <div class="truncate">
+                      {{ equipo?.nombre }}
+                    </div>
+                    <!-- Nombres -->
+                    <div class="truncate">
+                      {{ equipo?.tag }}
+                    </div>
+                    <!-- Apellidos -->
+                    <div class="truncate">
+                      {{ equipo?.modelo }}
+                    </div>
+                    <div class="truncate">
+                      {{ equipo?.flota }}
+                    </div>
+                    <div class="truncate">
+                      {{ equipo?.cliente }}
+                    </div>
+
+                    <div class="truncate">
+                      {{ equipo?.horometro }}
+                    </div>
+                    <div class="">
+                      {{ equipo?.nestado }}
+                    </div>
+
+                    <!-- Acciones -->
+                    <div>
+                      <a
+                        class="min-w-7 w-7 min-h-7 h-7 mr-1"
+                        mat-icon-button
+                        matTooltip="Editar"
+                        (click)="edit(equipo)"
+                      >
+                        <mat-icon
+                          class="icon-size-5 text-primary-500"
+                          [svgIcon]="'heroicons_outline:pencil'"
+                        ></mat-icon>
+                      </a>
+                    </div>
+                  </div>
+                </ng-container>
+              </ng-container>
+            </div>
+            <mat-paginator
+              class="
+                sm:inset-x-0 sm:bottom-0
+                border-b
+                sm:border-t sm:border-b-0
+                z-10
+                bg-gray-50
+                dark:bg-transparent
+              "
+              [ngClass]="{ 'pointer-events-none': isLoading }"
+              [length]="(pagination$ | async).length"
+              [pageIndex]="(pagination$ | async).page"
+              [pageSize]="(pagination$ | async)?.size || 10"
+              [pageSizeOptions]="[5, 10, 25, 100]"
+              [showFirstLastButtons]="true"
+              (page)="changePage($event)"
+            ></mat-paginator>
+            <div
+              class="
+                absolute
+                flex flex-0
+                items-center
+                justify-end
+                h-16
+                px-4
+                bottom-0
+                z-49
+                right-0
+                dark:bg-transparent
+                print:hidden
+              "
+            >
+              <span class="font-medium text-secondary">
+                <a mat-button color="primary" (click)="createEquipo()">
+                  <mat-icon [svgIcon]="'heroicons_solid:plus'"></mat-icon>
+                  Nuevo Equipo
+                </a>
+              </span>
+            </div>
+          </ng-container>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+</div>

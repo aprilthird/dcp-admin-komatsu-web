@@ -1,0 +1,49 @@
+<form
+  class="flex justify-between mt-8 gap-2 dashboard-filters"
+  formGroup="filter"
+>
+  <mat-form-field class="fuse-mat-no-subscript w-full">
+    <mat-label class="prose">Cliente</mat-label>
+    <mat-select formControlName="cliente" [value]="data.clients[0].name">
+      <mat-option *ngFor="let option of data.clients" [value]="option.name">{{
+        option.name
+      }}</mat-option>
+    </mat-select>
+  </mat-form-field>
+  <div>
+    <mat-label class="prose">Rango de fecha</mat-label>
+    <div class="flex items-start mt-6">
+      <div class="flex-auto">
+        <fuse-date-range formControlName="rango_fecha"></fuse-date-range>
+      </div>
+    </div>
+  </div>
+
+  <mat-form-field class="fuse-mat-no-subscript w-full">
+    <mat-label class="prose">Tipo de solicitud</mat-label>
+    <mat-select
+      formControlName="tipo_solicitud"
+      [value]="data.request_type[0].name"
+    >
+      <mat-option
+        *ngFor="let option of data.request_type"
+        [value]="option.name"
+        >{{ option.name }}</mat-option
+      >
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field class="fuse-mat-no-subscript w-full">
+    <mat-label class="prose">Clase de actividad</mat-label>
+    <mat-select
+      formControlName="tipo_solicitud"
+      [value]="data.activity_class[0].name"
+    >
+      <mat-option
+        *ngFor="let option of data.activity_class"
+        [value]="option.name"
+        >{{ option.name }}</mat-option
+      >
+    </mat-select>
+  </mat-form-field>
+</form>

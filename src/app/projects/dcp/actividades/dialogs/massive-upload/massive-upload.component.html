@@ -1,0 +1,91 @@
+<div
+  class="
+    sm:inset-0
+    flex flex-col flex-auto
+    min-w-0
+    sm:overflow-hidden
+    bg-card
+    dark:bg-transparent
+  "
+>
+  <!-- Header -->
+  <div
+    class="
+      relative
+      flex flex-col
+      sm:flex-row
+      flex-0
+      sm:items-center sm:justify-between
+      py-8
+      px-6
+      md:px-8
+      border-b
+    "
+  >
+    <!-- Loader -->
+    <div class="absolute inset-x-0 bottom-0">
+      <!--<mat-progress-bar [mode]="'indeterminate'"></mat-progress-bar>-->
+    </div>
+    <!-- Title -->
+    <div class="flex flex-row justify-between items-center w-full">
+      <div class="flex flex-col activities-container">
+        <div class="text-4xl font-extrabold tracking-tight">
+          <span>Carga masiva</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main -->
+  <div class="flex flex-auto overflow-hidden justify-between">
+    <!-- Products list -->
+    <div
+      class="
+        flex flex-col flex-auto
+        justify-between
+        items-center
+        overflow-hidden
+        bg-gray-100
+        h-50
+      "
+    >
+      <div
+        class="
+          sm:col-span-2
+          md:col-span-4
+          flex flex-col flex-auto
+          justify-between
+          p-6
+          bg-card
+          shadow
+          rounded-2xl
+          overflow-hidden
+          m-5
+          w-1/2
+        "
+      >
+        <div class="flex flex-row justify-between gap-10 mb-5">
+          <mat-form-field class="w-full items-center justify-between">
+            <mat-label class="font-bold">Subir archivo</mat-label>
+            <input matInput placeholder="Examinar" />
+            <mat-icon svgIcon="heroicons_outline:upload"></mat-icon>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="flex flex-row gap-5 mb-5">
+        <button
+          mat-raised-button
+          [color]="'secondary'"
+          routerLink="/admin/actividades/list"
+        >
+          <span class="ml-2 mr-1">Salir</span>
+        </button>
+
+        <button mat-raised-button [color]="'primary'">
+          <span class="ml-2 mr-1">Guardar</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

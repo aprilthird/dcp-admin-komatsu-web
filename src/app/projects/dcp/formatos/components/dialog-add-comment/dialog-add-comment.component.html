@@ -1,0 +1,32 @@
+<div mat-dialog-title class="flex justify-between items-center">
+  <h4>Comentario</h4>
+
+  <button mat-icon-button type="button" (click)="matDialog.close()">
+    <mat-icon [svgIcon]="'heroicons_outline:x'"></mat-icon>
+  </button>
+</div>
+<div mat-dialog-content class="pb-6">
+  <mat-form-field class="w-full">
+    <mat-label>Agregar comentario</mat-label>
+    <input class="w-full" matInput placeholder="Escribir comentario" />
+  </mat-form-field>
+  <div class="flex flex-col w-full gap-5">
+    <button
+      class="mr-8 flex justify-center"
+      mat-raised-button
+      [color]="'primary'"
+      (click)="submit()"
+    >
+      <span class="ml-2 mr-1">Enviar</span>
+    </button>
+
+    <button
+      class="mr-8 flex justify-center"
+      mat-raised-button
+      [color]="'secondary'"
+      (click)="matDialog.close()"
+    >
+      <span class="ml-2 mr-1">Volver</span>
+    </button>
+  </div>
+</div>

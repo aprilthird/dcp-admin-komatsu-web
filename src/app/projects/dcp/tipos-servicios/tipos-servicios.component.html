@@ -1,0 +1,192 @@
+<div
+  class="
+    sm:inset-0
+    flex flex-col flex-auto
+    min-w-0
+    sm:overflow-hidden
+    bg-card
+    dark:bg-transparent
+  "
+>
+  <!-- Header -->
+  <div
+    class="
+      relative
+      flex flex-col
+      sm:flex-row
+      flex-0
+      sm:items-center sm:justify-between
+      py-8
+      px-6
+      md:px-8
+      border-b
+    "
+  >
+    <!-- Loader -->
+    <div class="absolute inset-x-0 bottom-0" *ngIf="isLoading">
+      <mat-progress-bar [mode]="'indeterminate'"></mat-progress-bar>
+    </div>
+    <!-- Title -->
+    <div class="text-4xl font-extrabold tracking-tight">Tipo de servicio</div>
+
+    <!-- Actions -->
+    <div class="flex flex-shrink-0 items-center mt-6 sm:mt-0 sm:ml-4 gap-5">
+      <!-- Add product button -->
+      <button mat-raised-button [color]="'secondary'" (click)="openFilter()">
+        <mat-icon svgIcon="heroicons_outline:filter"></mat-icon>
+        <span class="ml-2 mr-1">Filtrar</span>
+      </button>
+      <button
+        mat-raised-button
+        [color]="'primary'"
+        (click)="clickNewTipoServicio()"
+      >
+        <mat-icon [svgIcon]="'heroicons_outline:plus'"></mat-icon>
+        <span class="ml-2 mr-1">Crear tipo de servicio</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Main -->
+  <div class="flex flex-auto overflow-hidden">
+    <!-- Products list -->
+    <div
+      class="
+        flex flex-col flex-auto
+        sm:mb-18
+        overflow-hidden
+        sm:overflow-y-auto
+      "
+    >
+      <ng-container *ngIf="tipos_servicios$">
+        <ng-container *ngIf="tipos_servicios$.length > 0; else empty">
+          <div class="grid overflow-x-auto">
+            <!-- Header -->
+            <div
+              class="
+                inventory-grid
+                z-10
+                sticky
+                top-0
+                grid
+                gap-4
+                py-4
+                px-6
+                md:px-8
+                shadow
+                text-md
+                font-semibold
+                text-secondary
+                bg-gray-50
+                dark:bg-black dark:bg-opacity-5
+                justify-between
+              "
+              matSort
+              matSortDisableClear
+            >
+              <div>ID</div>
+              <div>Tipo de servicio</div>
+              <div>Icono</div>
+              <div>Fecha</div>
+              <div>Modificado</div>
+              <div></div>
+            </div>
+
+            <!-- Rows -->
+            <ng-container *ngIf="tipos_servicios$">
+              <ng-container
+                *ngFor="
+                  let tipos_servicio of tipos_servicios$;
+                  trackBy: trackByFn
+                "
+              >
+                <div
+                  class="
+                    inventory-grid
+                    grid
+                    items-center
+                    gap-4
+                    py-3
+                    px-6
+                    md:px-8
+                    border-b
+                    justify-between
+                  "
+                >
+                  <!-- ID -->
+                  <div class="truncate">
+                    {{ tipos_servicio?.id }}
+                  </div>
+
+                  <!-- Cliente -->
+                  <div class="truncate">
+                    {{ tipos_servicio?.tipo_servicio }}
+                  </div>
+                  <!-- Nombres -->
+                  <div class="truncate">
+                    {{ tipos_servicio?.icono }}
+                  </div>
+                  <!-- ID -->
+                  <div class="truncate">
+                    {{ tipos_servicio?.fecha }}
+                  </div>
+                  <!-- Actividad -->
+                  <div class="truncate">
+                    {{ tipos_servicio?.modificado }}
+                  </div>
+
+                  <!-- Acciones -->
+                  <div>
+                    <a
+                      class="min-w-7 w-7 min-h-7 h-7 mr-1"
+                      mat-icon-button
+                      matTooltip="Editar"
+                    >
+                      <mat-icon
+                        class="icon-size-5 text-primary-500"
+                        [svgIcon]="'heroicons_outline:dots-vertical'"
+                      ></mat-icon>
+                    </a>
+                  </div>
+                </div>
+              </ng-container>
+            </ng-container>
+          </div>
+          <!--<mat-paginator
+            class="
+              sm:absolute sm:inset-x-0 sm:bottom-0
+              border-b
+              sm:border-t sm:border-b-0
+              z-10
+              bg-gray-50
+              dark:bg-transparent
+            "
+            [ngClass]="{ 'pointer-events-none': isLoading }"
+            [length]="(pagination$ | async).length"
+            [pageIndex]="(pagination$ | async).page"
+            [pageSize]="(pagination$ | async)?.size || 10"
+            [pageSizeOptions]="[5, 10, 25, 100]"
+            [showFirstLastButtons]="true"
+            (page)="changePage($event)"
+          ></mat-paginator>-->
+        </ng-container>
+      </ng-container>
+
+      <ng-template #empty>
+        <div
+          class="
+            p-8
+            sm:p-16
+            border-t
+            text-4xl
+            font-semibold
+            tracking-tight
+            text-center
+          "
+        >
+          No hay formatos registrados
+        </div>
+      </ng-template>
+    </div>
+  </div>
+</div>

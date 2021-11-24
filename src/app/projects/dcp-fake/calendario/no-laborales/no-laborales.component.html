@@ -1,0 +1,151 @@
+<div
+  class="
+    absolute
+    inset-0
+    flex flex-col
+    min-w-0
+    overflow-hidden
+    dark:bg-gray-900
+  "
+>
+  <mat-drawer-container class="flex-auto h-full bg-transparent">
+    <!-- Drawer -->
+    <mat-drawer
+      class="w-60 dark:bg-gray-900"
+      [autoFocus]="false"
+      [mode]="drawerMode"
+      [opened]="drawerOpened"
+      #drawer
+    >
+      <!-- <calendar-sidebar (calendarUpdated)="onCalendarUpdated($event)"></calendar-sidebar> -->
+    </mat-drawer>
+
+    <mat-drawer-content class="flex">
+      <!-- Main -->
+      <div class="flex flex-col flex-auto">
+        <!-- Header -->
+        <div class="flex flex-0 flex-wrap items-center p-4 border-b bg-card">
+          <button mat-icon-button (click)="toggleDrawer()">
+            <mat-icon [svgIcon]="'heroicons_outline:menu'"></mat-icon>
+          </button>
+
+          <div
+            class="ml-4 text-2xl font-semibold tracking-tight whitespace-nowrap"
+          >
+            {{ viewTitle }}
+          </div>
+
+          <button class="ml-5" mat-icon-button (click)="previous()">
+            <mat-icon
+              class="icon-size-5"
+              [svgIcon]="'heroicons_solid:chevron-left'"
+            ></mat-icon>
+          </button>
+
+          <button mat-icon-button (click)="next()">
+            <mat-icon
+              class="icon-size-5"
+              [svgIcon]="'heroicons_solid:chevron-right'"
+            ></mat-icon>
+          </button>
+
+          <button
+            class="hidden md:inline-flex"
+            mat-icon-button
+            (click)="today()"
+          >
+            <mat-icon [svgIcon]="'heroicons_outline:calendar'"></mat-icon>
+          </button>
+
+          <div class="hidden md:block ml-auto">
+            <mat-form-field
+              class="fuse-mat-dense fuse-mat-no-subscript w-30 ml-2"
+            >
+              <mat-select
+                (selectionChange)="changeView(viewChanger.value)"
+                [value]="view"
+                #viewChanger="matSelect"
+              >
+                <mat-option [value]="'dayGridMonth'">Month</mat-option>
+                <mat-option [value]="'timeGridWeek'">Week</mat-option>
+                <mat-option [value]="'timeGridDay'">Day</mat-option>
+                <mat-option [value]="'listYear'">Schedule</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <!-- Mobile menu -->
+          <div class="md:hidden ml-auto">
+            <button class="" [matMenuTriggerFor]="actionsMenu" mat-icon-button>
+              <mat-icon
+                [svgIcon]="'heroicons_outline:dots-vertical'"
+              ></mat-icon>
+
+              <mat-menu #actionsMenu="matMenu">
+                <button mat-menu-item (click)="today()">
+                  <mat-icon [svgIcon]="'heroicons_outline:calendar'"></mat-icon>
+                  <span>Go to today</span>
+                </button>
+                <button [matMenuTriggerFor]="actionsViewsMenu" mat-menu-item>
+                  <mat-icon
+                    [svgIcon]="'heroicons_outline:view-grid'"
+                  ></mat-icon>
+                  <span>View</span>
+                </button>
+              </mat-menu>
+
+              <mat-menu #actionsViewsMenu="matMenu">
+                <button
+                  mat-menu-item
+                  [disabled]="view === 'dayGridMonth'"
+                  (click)="changeView('dayGridMonth')"
+                >
+                  <span>Month</span>
+                </button>
+                <button
+                  mat-menu-item
+                  [disabled]="view === 'timeGridWeek'"
+                  (click)="changeView('timeGridWeek')"
+                >
+                  <span>Week</span>
+                </button>
+                <button
+                  mat-menu-item
+                  [disabled]="view === 'timeGridDay'"
+                  (click)="changeView('timeGridDay')"
+                >
+                  <span>Day</span>
+                </button>
+                <button
+                  mat-menu-item
+                  [disabled]="view === 'listYear'"
+                  (click)="changeView('listYear')"
+                >
+                  <span>Schedule</span>
+                </button>
+              </mat-menu>
+            </button>
+          </div>
+        </div>
+        <!-- FullCalendar -->
+        <div class="flex flex-col flex-auto">
+          <full-calendar
+            [defaultView]="view"
+            [events]="events"
+            [firstDay]="0"
+            [handleWindowResize]="false"
+            [header]="false"
+            [height]="'parent'"
+            [locales]="locales"
+            locale="es"
+            [plugins]="calendarPlugins"
+            [views]="views"
+            (dateClick)="onDateClick($event)"
+            (eventClick)="onEventClick($event)"
+            (eventRender)="onEventRender($event)"
+            #fullCalendar
+          ></full-calendar>
+        </div>
+      </div>
+    </mat-drawer-content>
+  </mat-drawer-container>
+</div>

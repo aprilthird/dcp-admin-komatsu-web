@@ -1,0 +1,266 @@
+<div
+  class="
+    sm:inset-0
+    flex flex-col flex-auto
+    min-w-0
+    sm:overflow-hidden
+    bg-card
+    dark:bg-transparent
+  "
+>
+  <!-- Header -->
+  <div
+    class="
+      relative
+      flex flex-col
+      sm:flex-row
+      flex-0
+      sm:items-center sm:justify-between
+      py-8
+      px-6
+      md:px-8
+      border-b
+    "
+  >
+    <!-- Loader -->
+    <div class="absolute inset-x-0 bottom-0" *ngIf="isLoading">
+      <mat-progress-bar [mode]="'indeterminate'"></mat-progress-bar>
+    </div>
+    <!-- Title -->
+    <div class="flex flex-row flex-wrap justify-between items-center w-full">
+      <div class="flex flex-col activities-container">
+        <div class="text-4xl font-extrabold tracking-tight">
+          Bandeja de informes
+        </div>
+        <a class="prose font-bold">De {{ start }} al {{ end }}</a>
+      </div>
+      <div
+        class="flex flex-wrap gap-5 mt-5 xl:my-none"
+        *ngIf="!assignToBay; else assign"
+      >
+        <app-filter (range)="daterange($event)"></app-filter>
+        <upload-print-activities class="pr-8"></upload-print-activities>
+      </div>
+      <ng-template #assign>
+        <button
+          class="mr-8"
+          mat-raised-button
+          [color]="'primary'"
+          (click)="openAssignment()"
+        >
+          <span class="ml-2 mr-1">Asignar bahía</span>
+        </button>
+      </ng-template>
+    </div>
+  </div>
+
+  <!-- Main -->
+  <div class="flex flex-auto overflow-hidden">
+    <!-- Products list -->
+    <div
+      class="
+        flex flex-col flex-auto
+        sm:mb-18
+        overflow-hidden
+        sm:overflow-y-auto
+      "
+    >
+      <ng-container *ngIf="activities">
+        <ng-container *ngIf="activities.length > 0; else empty">
+          <div class="grid overflow-x-auto">
+            <!-- Header -->
+            <div
+              class="
+                inventory-grid
+                z-10
+                sticky
+                top-0
+                grid
+                gap-4
+                py-4
+                px-6
+                md:px-8
+                shadow
+                text-md
+                font-semibold
+                text-secondary
+                bg-gray-50
+                dark:bg-black dark:bg-opacity-5
+                justify-between
+              "
+              matSort
+              matSortDisableClear
+            >
+              <div class="">ID</div>
+              <div class="">Tipo servicio</div>
+              <div class="">ID actividad</div>
+              <div class="">Cod. Order</div>
+              <div class="">Cod. Equipo</div>
+              <div class="">Correlativo</div>
+              <div class="">Cod. Und Servicio</div>
+              <div class="">Modificado</div>
+              <div class="">Modificado por</div>
+              <div>Estado</div>
+              <div></div>
+              <div></div>
+            </div>
+
+            <!-- Rows -->
+            <ng-container *ngIf="activities">
+              <ng-container *ngFor="let actividad of activities; let i = index">
+                <div
+                  class="
+                    inventory-grid
+                    grid
+                    items-center
+                    gap-4
+                    py-3
+                    px-6
+                    md:px-8
+                    border-b
+                    justify-between
+                  "
+                >
+                  <div class="truncate">
+                    {{ actividad?.ID }}
+                  </div>
+
+                  <div class="truncate">
+                    {{ actividad?.tipo_servicio }}
+                  </div>
+
+                  <div class="truncate">
+                    {{ actividad?.id_actividad }}
+                  </div>
+
+                  <div class="truncate">
+                    {{ actividad?.codigo_orden }}
+                  </div>
+
+                  <div class="truncate">
+                    {{ actividad?.codigo_equipo }}
+                  </div>
+                  <div class="truncate">
+                    {{ actividad?.correlativo }}
+                  </div>
+                  <div class="truncate">
+                    {{ actividad?.codigo_unidad_servicio }}
+                  </div>
+
+                  <div class="truncate">
+                    {{ actividad?.fechaMod }}
+                  </div>
+
+                  <div class="truncate">
+                    {{ actividad?.userMod }}
+                  </div>
+
+                  <div class="truncate">
+                    <span
+                      class="
+                        inline-flex
+                        items-center
+                        font-bold
+                        text-xs
+                        px-2.5
+                        py-0.5
+                        rounded-full
+                        tracking-wide
+                        uppercase
+                        bg-green-200
+                        text-green-800
+                        dark:bg-green-600 dark:text-green-50
+                      "
+                    >
+                      <span class="leading-relaxed whitespace-nowrap">
+                        {{ actividad?.nestado }}</span
+                      ></span
+                    >
+                  </div>
+
+                  <div>
+                    <button
+                      class="min-w-10 min-h-7 h-7 px-2 leading-6"
+                      mat-stroked-button
+                      (click)="toggleDetails(actividad)"
+                    >
+                      <mat-icon
+                        class="icon-size-5"
+                        [svgIcon]="
+                          selectedActivity?.id === actividad.id
+                            ? 'heroicons_solid:chevron-up'
+                            : 'heroicons_solid:chevron-down'
+                        "
+                      ></mat-icon>
+                    </button>
+                  </div>
+                  <div>
+                    <button
+                      mat-icon-button
+                      [matMenuTriggerFor]="menu"
+                      aria-label="Toggle menu"
+                    >
+                      <mat-icon
+                        svgIcon="heroicons_outline:dots-vertical"
+                      ></mat-icon>
+                    </button>
+                    <mat-menu #menu="matMenu" xPosition="before">
+                      <button
+                        mat-menu-item
+                        routerLink="/admin/actividades/validation/{{
+                          actividad.id
+                        }}/1/1"
+                      >
+                        Ver formatos
+                      </button>
+                      <button
+                        mat-menu-item
+                        routerLink="/admin/actividades/edit/{{ actividad.id }}"
+                      >
+                        Editar actividad
+                      </button>
+                    </mat-menu>
+                  </div>
+                  <ng-container *ngIf="selectedActivity?.id === actividad.id">
+                    <ng-container
+                      *ngTemplateOutlet="
+                        rowDetailsTemplate;
+                        context: { $implicit: actividad }
+                      "
+                    >
+                      <div>
+                        <!--<app-activity [isEdit]="isEdit"></app-activity>-->
+                      </div>
+                    </ng-container></ng-container
+                  >
+                </div>
+              </ng-container>
+            </ng-container>
+          </div>
+        </ng-container>
+      </ng-container>
+      <ng-template #rowDetailsTemplate
+        ><app-activity
+          [isEdit]="isEdit"
+          [activityData]="selectedActivity"
+        ></app-activity
+      ></ng-template>
+
+      <ng-template #empty>
+        <div
+          class="
+            p-8
+            sm:p-16
+            border-t
+            text-4xl
+            font-semibold
+            tracking-tight
+            text-center
+          "
+        >
+          No hay formatos registrados
+        </div>
+      </ng-template>
+    </div>
+  </div>
+</div>

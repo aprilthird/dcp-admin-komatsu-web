@@ -1,0 +1,103 @@
+<form [formGroup]="form" class="">
+  <div mat-dialog-title class="flex justify-between items-center">
+    <h4>Agregar flota</h4>
+    <button mat-icon-button type="button" (click)="matdialigRef.close()">
+      <mat-icon [svgIcon]="'heroicons_outline:x'"></mat-icon>
+    </button>
+  </div>
+  <div mat-dialog-content class="pb-6">
+    <div class="flex flex-col w-full">
+      <!-- Nombre -->
+
+      <mat-form-field floatLabel="always" class="w-100-p">
+        <mat-label>Nombre</mat-label>
+        <input
+          matInput
+          type="text"
+          formControlName="nombre"
+          placeholder="Ingrese nombre"
+        />
+        <mat-error *ngIf="form.controls['nombre'].invalid">{{
+          matErrorMsg
+        }}</mat-error>
+      </mat-form-field>
+
+      <!--<mat-form-field floatLabel="always" class="w-100-p">
+        <mat-label>Cliente</mat-label>
+        <input
+          matInput
+          type="text"
+          formControlName="cliente"
+          placeholder="Ingrese cliente"
+        />
+        <mat-error *ngIf="form.controls['cliente'].invalid">{{
+          matErrorMsg
+        }}</mat-error>
+      </mat-form-field>-->
+      <mat-form-field class="w-100-p">
+        <mat-label class="prose">Cliente</mat-label>
+        <mat-select formControlName="cliente">
+          <mat-option
+            *ngFor="let cliente of clienteOptions"
+            [value]="cliente.nombre"
+            >{{ cliente.nombre }}</mat-option
+          >
+        </mat-select>
+      </mat-form-field>
+
+      <mat-slide-toggle
+        color="primary"
+        (change)="check($event)"
+        [checked]="form.controls['estado'].value === 1 ? true : false"
+      >
+        Estado
+      </mat-slide-toggle>
+    </div>
+  </div>
+  <div mat-dialog-actions class="flex justify-center px-6 gap-5">
+    <button
+      (click)="matdialigRef.close()"
+      mat-button
+      class="
+        ml-4
+        bg-gray-50
+        border-solid border border-accent-300
+        text-gray-700
+        shadow-none
+      "
+    >
+      Cancelar
+    </button>
+    <button
+      *ngIf="!isEdit"
+      mat-raised-button
+      [color]="'primary'"
+      class="w-32"
+      (click)="submit()"
+      [disabled]="form.invalid"
+    >
+      <mat-progress-spinner
+        *ngIf="isLoading"
+        [diameter]="24"
+        [mode]="'indeterminate'"
+      ></mat-progress-spinner>
+      <span>Crear</span>
+    </button>
+
+    <button
+      *ngIf="isEdit"
+      mat-raised-button
+      [color]="'primary'"
+      class="w-32"
+      (click)="submit('edit')"
+      [disabled]="form.invalid"
+    >
+      <mat-progress-spinner
+        *ngIf="isLoading"
+        [diameter]="24"
+        [mode]="'indeterminate'"
+      ></mat-progress-spinner>
+      <span>Editar</span>
+    </button>
+  </div>
+</form>

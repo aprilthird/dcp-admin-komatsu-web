@@ -1,0 +1,36 @@
+<div class="flex gap-5">
+  <button mat-raised-button [color]="'secondary'" (click)="openFilter()">
+    <mat-icon svgIcon="heroicons_outline:filter"></mat-icon>
+    <span class="ml-2 mr-1">Filtrar</span>
+  </button>
+
+  <button mat-raised-button [color]="'secondary'" (click)="rangepicker.click()">
+    <!--<mat-icon svgIcon="heroicons_outline:calendar"></mat-icon>-->
+    <span class="ml-2 mr-1">Elegir fecha</span>
+    <mat-date-range-input
+      [formGroup]="dateRange"
+      #rangepicker
+      [rangePicker]="picker"
+      hidden
+      class="mat-date-ranage-input-width"
+    >
+      <input
+        matStartDate
+        placeholder="Start date"
+        hidden
+        formControlName="startDate"
+        class="mat-date-ranage-input-width"
+      />
+      <input
+        matEndDate
+        placeholder="End date"
+        hidden
+        formControlName="endDate"
+        class="mat-date-ranage-input-width"
+        (dateChange)="changeDate()"
+      />
+    </mat-date-range-input>
+    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-date-range-picker #picker></mat-date-range-picker>
+  </button>
+</div>

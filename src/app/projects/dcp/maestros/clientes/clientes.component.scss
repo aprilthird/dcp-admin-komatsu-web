@@ -1,0 +1,27 @@
+.inventory-grid {
+  grid-template-columns: 75px 75px 75px 75px 75px 30px;
+    @screen sm {
+      grid-template-columns: 75px 75px 75px 75px 75px 30px;
+    }
+  
+    @screen md {
+      grid-template-columns: 100px 100px 100px 100px 100px 50px;
+    }
+  
+    @screen lg {
+      grid-template-columns: 120px 120px 120px 100px 100px 100px;
+    }
+  
+    @screen xl {
+      grid-template-columns: 150px 150px 150px 120px 120px 120px;
+    }
+  }
+
+  .master-filter {
+    ::ng-deep .mat-form-field-flex {
+        border-radius: 1rem!important;
+    }
+}
+
+
+  

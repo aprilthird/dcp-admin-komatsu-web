@@ -1,0 +1,25 @@
+<!--The content below is only a placeholder and can be replaced.-->
+
+<div class="flex flex-col md:flex-row justify-center items-center gap-40">
+  <div id="pieChart">
+    <apx-chart
+      [series]="pieChartData.series"
+      [chart]="pieChartData.chart"
+      [labels]="pieChartData.labels"
+      [responsive]="pieChartData.responsive"
+      [colors]="colors"
+      [legend]="legend"
+      [title]="general"
+    ></apx-chart>
+  </div>
+  <div id="barChart">
+    <apx-chart
+      [series]="basicBarChartData.series"
+      [chart]="basicBarChartData.chart"
+      [dataLabels]="basicBarChartData.dataLabels"
+      [plotOptions]="basicBarChartData.plotOptions"
+      [xaxis]="basicBarChartData.xaxis"
+      [title]="state"
+    ></apx-chart>
+  </div>
+</div>

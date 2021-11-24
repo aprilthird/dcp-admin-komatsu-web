@@ -1,0 +1,104 @@
+<div>
+  <div mat-dialog-title class="flex justify-between items-center">
+    <h4>Agregar foto</h4>
+    <button mat-icon-button type="button" (click)="matDialog.close()">
+      <mat-icon [svgIcon]="'heroicons_outline:x'"></mat-icon>
+    </button>
+  </div>
+  <div mat-dialog-content class="pb-6">
+    <div
+      *ngIf="imageChangedEvent.length === 0; else img"
+      class="
+        flex flex-col
+        items-center
+        justify-center
+        w-56
+        rounded-lg
+        cursor-pointer
+        border-2 border-gray-300 border-dashed
+        hover:bg-hover
+        transition-colors
+        duration-150
+        ease-in-out
+        w-52
+        h-60
+      "
+      (click)="fileInput.click()"
+    >
+      <mat-icon
+        class="icon-size-12 text-hint"
+        [svgIcon]="'heroicons_outline:plus'"
+      ></mat-icon>
+    </div>
+    <input hidden #fileInput type="file" (change)="fileChangeEvent($event)" />
+    <canvas
+      #canvas
+      style="border: 1px solid black"
+      width="300"
+      height="200"
+      [ngStyle]="{ display: !cropped ? 'none' : 'block' }"
+    ></canvas>
+
+    <ng-template #img>
+      <!--<img class="w-52 h-60" [src]="imageChangedEvent" />-->
+      <image-cropper
+        *ngIf="!cropped"
+        style="width: 50vh"
+        [imageChangedEvent]="imageChangedEvent"
+        [maintainAspectRatio]="true"
+        [canvasRotation]="canvasRotation"
+        [aspectRatio]="4 / 3"
+        format="png"
+        (imageCropped)="imageCropped($event)"
+        (imageLoaded)="imageLoaded($event)"
+        (cropperReady)="cropperReady()"
+        (loadImageFailed)="loadImageFailed()"
+      ></image-cropper>
+      <!--<img style="width: 50vh" *ngIf="cropped" [src]="croppedImage" />-->
+
+      <!--<image-drawing
+        *ngIf="cropped"
+        [src]="imageChangedEvent"
+        outputMimeType="'image/jpeg'"
+        outputQuality="0.8"
+        (save)="save($event)"
+        (cancel)="cancel()"
+      >
+      </image-drawing>-->
+      <button
+        *ngIf="!cropped"
+        matTooltip="Rotar hacia la derecha"
+        mat-icon-button
+        type="button"
+        (click)="rotateRight()"
+      >
+        <mat-icon svgIcon="mat_solid:rotate_right"></mat-icon>
+      </button>
+    </ng-template>
+  </div>
+
+  <div mat-dialog-actions class="flex justify-end px-6 bg-gray-100">
+    <button
+      mat-button
+      (click)="matDialog.close()"
+      class="
+        ml-4
+        bg-gray-50
+        border-solid border border-accent-300
+        text-gray-700
+        shadow-none
+      "
+    >
+      Cancelar
+    </button>
+    <button
+      [disabled]="croppedImage.length === 0"
+      mat-raised-button
+      [color]="'primary'"
+      class="w-24"
+      (click)="croppedFinish()"
+    >
+      <span> Siguiente </span>
+    </button>
+  </div>
+</div>

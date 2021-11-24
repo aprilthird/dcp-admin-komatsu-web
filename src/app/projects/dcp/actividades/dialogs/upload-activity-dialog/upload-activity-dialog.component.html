@@ -1,0 +1,30 @@
+<div mat-dialog-title class="flex justify-between items-center">
+  <h4>Cargar de actividades</h4>
+
+  <button mat-icon-button type="button" (click)="matDialogRef.close()">
+    <mat-icon [svgIcon]="'heroicons_outline:x'"></mat-icon>
+  </button>
+</div>
+<div mat-dialog-content class="pb-6">
+  <div class="flex flex-col w-full gap-5">
+    <button
+      class="mr-8"
+      mat-raised-button
+      [color]="'primary'"
+      routerLink="/admin/actividades/add"
+      (click)="matDialogRef.close()"
+    >
+      <span class="ml-2 mr-1">Carga individual</span>
+    </button>
+
+    <button
+      class="mr-8"
+      mat-raised-button
+      [color]="'primary'"
+      (click)="matDialogRef.close()"
+      routerLink="/admin/actividades/upload"
+    >
+      <span class="ml-2 mr-1">Carga Masiva</span>
+    </button>
+  </div>
+</div>
