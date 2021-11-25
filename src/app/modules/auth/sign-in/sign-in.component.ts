@@ -83,7 +83,8 @@ export class AuthSignInComponent implements OnInit {
           setTimeout(() => {
             const permissions = JSON.parse(localStorage.getItem("permissions"));
             const firstURL = Object.keys(permissions)[0];
-            const redirectURL = firstURL || "/signed-in-redirect";
+            //const redirectURL = firstURL || "/signed-in-redirect";
+            const redirectURL = "/admin/informes/list";
             // Navigate to the redirect url
             this._router.navigateByUrl(redirectURL);
           }, 100);
