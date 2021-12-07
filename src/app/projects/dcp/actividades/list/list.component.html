@@ -34,23 +34,15 @@
         </div>
         <a class="prose font-bold">De {{ start }} al {{ end }}</a>
       </div>
-      <div
-        class="flex flex-wrap gap-5 mt-5 xl:my-none"
-        *ngIf="!assignToBay; else assign"
-      >
+      <div class="flex flex-wrap gap-5 mt-5 xl:my-none">
         <app-filter (range)="daterange($event)"></app-filter>
-        <upload-print-activities class="pr-8"></upload-print-activities>
-      </div>
-      <ng-template #assign>
-        <button
-          class="mr-8"
-          mat-raised-button
-          [color]="'primary'"
-          (click)="openAssignment()"
-        >
-          <span class="ml-2 mr-1">Asignar bahía</span>
+        <button mat-raised-button [color]="'primary'">
+          <mat-icon
+            [svgIcon]="'heroicons_outline:document-download'"
+          ></mat-icon>
+          <span class="ml-2 mr-1">Exportar</span>
         </button>
-      </ng-template>
+      </div>
     </div>
   </div>
 

@@ -65,6 +65,8 @@ export class ListadoService {
           filter: {
             idClaseActividad,
             estado,
+            fechaInicio: "2021-10-06",
+            fechaFin: "2021-12-06",
           },
         }
       )

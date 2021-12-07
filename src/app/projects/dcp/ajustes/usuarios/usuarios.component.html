@@ -45,12 +45,7 @@
             Usuarios
           </h2>
         </div>
-        <div class="flex w-2/4 justify-end master-filter gap-5">
-          <shared-inner-header
-            [type]="'usuarios'"
-            (isLoading)="setLoading($event)"
-          ></shared-inner-header>
-        </div>
+        <div class="flex w-2/4 justify-end master-filter gap-5"></div>
       </div>
     </div>
 
@@ -187,41 +182,46 @@
               [showFirstLastButtons]="true"
               (page)="changePage($event)"
             ></mat-paginator>
-            <div
-              class="
-                absolute
-                flex flex-0
-                items-center
-                justify-end
-                h-16
-                px-4
-                bottom-0
-                z-49
-                right-0
-                dark:bg-transparent
-                print:hidden
-              "
-            >
-              <span class="font-medium text-secondary">
-                <a
-                  mat-button
-                  color="primary"
-                  routerLink="/admin/ajustes/usuarios/crear"
-                  *ngIf="
-                    _permissonService.hasPermissonAccion(
-                      '/admin/ajustes/usuarios',
-                      'Registrar usuario'
-                    )
-                  "
-                >
-                  <mat-icon [svgIcon]="'heroicons_solid:plus'"></mat-icon>
-                  Nuevo Usuario
-                </a>
-              </span>
-            </div>
           </ng-container>
         </ng-container>
+        <ng-template #empty>
+          <div
+            class="
+              p-8
+              sm:p-16
+              border-t
+              text-4xl
+              font-semibold
+              tracking-tight
+              text-center
+            "
+          >
+            No existen usuarios aún
+          </div>
+        </ng-template>
       </div>
     </div>
+  </div>
+  <div
+    class="
+      absolute
+      flex flex-0
+      items-center
+      justify-end
+      h-16
+      px-4
+      bottom-0
+      z-49
+      right-0
+      dark:bg-transparent
+      print:hidden
+    "
+  >
+    <span class="font-medium text-secondary">
+      <a mat-button color="primary" routerLink="/admin/ajustes/usuarios/crear">
+        <mat-icon [svgIcon]="'heroicons_solid:plus'"></mat-icon>
+        Nuevo Usuario
+      </a>
+    </span>
   </div>
 </div>

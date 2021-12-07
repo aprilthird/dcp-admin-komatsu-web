@@ -8,10 +8,16 @@ import {
   Validators,
 } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
-import { Perfil } from "app/projects/dcp-fake/seguridad/perfiles/perfiles.types";
 import { Observable, Subject } from "rxjs";
 import { takeUntil } from "rxjs/operators";
 import { CrearUsuarioService } from "./crear-usuario.service";
+
+interface Perfil {
+  id: string;
+  nombre: string;
+  activo: boolean;
+  visible: boolean;
+}
 
 function minSelectedCheckboxes(min = 1) {
   const validator: ValidatorFn = (formArray: FormArray) => {
@@ -53,6 +59,7 @@ export class CrearUsuarioComponent implements OnInit {
     nombres: ["", Validators.required],
     apellidos: ["", Validators.required],
     correo: ["", [Validators.required, Validators.email]],
+    ad: [""],
     roles: [], // Roles será la lista general de roles
     plataformas: new FormArray(
       [new FormControl(false), new FormControl(false)],

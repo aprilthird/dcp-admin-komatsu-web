@@ -50,6 +50,7 @@ export class UsuariosComponent implements OnInit {
 
   loadData() {
     this.isLoading = true;
+
     this._usuariosService
       .getUsuarios(this._routeActived.snapshot.queryParams)
       .subscribe(() => {

@@ -50,9 +50,6 @@ import { ImagePreviewComponent } from "./fotografia/image-preview/image-preview.
 //CROPER
 import { ImageCropperModule } from "ngx-image-cropper";
 
-//Drawer
-//import { ImageDrawingModule } from "ngx-image-drawing";
-
 @NgModule({
   declarations: [
     ListadoComponent,

@@ -115,9 +115,9 @@ export class ActivitiesService {
     );
   }
 
-  getActivities(): Observable<any[]> {
+  getActivities(id: number): Observable<any[]> {
     return this.http.post<any[]>(
-      environment.apiUrl + "/Actividades/BandejaActividades",
+      environment.apiUrl + "/Actividades/BandejaActividades/" + id,
       {
         ...getInboxParams,
         filter: {},

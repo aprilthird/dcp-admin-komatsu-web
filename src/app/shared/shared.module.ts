@@ -7,7 +7,6 @@ import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
 import { MatTooltipModule } from "@angular/material/tooltip";
 import { TextFilterPipe } from "./pipes/text-filter.pipe";
 import { ExportExcelService } from "./utils/export-excel.ts.service";
-import { InnerHeaderComponent } from "./ui/inner-header/inner-header.component";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatButtonModule } from "@angular/material/button";
 import { MatInputModule } from "@angular/material/input";
@@ -30,9 +29,8 @@ import { MatInputModule } from "@angular/material/input";
     ReactiveFormsModule,
     UploadFileComponent,
     TextFilterPipe,
-    InnerHeaderComponent,
   ],
-  declarations: [UploadFileComponent, TextFilterPipe, InnerHeaderComponent],
+  declarations: [UploadFileComponent, TextFilterPipe],
   providers: [ExportExcelService],
 })
 export class SharedModule {}

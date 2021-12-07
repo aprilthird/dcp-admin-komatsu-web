@@ -2,7 +2,10 @@ import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { Observable, of, ReplaySubject } from "rxjs";
 import { tap } from "rxjs/operators";
-import { Navigation } from "app/core/navigation/navigation.types";
+import {
+  Navigation,
+  fakeDcpNavigation,
+} from "app/core/navigation/navigation.types";
 import { environment } from "environments/environment";
 import { PermissionService } from "../permission/permission.service";
 import { Permission } from "../permission/permission.types";
@@ -62,6 +65,7 @@ export class NavigationService {
 
           // Función permite la navegación de manera visual en la vista
           const getNavigation = (e) => {
+            console.log("-----menu------", e);
             console.log(e.nombre, e.activo, e.nivel);
             if (!e.activo) return [];
 
@@ -99,6 +103,9 @@ export class NavigationService {
           nextNavigation.horizontal = response.body.map((e) =>
             getNavigation(e)
           );
+          //RUTAS ESTATICAS TEMPORALES
+          nextNavigation.default = fakeDcpNavigation;
+          nextNavigation.horizontal = fakeDcpNavigation;
           this._permissionsServices.updatPermissions$ = permissions;
 
           //nextNavigation.default.reverse();

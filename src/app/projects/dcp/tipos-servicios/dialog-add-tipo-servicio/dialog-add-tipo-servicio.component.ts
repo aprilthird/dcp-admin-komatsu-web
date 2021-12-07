@@ -2,6 +2,7 @@ import { Component, Inject, OnInit } from "@angular/core";
 import { FormBuilder, FormControl } from "@angular/forms";
 import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
 import { AzureService } from "app/core/azure/azure.service";
+import { TiposServiciosService } from "../tipos-servicios.service";
 
 @Component({
   selector: "app-dialog-add-tipo-servicio",
@@ -12,6 +13,7 @@ export class DialogAddTipoServicioComponent implements OnInit {
   form: any;
   filesLoading: boolean;
   isLoading: boolean;
+  services_type: any;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,

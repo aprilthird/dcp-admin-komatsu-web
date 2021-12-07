@@ -10,27 +10,28 @@
       <!-- Nombre -->
       <mat-form-field class="w-full">
         <mat-label>CeCo</mat-label>
-        <input matInput formControlName="ceco" />
-        <mat-error> {{ getErrorMessage("ceco") }} </mat-error>
+        <input matInput formControlName="codCeco" />
+        <mat-error> {{ getErrorMessage("codCeco") }} </mat-error>
       </mat-form-field>
       <mat-form-field class="w-full">
         <mat-label>GP</mat-label>
-        <input matInput formControlName="gp" />
-        <mat-error> {{ getErrorMessage("gp") }} </mat-error>
+        <input matInput formControlName="codGp" />
+        <mat-error> {{ getErrorMessage("codGp") }} </mat-error>
       </mat-form-field>
       <mat-form-field class="w-full">
         <mat-label class="font-bold">CE</mat-label>
-        <input matInput formControlName="ce" />
-        <mat-error> {{ getErrorMessage("ce") }} </mat-error>
+        <input matInput formControlName="codCe" />
+        <mat-error> {{ getErrorMessage("codCe") }} </mat-error>
       </mat-form-field>
 
       <mat-form-field class="w-full">
         <mat-label class="font-bold">Tipo de servicio</mat-label>
-        <mat-select
-          formControlName="tipo_servicio"
-          [value]="form.controls['tipo_servicio'].value"
-        >
-          <mat-option value="1">tipo servicio 1</mat-option>
+        <mat-select formControlName="idTipoServicio">
+          <mat-option
+            *ngFor="let service_type of services_type"
+            value="{{ service_type.id }}"
+            >{{ service_type.nombre }}</mat-option
+          >
         </mat-select>
       </mat-form-field>
 

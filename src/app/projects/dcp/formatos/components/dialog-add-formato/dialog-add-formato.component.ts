@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { MatDialogRef } from "@angular/material/dialog";
 import { Router } from "@angular/router";
 import { ActivitiesService } from "app/projects/dcp/actividades/activities.service";
+import { TiposServiciosService } from "app/projects/dcp/tipos-servicios/tipos-servicios.service";
 import { forkJoin } from "rxjs";
 import { map } from "rxjs/operators";
 import { DialogAddFormatoService } from "./dialog-add-formato.service";
@@ -16,27 +17,39 @@ export class DialogAddFormatoComponent implements OnInit {
   loading: boolean = false;
 
   form: FormGroup = this.fb.group({
-    ceco: ["", Validators.required],
-    gp: ["", Validators.required],
-    ce: ["", Validators.required],
-    tipo_servicio: ["", Validators.required],
+    codCeco: ["", Validators.required],
+    codGp: ["", Validators.required],
+    codCe: ["", Validators.required],
+    idTipoServicio: [1, Validators.required],
     titulo: ["", Validators.required],
+    visible: [true],
+    activo: [true],
+    estado: [1],
   });
   clientsOpt: any;
   modelosOpt: any;
   actividadOpt: any;
   tipo_mttoOpt: any;
+  services_type: any;
 
   constructor(
     private fb: FormBuilder,
     public dialogRef: MatDialogRef<DialogAddFormatoComponent>,
     private dialogAddFormatoService: DialogAddFormatoService,
     private router: Router,
-    private serviceAct: ActivitiesService
+    private serviceAct: ActivitiesService,
+    private serviceTypes: TiposServiciosService
   ) {}
 
   ngOnInit(): void {
     this.getInboxes();
+    this.getServiceTypes();
+  }
+
+  private getServiceTypes(): void {
+    this.serviceTypes.getServiceTypes().subscribe((resp) => {
+      this.services_type = resp.body;
+    });
   }
 
   getInboxes(): void {

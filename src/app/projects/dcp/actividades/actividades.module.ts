@@ -7,9 +7,6 @@ import { ActividadesComponent } from "./actividades.component";
 import { FilterComponent } from "./filter/filter.component";
 import { ActividadesRoutingModule } from "./actividades-routing.mudule";
 import { ListComponent } from "./list/list.component";
-import { UploadActivitiesComponent } from "./upload-activities/upload-activities.component";
-import { ActivityComponent } from "./list/activity/activity.component";
-import { ActivityAddEditComponent } from "./list/activity-add-edit/activity-add-edit.component";
 
 //MATERIAL
 
@@ -18,7 +15,6 @@ import { MatSortModule } from "@angular/material/sort";
 import { MatCheckboxModule } from "@angular/material/checkbox";
 import { MatButtonModule } from "@angular/material/button";
 import { MatMenuModule } from "@angular/material/menu";
-import { AssignBayComponent } from "./dialogs/assign-bay/assign-bay.component";
 import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
 import { MatSelectModule } from "@angular/material/select";
 import { MatFormFieldModule } from "@angular/material/form-field";
@@ -36,24 +32,14 @@ import {
   NgxMatTimepickerModule,
 } from "@angular-material-components/datetime-picker";
 
-//NGX INPUT SEARCH
-import { NgxMatSelectSearchModule } from "ngx-mat-select-search";
 import { FilterDialogComponent } from "./filter/filter-dialog/filter-dialog.component";
-import { UploadActivityDialogComponent } from './dialogs/upload-activity-dialog/upload-activity-dialog.component';
-import { MassiveUploadComponent } from './dialogs/massive-upload/massive-upload.component';
 
 @NgModule({
   declarations: [
     ActividadesComponent,
     FilterComponent,
     ListComponent,
-    UploadActivitiesComponent,
-    AssignBayComponent,
     FilterDialogComponent,
-    ActivityComponent,
-    ActivityAddEditComponent,
-    UploadActivityDialogComponent,
-    MassiveUploadComponent,
   ],
   imports: [
     CommonModule,
@@ -67,7 +53,6 @@ import { MassiveUploadComponent } from './dialogs/massive-upload/massive-upload.
     MatFormFieldModule,
     MatSelectModule,
     MatProgressSpinnerModule,
-    NgxMatSelectSearchModule,
     MatDialogModule,
     MatDatepickerModule,
     MatExpansionModule,

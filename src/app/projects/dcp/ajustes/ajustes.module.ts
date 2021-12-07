@@ -4,10 +4,6 @@ import { CommonModule } from "@angular/common";
 import { AjustesRoutingModule } from "./ajustes-routing.module";
 import { AjustesComponent } from "./ajustes.component";
 import { UsuariosComponent } from "./usuarios/usuarios.component";
-import { PerfilesComponent } from "./perfiles/perfiles.component";
-import { DispositivosComponent } from "./dispositivos/dispositivos.component";
-import { DialogAddPerfilComponent } from "./components/dialog-add-perfil/dialog-add-perfil.component";
-import { DialogDeletePerfilComponent } from "./components/dialog-delete-perfil/dialog-delete-perfil.component";
 import { MatDialogModule } from "@angular/material/dialog";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatButtonModule } from "@angular/material/button";
@@ -28,21 +24,10 @@ import { FuseAlertModule } from "@fuse/components/alert";
 import { FuseConfirmationModule } from "@fuse/services/confirmation";
 import { MatListModule } from "@angular/material/list";
 import { SharedModule } from "app/shared/shared.module";
-import { EditarPerfilComponent } from "./editar-perfil/editar-perfil.component";
 import { CrearUsuarioComponent } from "./crear-usuario/crear-usuario.component";
-//import { InnerHeaderComponent } from "app/shared/ui/inner-header/inner-header.component";
 
 @NgModule({
-  declarations: [
-    AjustesComponent,
-    UsuariosComponent,
-    PerfilesComponent,
-    DispositivosComponent,
-    DialogAddPerfilComponent,
-    DialogDeletePerfilComponent,
-    EditarPerfilComponent,
-    CrearUsuarioComponent,
-  ],
+  declarations: [AjustesComponent, UsuariosComponent, CrearUsuarioComponent],
   imports: [
     CommonModule,
     AjustesRoutingModule,
@@ -65,7 +50,6 @@ import { CrearUsuarioComponent } from "./crear-usuario/crear-usuario.component";
     FuseAlertModule,
     FuseConfirmationModule,
     MatListModule,
-    //InnerHeaderComponent,
     SharedModule,
   ],
 })

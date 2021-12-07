@@ -1,17 +1,10 @@
-import { Component, OnChanges, OnInit, SimpleChange } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import { MatCheckbox } from "@angular/material/checkbox";
 import { MatDialog } from "@angular/material/dialog";
 import { Pagination } from "app/core/types/list.types";
-import { activities } from "app/mock-api/pages/activities/data";
 import { Observable, Subject } from "rxjs";
-import {
-  Activity,
-  Asignaciones,
-  ActivitiesData,
-  ActivityFake,
-} from "../../fake-db/activities/activity-fake-db";
+import { ActivityFake } from "../../fake-db/activities/activity-fake-db";
 import { ActivitiesService } from "../activities.service";
-import { AssignBayComponent } from "../dialogs/assign-bay/assign-bay.component";
 
 @Component({
   selector: "list-activities",
@@ -23,8 +16,7 @@ export class ListComponent implements OnInit {
   pagination$: Observable<Pagination>;
   private _unsubscribeAll: Subject<any> = new Subject<any>();
   isLoading = false;
-  //activities: Activity[] = Asignaciones;
-  //activities: ActivityFake[] = ActivitiesData;
+
   activities: any[];
   assignToBay: boolean;
   isEdit: boolean;
@@ -46,7 +38,7 @@ export class ListComponent implements OnInit {
   changePage(): void {}
 
   getActivities(): void {
-    this.activitiesService.getActivities().subscribe((_activities: any) => {
+    this.activitiesService.getActivities(2).subscribe((_activities: any) => {
       console.log(_activities);
       this.activities = _activities.body.data;
     });
@@ -58,13 +50,6 @@ export class ListComponent implements OnInit {
         this.activities = _activities;
       }
     );
-  }
-
-  openAssignment(): void {
-    this.matDialog.open(AssignBayComponent, {
-      width: "370px",
-      data: { type: "bahía" },
-    });
   }
 
   selectActivity(event: MatCheckbox, index?: number): void {
