@@ -92,8 +92,8 @@ export class AuthSignInComponent implements OnInit {
         });
       },
       (error: HttpErrorResponse) => {
-        if (!error.error["error"]) {
-          error.error["error"] =
+        if (!error.error["code"]) {
+          error.error["message"] =
             "Por favor, revisa tu conexión a internet y vuelve a intentarlo";
         }
         // Re-enable the form
@@ -105,7 +105,7 @@ export class AuthSignInComponent implements OnInit {
         // Set the alert
         this.alert = {
           type: "error",
-          message: error.error["error"],
+          message: error.error["message"],
         };
 
         // Show the alert

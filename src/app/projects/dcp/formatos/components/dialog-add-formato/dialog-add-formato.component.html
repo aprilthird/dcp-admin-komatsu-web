@@ -29,7 +29,7 @@
         <mat-select formControlName="idTipoServicio">
           <mat-option
             *ngFor="let service_type of services_type"
-            value="{{ service_type.id }}"
+            [value]="service_type.id"
             >{{ service_type.nombre }}</mat-option
           >
         </mat-select>
@@ -37,8 +37,8 @@
 
       <mat-form-field class="w-full">
         <mat-label class="font-bold">Título</mat-label>
-        <input matInput formControlName="titulo" />
-        <mat-error> {{ getErrorMessage("titulo") }} </mat-error>
+        <input matInput formControlName="nombre" />
+        <mat-error> {{ getErrorMessage("nombre") }} </mat-error>
       </mat-form-field>
     </div>
   </div>

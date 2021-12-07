@@ -45,7 +45,6 @@ export class CrearUsuarioComponent implements OnInit {
   alert: any;
 
   perfiles: Perfil[] = [];
-  /** */
   form: FormGroup = this.fb.group({
     usr: ["", [Validators.required, Validators.pattern("[a-zA-Z0-9s]+")]],
     psw: [

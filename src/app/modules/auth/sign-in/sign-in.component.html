@@ -29,10 +29,18 @@
   >
     <div class="w-full max-w-80 sm:w-80 mx-auto sm:mx-0">
       <!-- Logo -->
-      <div class="w-12 flex w-full">
+      <div class="w-12 flex w-full justify-center logo-country">
         <figure class="logo" [ngClass]="'--' + environment.project">
           <img src="assets/images/logo/logo-{{ environment.project }}.svg" />
         </figure>
+        <div
+          *ngIf="environment.project == 'dcp'"
+          [ngClass]="environment.project"
+          class="text-6xl text-red-600 font-extrabold"
+          [ngStyle]="{ color: 'primary' }"
+        >
+          Perú
+        </div>
       </div>
 
       <!-- Title -->
@@ -190,9 +198,8 @@
     <!-- Content -->
     <div class="z-10 relative w-full max-w-2xl">
       <div class="text-7xl font-bold leading-none text-gray-100">
-        <div>SGH</div>
         <div>Sistema de</div>
-        <div>Gestión de Horas</div>
+        <div>Informes digitales</div>
       </div>
     </div>
   </div>
