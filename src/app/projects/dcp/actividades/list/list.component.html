@@ -32,7 +32,7 @@
         <div class="text-4xl font-extrabold tracking-tight">
           Bandeja de informes
         </div>
-        <a class="prose font-bold">De {{ start }} al {{ end }}</a>
+        <a class="prose font-bold">De semana {{ start }} al {{ end }}</a>
       </div>
       <div class="flex flex-wrap gap-5 mt-5 xl:my-none">
         <app-filter (range)="daterange($event)"></app-filter>
@@ -57,7 +57,7 @@
         sm:overflow-y-auto
       "
     >
-      <ng-container *ngIf="activities">
+      <ng-container *ngIf="activities$ | async as activities">
         <ng-container *ngIf="activities.length > 0; else empty">
           <div class="grid overflow-x-auto">
             <!-- Header -->
@@ -86,7 +86,7 @@
               <div class="">ID</div>
               <div class="">Tipo servicio</div>
               <div class="">ID actividad</div>
-              <div class="">Cod. Order</div>
+              <div class="">Cod. Orden</div>
               <div class="">Cod. Equipo</div>
               <div class="">Correlativo</div>
               <div class="">Cod. Und Servicio</div>
@@ -114,37 +114,37 @@
                   "
                 >
                   <div class="truncate">
-                    {{ actividad?.ID }}
+                    {{ actividad?.id }}
                   </div>
 
                   <div class="truncate">
-                    {{ actividad?.tipo_servicio }}
+                    {{ actividad?.tipoServicio }}
                   </div>
 
                   <div class="truncate">
-                    {{ actividad?.id_actividad }}
+                    {{ actividad?.idActividad }}
                   </div>
 
                   <div class="truncate">
-                    {{ actividad?.codigo_orden }}
+                    {{ actividad?.codOrden }}
                   </div>
 
                   <div class="truncate">
-                    {{ actividad?.codigo_equipo }}
+                    {{ actividad?.codEquipo }}
                   </div>
                   <div class="truncate">
                     {{ actividad?.correlativo }}
                   </div>
                   <div class="truncate">
-                    {{ actividad?.codigo_unidad_servicio }}
+                    {{ actividad?.codUnidadServicio }}
                   </div>
 
                   <div class="truncate">
-                    {{ actividad?.fechaMod }}
+                    {{ actividad?.fechaReg | date: "dd/MM/yy h:mma" }}
                   </div>
 
                   <div class="truncate">
-                    {{ actividad?.userMod }}
+                    {{ actividad?.nusrMod }}
                   </div>
 
                   <div class="truncate">
@@ -172,22 +172,6 @@
 
                   <div>
                     <button
-                      class="min-w-10 min-h-7 h-7 px-2 leading-6"
-                      mat-stroked-button
-                      (click)="toggleDetails(actividad)"
-                    >
-                      <mat-icon
-                        class="icon-size-5"
-                        [svgIcon]="
-                          selectedActivity?.id === actividad.id
-                            ? 'heroicons_solid:chevron-up'
-                            : 'heroicons_solid:chevron-down'
-                        "
-                      ></mat-icon>
-                    </button>
-                  </div>
-                  <div>
-                    <button
                       mat-icon-button
                       [matMenuTriggerFor]="menu"
                       aria-label="Toggle menu"
@@ -199,44 +183,37 @@
                     <mat-menu #menu="matMenu" xPosition="before">
                       <button
                         mat-menu-item
-                        routerLink="/admin/actividades/validation/{{
-                          actividad.id
-                        }}/1/1"
+                        (click)="redirectToValidation(actividad.id)"
                       >
-                        Ver formatos
+                        Ver detalle de informe
                       </button>
-                      <button
-                        mat-menu-item
-                        routerLink="/admin/actividades/edit/{{ actividad.id }}"
-                      >
-                        Editar actividad
-                      </button>
+                      <button mat-menu-item>General PDF</button>
+                      <button mat-menu-item>Ver galería</button>
                     </mat-menu>
                   </div>
-                  <ng-container *ngIf="selectedActivity?.id === actividad.id">
-                    <ng-container
-                      *ngTemplateOutlet="
-                        rowDetailsTemplate;
-                        context: { $implicit: actividad }
-                      "
-                    >
-                      <div>
-                        <!--<app-activity [isEdit]="isEdit"></app-activity>-->
-                      </div>
-                    </ng-container></ng-container
-                  >
                 </div>
               </ng-container>
             </ng-container>
           </div>
+          <mat-paginator
+            class="
+              sm:inset-x-0 sm:bottom-0
+              border-b
+              sm:border-t sm:border-b-0
+              z-10
+              bg-gray-50
+              dark:bg-transparent
+            "
+            [ngClass]="{ 'pointer-events-none': isLoading }"
+            [length]="(pagination$ | async).length"
+            [pageIndex]="(pagination$ | async).page"
+            [pageSize]="(pagination$ | async)?.size || 10"
+            [pageSizeOptions]="[5, 10, 25, 100]"
+            [showFirstLastButtons]="true"
+            (page)="changePage($event)"
+          ></mat-paginator>
         </ng-container>
       </ng-container>
-      <ng-template #rowDetailsTemplate
-        ><app-activity
-          [isEdit]="isEdit"
-          [activityData]="selectedActivity"
-        ></app-activity
-      ></ng-template>
 
       <ng-template #empty>
         <div
@@ -250,7 +227,7 @@
             text-center
           "
         >
-          No hay formatos registrados
+          No hay Actividades registradas
         </div>
       </ng-template>
     </div>

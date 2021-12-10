@@ -26,11 +26,11 @@ const routes: Routes = [
         component: FotografiaComponent,
       },
       {
-        path: "validation/:idActivity",
+        path: "validation/:id",
         component: ValidationFormatosComponent,
       },
       {
-        path: "validation/:idActivity/:idFormat/:idSection",
+        path: "validation/:id/:section",
         component: ValidationFormatosComponent,
       },
     ],

@@ -14,6 +14,9 @@ import { tap } from "rxjs/operators";
 @Injectable({ providedIn: "root" })
 export class EditarFormatoService {
   _formato: BehaviorSubject<Formato> = new BehaviorSubject<Formato>(null);
+  _ceCo: BehaviorSubject<Formato> = new BehaviorSubject<Formato>(null);
+  _gp: BehaviorSubject<Formato> = new BehaviorSubject<Formato>(null);
+  _ce: BehaviorSubject<Formato> = new BehaviorSubject<Formato>(null);
   _secciones: BehaviorSubject<Seccion[]> = new BehaviorSubject<Seccion[]>(null);
   _tipoDatos: BehaviorSubject<Parametro[]> = new BehaviorSubject<Parametro[]>(
     null
@@ -31,22 +34,29 @@ export class EditarFormatoService {
 
   getFormato(idFormato): Observable<any> {
     return this._httpClient
-      .get<any>(environment.apiUrl + "/Core/ObtenerFormato/" + idFormato )
+      .get<any>(environment.apiUrl + "/Core/ObtenerFormato/" + idFormato)
       .pipe(
         tap((response) => {
           if (response && response.body) {
             this._formato.next(response.body.nombre);
+            this._ceCo.next(response.body.codCeco);
+            this._ce.next(response.body.codCe);
+            this._gp.next(response.body.codGp);
           }
         })
       );
   }
 
-  getObtenerFormatoCompleto(id):Observable<any> {
-    return this._httpClient.get<any>(environment.apiUrl + '/Core/ObtenerFormatoCompleto/' + id);
+  getObtenerFormatoCompleto(id): Observable<any> {
+    return this._httpClient.get<any>(
+      environment.apiUrl + "/Core/ObtenerFormatoCompleto/" + id
+    );
   }
 
-  getAbrirAsignacion(id):Observable<any> {
-    return this._httpClient.get<any>(environment.apiUrl + '/Mantenimiento/AbrirAsignacion/' + id);
+  getAbrirAsignacion(id): Observable<any> {
+    return this._httpClient.get<any>(
+      environment.apiUrl + "/Mantenimiento/AbrirAsignacion/" + id
+    );
   }
 
   datos(): any {
@@ -62,7 +72,6 @@ export class EditarFormatoService {
    * @returns
    */
   getSecciones({ idFormulario, reload = false }): Observable<any> {
-
     return this._httpClient
       .get<HttpResponse<Seccion[]>>(
         environment.apiUrl + "/Core/ObtenerSecciones/" + idFormulario
@@ -111,6 +120,13 @@ export class EditarFormatoService {
   createDato(data): Observable<any> {
     return this._httpClient.post<any>(
       environment.apiUrl + "/Core/GuardarParametrosxGrupo",
+      data
+    );
+  }
+
+  saveAssignation(data): Observable<any> {
+    return this._httpClient.post<any>(
+      environment.apiUrl + "/Mantenimiento/GuardarAsignacion",
       data
     );
   }

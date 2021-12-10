@@ -9,10 +9,12 @@ import { ActivatedRoute } from "@angular/router";
 import { ActivitiesService } from "../../actividades/activities.service";
 
 //FAKE CONFIG
-import {
-  ActivityFake,
-  FormatosFake,
-} from "../../fake-db/activities/activity-fake-db";
+import { ActivityFake } from "../../fake-db/activities/activity-fake-db";
+import { EditarFormatoService } from "../editar-formato/editar-formato.service";
+import { FormBuilder, FormControl, FormGroup } from "@angular/forms";
+import { TipoParametro } from "app/core/types/formatos.types";
+import { MatCheckbox } from "@angular/material/checkbox";
+import { AzureService } from "app/core/azure/azure.service";
 
 @Component({
   selector: "app-validation-formatos",
@@ -25,21 +27,43 @@ export class ValidationFormatosComponent implements OnInit {
   drawerOpened: boolean;
   menuData: any[];
   commented: boolean;
-  currentIdActivity: any;
+  currentIdAsignation: any;
   currentActivity: ActivityFake;
   sectionSelected: any;
-  sectionId: any;
-  formatoId: any;
+  sections: any[] = [];
+
+  form: FormGroup = this.fb.group({});
+  currentSeccionId: any;
+  currentSectionData: any;
+
+  observation: {
+    [key: string]: boolean;
+  } = {};
+
+  editGroup: {
+    [key: string]: boolean;
+  } = {};
+
+  groups: {
+    [key: string]: boolean;
+  } = {};
+
+  filesLoading: {
+    [key: string]: boolean;
+  } = {};
 
   constructor(
     private matDialog: MatDialog,
     private activityServices: ActivitiesService,
-    private routerActive: ActivatedRoute
+    private routerActive: ActivatedRoute,
+    private asignationService: EditarFormatoService,
+    private fb: FormBuilder,
+    private _azureService: AzureService,
+    private _editarFormatoService: EditarFormatoService
   ) {
-    this.getActivityId();
-    this.getActivities();
-    this.setCollapsableNav();
-    this.setSectionData();
+    this.getAsignationId();
+
+    //this.setCollapsableNav();
   }
 
   ngOnInit(): void {
@@ -47,70 +71,46 @@ export class ValidationFormatosComponent implements OnInit {
     this.drawerOpened = true;
   }
 
-  private getActivityId(): void {
+  private getAsignationId(): void {
     this.routerActive.paramMap.subscribe((params: any) => {
-      this.currentIdActivity = params.params["idActivity"];
-      this.sectionId = params.params["idSection"];
-      this.formatoId = params.params["idFormat"];
+      this.currentIdAsignation = params.params["id"];
+      this.currentSeccionId = params.params["section"];
+      this.getAsignation();
     });
   }
 
-  private getActivities(): void {
-    this.activityServices.activities$.subscribe(
-      (activities: ActivityFake[]) => {
-        this.currentActivity = activities.find(
-          (activity) => activity.id === Number(this.currentIdActivity)
-        );
-
-        console.log("this.currentActivity ", this.currentActivity);
-      }
-    );
-  }
-
-  setSectionData(id?): void {
-    if (id) {
-      this.sectionId = id;
-    }
-
-    this.sectionSelected = this.currentActivity.formatos
-      .find((formato) => formato.id === Number(this.formatoId))
-      .sections.find((section) => section.id === Number(this.sectionId));
-
-    console.log("console.log(this.sectionSelected)-", this.sectionSelected);
+  private async getAsignation() {
+    this.asignationService
+      .getAbrirAsignacion(this.currentIdAsignation)
+      .subscribe(async (resp) => {
+        console.log("asignation ", resp);
+        this.sections = await resp.body.secciones;
+        if (this.currentSeccionId) {
+          this.currentSectionData = await [...this.sections].find(
+            (section: any) => Number(this.currentSeccionId) === section.id
+          );
+          this.generateForm();
+        }
+      });
   }
 
   private setCollapsableNav(): void {
     this.menuData = [
       {
-        id: "formatos",
-        title: "Formatos",
+        id: "secciones",
+        title: "Secciones",
         type: "group",
         children: [],
       },
     ];
 
-    /*this.menuData[0].children.push({
-      id: "fotografia",
-      title: "Fotografía",
-      type: "basic",
-      link: `/admin/actividades/validation/fotografias`,
-    });*/
-    this.currentActivity.formatos.forEach((formato, index) => {
+    this.sections.forEach((section, index) => {
       this.menuData[0].children.push({
-        id: formato.id,
-        title: formato.name,
-        type: "collapsable",
-        link: `/admin/actividades/validation/${this.currentIdActivity}/${formato.id}`,
+        id: section.id,
+        title: section.nombre,
+        type: "basic",
+        link: `/admin/informes/validation/${this.currentIdAsignation}/${section.id}`,
         children: [],
-      });
-
-      formato.sections.forEach((section) => {
-        this.menuData[0].children[index].children.push({
-          id: section.id,
-          title: section.name,
-          type: "basic",
-          link: `/admin/actividades/validation/${this.currentIdActivity}/${formato.id}/${section.id}`,
-        });
       });
     });
 
@@ -118,17 +118,233 @@ export class ValidationFormatosComponent implements OnInit {
       id: "fotografia",
       title: "Fotografía",
       type: "basic",
-      link: `/admin/actividades/validation/fotografias`,
+      link: `/admin/informes/validation/fotografias`,
     });
   }
 
   validate(): void {
-    this.matDialog.open(DialogValidateFormatComponent, { width: "500px" });
-  }
+    const idAsignacionDetalle =
+      this.currentSectionData.grupos[0].parametros[0].idAsignacionDetalle;
+    const idSeccion = this.currentSectionData.grupos[0].parametros[0].idSeccion;
 
-  addComment(): void {
-    this.matDialog.open(DialogAddCommentComponent, { width: "500px" });
+    const data = {
+      idAsignacionDetalle: idAsignacionDetalle,
+      idSeccion: idSeccion,
+    };
+    this.matDialog.open(DialogValidateFormatComponent, {
+      width: "500px",
+      data: data,
+    });
   }
 
   deleteComment(): void {}
+
+  splitOptions(options: string): string[] {
+    return options.split(",");
+  }
+
+  getParametroControl({ j, k }) {
+    return `${j}-${k}`;
+  }
+
+  private generateForm() {
+    this.currentSectionData.grupos.forEach((grupo, j) => {
+      this.observation[`${j}`] = false;
+      grupo.parametros.forEach((parametro, k) => {
+        if (parametro.activo) {
+          if (
+            parametro.idParametro === TipoParametro.UPLOAD ||
+            parametro.idParametro === TipoParametro.IMAGEN ||
+            parametro.idParametro === TipoParametro.FIRMA
+          ) {
+            this.filesLoading[`${j}-${k}`] = false;
+          }
+          if (parametro.idParametro === TipoParametro.CHECKBOX) {
+            this.form.addControl(
+              `${this.getParametroControl({ j, k })}`,
+              new FormControl({
+                value: parametro.valor === "true" ? true : false,
+                disabled: true,
+              })
+            );
+          } else if (parametro.idParametro === TipoParametro.FECHA) {
+            this.form.addControl(
+              `${this.getParametroControl({ j, k })}`,
+              new FormControl({
+                value: this.convertDate(parametro.valor),
+                disabled: true,
+              })
+            );
+          } else {
+            this.form.addControl(
+              `${this.getParametroControl({ j, k })}`,
+              new FormControl({
+                value: parametro.valor,
+                disabled: true,
+              })
+            );
+          }
+
+          /**OBSERVE PARAM */
+        }
+      });
+    });
+    this.setCollapsableNav();
+  }
+
+  async onChageFile(event: any, control: string) {
+    if (event) {
+      const { target } = event;
+      const file = target.files[0];
+      const blob = new Blob([file], { type: file.type });
+      this.filesLoading[`${control}`] = true;
+      try {
+        const response = await this._azureService.uploadFile(blob, file.name);
+        this.form.get(control).setValue(response.uuidFileName);
+      } catch (e) {}
+      this.filesLoading[`${control}`] = false;
+    } else {
+      this.form.get(control).setValue("");
+    }
+  }
+
+  setImage(src: string): string {
+    return this._azureService.getResourceUrlComplete(src);
+  }
+
+  convertDate(str) {
+    var date = new Date(str),
+      mnth = ("0" + (date.getMonth() + 1)).slice(-2),
+      day = ("0" + date.getDate()).slice(-2);
+    return [date.getFullYear(), mnth, day].join("-");
+  }
+
+  getErrorMessage(input: string) {
+    const control = this.form.get(input);
+
+    if (control.hasError("required")) {
+      return "Campo requerido";
+    }
+
+    if (control.hasError("minlength")) {
+      return `Debe tener mínimo ${control.errors.minlength.requiredLength}`;
+    }
+
+    if (control.hasError("maxlength")) {
+      return `Debe tener máximo ${control.errors.maxlength.requiredLength}`;
+    }
+
+    if (control.hasError("pattern")) {
+      return `Formato incorrecto`;
+    }
+
+    return control.hasError("email") ? "Formato de correo incorrecto" : "";
+  }
+
+  observateGroup(j: number, event: MatCheckbox) {
+    this.observation[j] = event.checked;
+  }
+
+  edit(groupIndex: number): void {
+    this.currentSectionData.grupos.forEach((grupo, j) => {
+      if (j === groupIndex) {
+        this.groups[j] = !this.groups[j];
+        grupo.parametros.forEach((parametro, k) => {
+          this.editGroup[`${j}`] = true;
+          this.form.get(`${this.getParametroControl({ j, k })}`).enable();
+        });
+      }
+    });
+  }
+
+  submit(e: MouseEvent, j): void {
+    console.log(this.form.value);
+    //if (this.form.valid) {
+    const data = [...this.sections];
+
+    data.forEach((seccion, i) => {
+      seccion.grupos.forEach((grupo, j) => {
+        this.groups[j] = !this.groups[j];
+        grupo.parametros.forEach((parametro, k) => {
+          if (parametro.activo) {
+            if (
+              parametro.idParametro === TipoParametro.UPLOAD ||
+              parametro.idParametro === TipoParametro.IMAGEN
+            ) {
+              if (parametro.valor === null || parametro.valor === "") {
+                this.form
+                  .get(this.getParametroControl({ j, k }))
+                  .setValue(parametro.dato);
+              }
+            }
+
+            /*if (parametro.idParametro === TipoParametro.FECHA) {
+                
+                this.form
+                  .get(this.getParametroControl({ i, j, k }))
+                  .setValue(new Date(parametro.valor).getTimezoneOffset());
+              }*/
+            parametro.valor = String(
+              this.form.get(this.getParametroControl({ j, k })).value
+            );
+          }
+        });
+      });
+    });
+    const payload = {
+      secciones: data,
+      idFormato: data[0].grupos[0].parametros[0].idFormato,
+    };
+    this._editarFormatoService.saveAssignation(payload).subscribe(() => {
+      Object.keys(this.form.controls).forEach((key) => {
+        this.form.get(key).disable();
+      });
+    });
+    //}
+    e.preventDefault();
+  }
+
+  validateSection(): boolean {
+    if (this.currentSectionData.grupos[0].parametros.length > 0) {
+      return this.currentSectionData.grupos[0].parametros[0].seccionValida;
+    }
+    return false;
+  }
+
+  validateFormat(): boolean {
+    if (this.currentSectionData.grupos[0].parametros.length > 0) {
+      return this.currentSectionData.grupos[0].parametros[0].formatoValido;
+    }
+    return false;
+  }
+
+  cancelEdit(j): void {
+    this.groups[j] = false;
+    Object.keys(this.form.controls).forEach((key) => {
+      this.form.get(key).disable();
+    });
+  }
+
+  addComment(groupIdx: number): void {
+    const data = {
+      data: this.sections,
+      groupIndex: groupIdx,
+      sectionId: this.currentSeccionId,
+      idFormato: this.sections[0].grupos[0].parametros[0].idFormato,
+    };
+    this.matDialog.open(DialogAddCommentComponent, {
+      width: "500px",
+      data: data,
+    });
+    /*.afterClosed()
+      .subscribe(() =>
+        Object.keys(this.observation).forEach(
+          (key) => (this.observation[key] = false)
+        )
+      );*/
+  }
+
+  editable(j): boolean {
+    return this.groups[`${j}`];
+  }
 }

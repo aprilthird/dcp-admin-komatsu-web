@@ -34,7 +34,9 @@ export class EditarFormatoComponent implements OnInit, OnDestroy {
   grupos: Grupo[] = [];
   loading: boolean = true;
 
-  formato$: Observable<Formato>;
+  ceCo$: Observable<Formato>;
+  ce$: Observable<Formato>;
+  gp$: Observable<Formato>;
 
   private _unsubscribeAll: Subject<any> = new Subject<any>();
   constructor(
@@ -57,7 +59,13 @@ export class EditarFormatoComponent implements OnInit, OnDestroy {
       });
 
     // this._router.routeReuseStrategy.shouldReuseRoute = () => true;
-    this.formato$ = this._editarFormatoService.formato$.pipe(
+    this.ce$ = this._editarFormatoService._ce.pipe(
+      takeUntil(this._unsubscribeAll)
+    );
+    this.ceCo$ = this._editarFormatoService._ceCo.pipe(
+      takeUntil(this._unsubscribeAll)
+    );
+    this.gp$ = this._editarFormatoService._gp.pipe(
       takeUntil(this._unsubscribeAll)
     );
   }

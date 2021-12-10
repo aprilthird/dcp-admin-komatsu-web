@@ -7,12 +7,18 @@
 </div>
 <div mat-dialog-content class="pb-6">
   <mat-form-field class="w-full">
-    <mat-label>Agregar comentario</mat-label>
-    <input class="w-full" matInput placeholder="Escribir comentario" />
+    <mat-label>Añadir comentario</mat-label>
+    <textarea
+      class="w-full min-h-30"
+      matInput
+      placeholder="Escribir comentario"
+      [formControl]="comment"
+      matInput
+    ></textarea>
   </mat-form-field>
   <div class="flex flex-col w-full gap-5">
     <button
-      class="mr-8 flex justify-center"
+      class="flex justify-center"
       mat-raised-button
       [color]="'primary'"
       (click)="submit()"
@@ -21,10 +27,11 @@
     </button>
 
     <button
-      class="mr-8 flex justify-center"
+      class="flex justify-center"
       mat-raised-button
       [color]="'secondary'"
       (click)="matDialog.close()"
+      [disabled]="comment.invalid"
     >
       <span class="ml-2 mr-1">Volver</span>
     </button>

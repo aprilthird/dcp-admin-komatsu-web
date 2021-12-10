@@ -119,27 +119,29 @@
 
                   <!-- Cliente -->
                   <div class="truncate">
-                    {{ formato?.ceco }}
+                    {{ formato?.codCeco }}
                   </div>
                   <!-- Nombres -->
                   <div class="truncate">
-                    {{ formato?.gp }}
+                    {{ formato?.codGp }}
                   </div>
                   <!-- ID -->
                   <div class="truncate">
-                    {{ formato?.ce }}
+                    {{ formato?.codCe }}
                   </div>
                   <!-- Actividad -->
                   <div class="truncate">
-                    {{ formato?.tipo_servicio }}
+                    {{ formato?.tipoServicio }}
                   </div>
                   <!-- tipo mtto -->
                   <div class="truncate">
-                    {{ formato?.titulo }}
+                    {{ formato?.nombre }}
                   </div>
 
                   <!-- fecha reg -->
-                  <div class="">{{ formato?.fechaReg | date: "dd/MM/yy" }}</div>
+                  <div class="">
+                    {{ formato?.fechaReg | date: "dd/MM/yy h:mm" }}
+                  </div>
 
                   <!-- Acciones -->
                   <div>
@@ -154,7 +156,6 @@
                     </button>
 
                     <mat-menu #menu="matMenu" xPosition="before">
-                      <button mat-menu-item>Editar</button>
                       <button
                         mat-menu-item
                         routerLink="/admin/formatos/editar/{{ formato.id }}/{{

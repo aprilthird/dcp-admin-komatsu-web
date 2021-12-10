@@ -1,18 +1,18 @@
 .inventory-grid {
-  grid-template-columns: 50px 50px 50px 50px 50px 50px 50px 50px 50px 50px 50px 100px;
+  grid-template-columns: 50px 50px 50px 50px 50px 50px 50px 50px 50px 50px 60px;
     @screen sm {
-      grid-template-columns: 50px 50px 50px 50px 50px 50px 50px 50px 50px 50px 50px 100px;
+      grid-template-columns: 50px 50px 50px 50px 50px 50px 50px 50px 50px 50px 60px;
     }
   
     @screen md {
-      grid-template-columns: 50px 50px 50px 50px 50px 50px 50px 50px 50px 50px 50px 100px;
+      grid-template-columns: 50px 50px 50px 50px 50px 50px 50px 50px 50px 100px 80px;
     }
   
     @screen lg {
-      grid-template-columns: 40px 80px 80px 80px 80px 80px 80px 80px 80px 30px 20px 100px;
+      grid-template-columns: 40px 80px 80px 80px 80px 80px 80px 80px 80px 100px 80px;
     }
   
     @screen xl {
-        grid-template-columns: 50px 80px 80px 80px 80px 80px 80px 80px 80px 40px 20px 100px;
+        grid-template-columns: 50px 80px 80px 80px 80px 80px 80px 80px 80px 100px 80px;
     }        
   }

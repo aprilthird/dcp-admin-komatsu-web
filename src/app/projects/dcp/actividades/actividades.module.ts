@@ -25,6 +25,7 @@ import { MatProgressBarModule } from "@angular/material/progress-bar";
 import { MatSlideToggleModule } from "@angular/material/slide-toggle";
 import { MatRippleModule } from "@angular/material/core";
 import { MatInputModule } from "@angular/material/input";
+import { MatPaginatorModule } from "@angular/material/paginator";
 
 import {
   NgxMatDatetimePickerModule,
@@ -60,6 +61,7 @@ import { FilterDialogComponent } from "./filter/filter-dialog/filter-dialog.comp
     MatSlideToggleModule,
     MatRippleModule,
     MatInputModule,
+    MatPaginatorModule,
     NgxMatDatetimePickerModule,
     NgxMatNativeDateModule,
     NgxMatTimepickerModule,

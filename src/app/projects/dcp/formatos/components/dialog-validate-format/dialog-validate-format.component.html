@@ -1,5 +1,5 @@
 <div mat-dialog-title class="flex justify-between items-center">
-  <h4>¿ Está seguro que desea valdiar el informe ?</h4>
+  <h4>¿ Está seguro que desea valdiar la sección ?</h4>
 
   <button mat-icon-button type="button" (click)="matDialog.close()">
     <mat-icon [svgIcon]="'heroicons_outline:x'"></mat-icon>
@@ -11,9 +11,9 @@
       class="mr-8"
       mat-raised-button
       [color]="'primary'"
-      (click)="validate()"
+      (click)="postValidateSection()"
     >
-      <span class="ml-2 mr-1">Si, validar el informe</span>
+      <span class="ml-2 mr-1">Si, validar sección</span>
     </button>
 
     <button

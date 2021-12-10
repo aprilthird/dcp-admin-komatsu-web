@@ -8,11 +8,17 @@
       #matDrawer
     >
       <!-- Menu-->
-      <div class="flex flex-col p-3 pb-0 form-title">
-        <div class="d-flex items-center form-title__text">
-          Formato: {{ formato$ | async }}
+      <div class="flex flex-col p-5 pb-0 form-title">
+        <div class="d-flex items-center font-bold">Evalucación</div>
+        <div class="d-flex items-center">
+          <span class="font-bold">CeCo: </span> <span>{{ ceCo$ | async }}</span>
         </div>
-        <div class="d-flex items-center form-title__text">Secciones</div>
+        <div class="d-flex items-center">
+          <span class="font-bold">GP: </span> <span>{{ gp$ | async }}</span>
+        </div>
+        <div class="d-flex items-center">
+          <span class="font-bold">CE: </span> <span>{{ ce$ | async }}</span>
+        </div>
       </div>
 
       <div class="flex flex-col section p-3 pt-1" id="items">

@@ -1,5 +1,7 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
+import { ParamsPagination } from "app/core/types/http.types";
+import { Pagination } from "app/core/types/list.types";
 import { Response } from "app/shared/models/general-model";
 import { environment } from "environments/environment";
 import { filter } from "lodash";
@@ -16,7 +18,7 @@ import { Activity as ActivityI } from "./models/activities-model";
 
 interface GetInbox {
   page: number | 0;
-  pageSize: number | 200;
+  pageSize: number | 10;
   offset: number | 0;
   next: number | 0;
   filter: {
@@ -34,7 +36,7 @@ interface GetInbox {
 
 const getInboxParams: GetInbox = {
   page: 0,
-  pageSize: 200,
+  pageSize: 10,
   offset: 0,
   next: 0,
   filter: {
@@ -55,7 +57,16 @@ const getInboxParams: GetInbox = {
 })
 export class ActivitiesService {
   preloadedFormats: BehaviorSubject<any> = new BehaviorSubject(null);
-  _activities: BehaviorSubject<any> = new BehaviorSubject(ActivitiesData);
+  _activities: BehaviorSubject<any> = new BehaviorSubject(null);
+
+  _pagination: BehaviorSubject<any> = new BehaviorSubject({
+    length: 0,
+    size: 10,
+    page: 0,
+    lastPage: 0,
+    startIndex: 0,
+    endIndex: 0,
+  });
 
   constructor(private http: HttpClient) {}
 
@@ -73,6 +84,10 @@ export class ActivitiesService {
 
   set activities$(data) {
     this._activities.next(data);
+  }
+
+  get pagination$(): Observable<Pagination> {
+    return this._pagination.asObservable();
   }
 
   addNewActivity(newData) {
@@ -115,14 +130,47 @@ export class ActivitiesService {
     );
   }
 
-  getActivities(id: number): Observable<any[]> {
-    return this.http.post<any[]>(
-      environment.apiUrl + "/Actividades/BandejaActividades/" + id,
-      {
+  getActivities(
+    { page, pageSize, nombre }: ParamsPagination | any = {
+      page: 0,
+      pageSize: 10,
+    }
+  ): Observable<any[]> {
+    let currentFilter;
+    getInboxParams.filter.tipo = 4;
+    getInboxParams.filter.nombre = nombre;
+
+    if (!page) {
+      currentFilter = { ...getInboxParams };
+    } else {
+      currentFilter = {
         ...getInboxParams,
-        filter: {},
-      }
-    );
+        page,
+        pageSize,
+      };
+    }
+    return this.http
+      .post<any[]>(
+        environment.apiUrl + "/Actividades/BandejaInformesPaginado",
+        {
+          ...getInboxParams,
+          filter: {},
+        }
+      )
+      .pipe(
+        tap((resp: any) => {
+          this._pagination.next({
+            ...this._pagination.getValue(),
+            page,
+            size: pageSize,
+            length: resp.body.totalRecords,
+            lastPage: Math.ceil(
+              resp.body.totalRecords / this._pagination.getValue().size
+            ),
+          });
+          this._activities.next(resp.body.data);
+        })
+      );
   }
 
   getActivity(id: number): Observable<any[]> {
