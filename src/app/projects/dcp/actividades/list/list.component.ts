@@ -1,11 +1,8 @@
 import { Component, OnInit } from "@angular/core";
-import { MatCheckbox } from "@angular/material/checkbox";
-import { MatDialog } from "@angular/material/dialog";
 import { ActivatedRoute, Router } from "@angular/router";
 import { Pagination } from "app/core/types/list.types";
 import { Observable, Subject } from "rxjs";
 import { takeUntil } from "rxjs/operators";
-import { ActivityFake } from "../../fake-db/activities/activity-fake-db";
 import { EditarFormatoService } from "../../formatos/editar-formato/editar-formato.service";
 import { ActivitiesService } from "../activities.service";
 
