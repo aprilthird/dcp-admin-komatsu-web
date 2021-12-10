@@ -117,19 +117,19 @@
                     {{ actividad?.id }}
                   </div>
 
-                  <div class="truncate">
+                  <div [matTooltip]="actividad?.tipoServicio" class="truncate">
                     {{ actividad?.tipoServicio }}
                   </div>
 
-                  <div class="truncate">
+                  <div [matTooltip]="actividad?.idActividad" class="truncate">
                     {{ actividad?.idActividad }}
                   </div>
 
-                  <div class="truncate">
+                  <div [matTooltip]="actividad?.codOrden" class="truncate">
                     {{ actividad?.codOrden }}
                   </div>
 
-                  <div class="truncate">
+                  <div [matTooltip]="actividad?.codEquipo" class="truncate">
                     {{ actividad?.codEquipo }}
                   </div>
                   <div class="truncate">
@@ -140,7 +140,7 @@
                   </div>
 
                   <div class="truncate">
-                    {{ actividad?.fechaReg | date: "dd/MM/yy h:mma" }}
+                    {{ actividad?.fechaMod | date: "dd/MM/yy h:mma" }}
                   </div>
 
                   <div class="truncate">

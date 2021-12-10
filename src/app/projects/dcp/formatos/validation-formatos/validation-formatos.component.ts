@@ -257,50 +257,57 @@ export class ValidationFormatosComponent implements OnInit {
     });
   }
 
-  submit(e: MouseEvent, j): void {
+  submit(e: MouseEvent, indexGroup, deleteComment?: boolean): void {
     console.log(this.form.value);
-    //if (this.form.valid) {
-    const data = [...this.sections];
+    if (this.form.valid) {
+      const data = [...this.sections];
 
-    data.forEach((seccion, i) => {
-      seccion.grupos.forEach((grupo, j) => {
-        this.groups[j] = !this.groups[j];
-        grupo.parametros.forEach((parametro, k) => {
-          if (parametro.activo) {
-            if (
-              parametro.idParametro === TipoParametro.UPLOAD ||
-              parametro.idParametro === TipoParametro.IMAGEN
-            ) {
-              if (parametro.valor === null || parametro.valor === "") {
-                this.form
-                  .get(this.getParametroControl({ j, k }))
-                  .setValue(parametro.dato);
-              }
+      data.forEach((seccion, i) => {
+        seccion.grupos.forEach((grupo, j) => {
+          this.groups[j] = !this.groups[j];
+
+          if (deleteComment) {
+            if (j === indexGroup) {
+              grupo.comentarios = null;
             }
+          }
 
-            /*if (parametro.idParametro === TipoParametro.FECHA) {
+          grupo.parametros.forEach((parametro, k) => {
+            if (parametro.activo) {
+              if (
+                parametro.idParametro === TipoParametro.UPLOAD ||
+                parametro.idParametro === TipoParametro.IMAGEN
+              ) {
+                if (parametro.valor === null || parametro.valor === "") {
+                  this.form
+                    .get(this.getParametroControl({ j, k }))
+                    .setValue(parametro.dato);
+                }
+              }
+
+              /*if (parametro.idParametro === TipoParametro.FECHA) {
                 
                 this.form
                   .get(this.getParametroControl({ i, j, k }))
                   .setValue(new Date(parametro.valor).getTimezoneOffset());
               }*/
-            parametro.valor = String(
-              this.form.get(this.getParametroControl({ j, k })).value
-            );
-          }
+              parametro.valor = String(
+                this.form.get(this.getParametroControl({ j, k })).value
+              );
+            }
+          });
         });
       });
-    });
-    const payload = {
-      secciones: data,
-      idFormato: data[0].grupos[0].parametros[0].idFormato,
-    };
-    this._editarFormatoService.saveAssignation(payload).subscribe(() => {
-      Object.keys(this.form.controls).forEach((key) => {
-        this.form.get(key).disable();
+      const payload = {
+        secciones: data,
+        idFormato: data[0].grupos[0].parametros[0].idFormato,
+      };
+      this._editarFormatoService.saveAssignation(payload).subscribe(() => {
+        Object.keys(this.form.controls).forEach((key) => {
+          this.form.get(key).disable();
+        });
       });
-    });
-    //}
+    }
     e.preventDefault();
   }
 
@@ -336,12 +343,6 @@ export class ValidationFormatosComponent implements OnInit {
       width: "500px",
       data: data,
     });
-    /*.afterClosed()
-      .subscribe(() =>
-        Object.keys(this.observation).forEach(
-          (key) => (this.observation[key] = false)
-        )
-      );*/
   }
 
   editable(j): boolean {

@@ -9,10 +9,10 @@
     }
   
     @screen lg {
-      grid-template-columns: 40px 80px 80px 80px 80px 80px 80px 80px 80px 100px 80px;
+      grid-template-columns: 40px 80px 120px 80px 80px 80px 80px 120px 80px 100px 50px;
     }
   
     @screen xl {
-        grid-template-columns: 50px 80px 80px 80px 80px 80px 80px 80px 80px 100px 80px;
+        grid-template-columns: 50px 80px 80px 120px 80px 80px 80px 120px 80px 100px 50px;
     }        
   }

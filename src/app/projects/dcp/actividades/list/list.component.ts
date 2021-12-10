@@ -23,8 +23,8 @@ export class ListComponent implements OnInit {
   activities$: Observable<any>;
   isEdit: boolean;
 
-  start = new Date().toLocaleDateString("en-US");
-  end = new Date().toLocaleDateString("en-US");
+  start = new Date().toLocaleDateString("es-ES");
+  end = new Date().toLocaleDateString("es-ES");
 
   constructor(
     private activitiesService: ActivitiesService,

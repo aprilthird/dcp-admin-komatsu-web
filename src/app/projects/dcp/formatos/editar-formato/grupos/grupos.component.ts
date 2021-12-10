@@ -87,8 +87,8 @@ export class GruposComponent implements OnInit {
   clickDeleteParametro(parametro): void {
     console.log(this.data);
     const dialogRef = this._fuseConfirmationService.open({
-      title: "Eliminar parametro",
-      message: "¿Estás seguro que deseas eliminar el parametro?",
+      title: "Eliminar Dato",
+      message: "¿Estás seguro que deseas eliminar el dato?",
       icon: {
         name: "heroicons_outline:trash",
         color: "primary",

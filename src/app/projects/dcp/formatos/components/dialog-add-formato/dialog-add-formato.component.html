@@ -9,18 +9,18 @@
     <div class="flex flex-col w-full">
       <!-- Nombre -->
       <mat-form-field class="w-full">
-        <mat-label>CeCo</mat-label>
-        <input matInput formControlName="codCeco" />
+        <mat-label class="font-bold">CeCo</mat-label>
+        <input maxlength="20" matInput formControlName="codCeco" />
         <mat-error> {{ getErrorMessage("codCeco") }} </mat-error>
       </mat-form-field>
       <mat-form-field class="w-full">
-        <mat-label>GP</mat-label>
-        <input matInput formControlName="codGp" />
+        <mat-label class="font-bold">GP</mat-label>
+        <input maxlength="20" matInput formControlName="codGp" />
         <mat-error> {{ getErrorMessage("codGp") }} </mat-error>
       </mat-form-field>
       <mat-form-field class="w-full">
         <mat-label class="font-bold">CE</mat-label>
-        <input matInput formControlName="codCe" />
+        <input maxlength="20" matInput formControlName="codCe" />
         <mat-error> {{ getErrorMessage("codCe") }} </mat-error>
       </mat-form-field>
 
@@ -37,7 +37,7 @@
 
       <mat-form-field class="w-full">
         <mat-label class="font-bold">Título</mat-label>
-        <input matInput formControlName="nombre" />
+        <input maxlength="100" matInput formControlName="nombre" />
         <mat-error> {{ getErrorMessage("nombre") }} </mat-error>
       </mat-form-field>
     </div>
