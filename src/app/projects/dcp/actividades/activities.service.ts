@@ -26,10 +26,10 @@ interface GetInbox {
     idUsuario: number;
     dni: string;
     nombre: string;
-    estado: number | 1;
-    tipo: number;
-    fechaIni: any | "";
-    fechaFin: any | "";
+    estado?: number | 1;
+    tipo?: number;
+    fechaIni?: any | "";
+    fechaFin?: any | "";
     codigo: string | "";
   };
 }
@@ -44,10 +44,6 @@ const getInboxParams: GetInbox = {
     idUsuario: 0,
     dni: "",
     nombre: "",
-    estado: 0,
-    tipo: 1,
-    fechaIni: null,
-    fechaFin: null,
     codigo: "",
   },
 };
@@ -131,14 +127,12 @@ export class ActivitiesService {
   }
 
   getActivities(
-    { page, pageSize, nombre }: ParamsPagination | any = {
+    { page, pageSize }: ParamsPagination | any = {
       page: 0,
       pageSize: 10,
     }
   ): Observable<any[]> {
     let currentFilter;
-    getInboxParams.filter.tipo = 4;
-    getInboxParams.filter.nombre = nombre;
 
     if (!page) {
       currentFilter = { ...getInboxParams };
@@ -153,8 +147,9 @@ export class ActivitiesService {
       .post<any[]>(
         environment.apiUrl + "/Actividades/BandejaInformesPaginado",
         {
-          ...getInboxParams,
-          filter: {},
+          page,
+          pageSize,
+          ...currentFilter,
         }
       )
       .pipe(
