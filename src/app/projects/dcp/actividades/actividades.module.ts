@@ -36,6 +36,8 @@ import {
 
 import { FilterDialogComponent } from "./filter/filter-dialog/filter-dialog.component";
 
+import { FuseConfirmationModule } from "@fuse/services/confirmation";
+
 @NgModule({
   declarations: [
     ActividadesComponent,
@@ -66,6 +68,7 @@ import { FilterDialogComponent } from "./filter/filter-dialog/filter-dialog.comp
     MatTooltipModule,
     NgxMatDatetimePickerModule,
     NgxMatNativeDateModule,
+    FuseConfirmationModule,
     NgxMatTimepickerModule,
   ],
 })

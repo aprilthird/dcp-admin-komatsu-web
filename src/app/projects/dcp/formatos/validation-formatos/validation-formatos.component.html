@@ -66,12 +66,17 @@
         [opened]="true"
       ></fuse-vertical-navigation>
 
-      <div class="p-4 mb-2 flex justify-center items-center">
+      <div
+        *ngIf="currentSectionData"
+        class="p-4 mb-2 flex justify-center items-center"
+      >
         <button
+          *ngIf="!validateFormat()"
           class="text-white"
           mat-raised-button
           [color]="'primary'"
-          disabled
+          [disabled]="!validateSection()"
+          (click)="postValidateFormat()"
         >
           <mat-icon
             class="text-white mr-1"
@@ -80,6 +85,17 @@
 
           Validar informe
         </button>
+
+        <div
+          *ngIf="validateFormat()"
+          class="flex items-center font-bold tracking-tight align-items"
+        >
+          <mat-icon
+            class="text-green-600 mr-2"
+            svgIcon="heroicons_outline:check-circle"
+          ></mat-icon>
+          <span>Informe validado</span>
+        </div>
       </div>
     </mat-drawer>
 

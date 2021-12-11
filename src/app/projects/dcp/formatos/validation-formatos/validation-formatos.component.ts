@@ -6,15 +6,15 @@ import { DialogValidateFormatComponent } from "../components/dialog-validate-for
 import { ActivatedRoute } from "@angular/router";
 
 //SERVICES
-import { ActivitiesService } from "../../actividades/activities.service";
 
-//FAKE CONFIG
 import { ActivityFake } from "../../fake-db/activities/activity-fake-db";
 import { EditarFormatoService } from "../editar-formato/editar-formato.service";
 import { FormBuilder, FormControl, FormGroup } from "@angular/forms";
 import { TipoParametro } from "app/core/types/formatos.types";
 import { MatCheckbox } from "@angular/material/checkbox";
 import { AzureService } from "app/core/azure/azure.service";
+import { FuseConfirmationService } from "@fuse/services/confirmation";
+import { FormatosService } from "../formatos.service";
 
 @Component({
   selector: "app-validation-formatos",
@@ -54,12 +54,14 @@ export class ValidationFormatosComponent implements OnInit {
 
   constructor(
     private matDialog: MatDialog,
-    private activityServices: ActivitiesService,
     private routerActive: ActivatedRoute,
     private asignationService: EditarFormatoService,
     private fb: FormBuilder,
     private _azureService: AzureService,
-    private _editarFormatoService: EditarFormatoService
+    private _editarFormatoService: EditarFormatoService,
+
+    private formatosService: FormatosService,
+    private _fuseConfirmationService: FuseConfirmationService
   ) {
     this.getAsignationId();
 
@@ -134,6 +136,37 @@ export class ValidationFormatosComponent implements OnInit {
     this.matDialog.open(DialogValidateFormatComponent, {
       width: "500px",
       data: data,
+    });
+  }
+
+  postValidateFormat(): void {
+    const dialogRef = this._fuseConfirmationService.open({
+      title: "Validación de informe",
+      message: "¿Estás seguro que desea validar el informe?",
+
+      actions: {
+        confirm: {
+          label: "Sí, validar",
+          color: "primary",
+        },
+        cancel: {
+          label: "No",
+        },
+      },
+      dismissible: true,
+    });
+
+    dialogRef.beforeClosed().subscribe((result) => {
+      const data = {
+        idAsignacionDetalle:
+          this.sections[0].grupos[0].parametros[0].idAsignacionDetalle,
+        idFormato: this.sections[0].grupos[0].parametros[0].idFormato,
+      };
+
+      console.log(result);
+      if (result === "confirmed") {
+        this.formatosService.validateFormat(data).subscribe(() => {});
+      }
     });
   }
 
