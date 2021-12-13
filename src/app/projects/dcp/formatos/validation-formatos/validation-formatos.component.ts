@@ -291,56 +291,55 @@ export class ValidationFormatosComponent implements OnInit {
   }
 
   submit(e: MouseEvent, indexGroup, deleteComment?: boolean): void {
-    console.log(this.form.value);
-    if (this.form.valid) {
-      const data = [...this.sections];
+    //if (this.form.valid) {
+    const data = [...this.sections];
 
-      data.forEach((seccion, i) => {
-        seccion.grupos.forEach((grupo, j) => {
-          this.groups[j] = !this.groups[j];
+    data.forEach((seccion, i) => {
+      seccion.grupos.forEach((grupo, j) => {
+        this.groups[j] = !this.groups[j];
 
-          if (deleteComment) {
-            if (j === indexGroup) {
-              grupo.comentarios = null;
-            }
+        if (deleteComment) {
+          if (j === indexGroup) {
+            grupo.comentarios = null;
           }
+        }
 
-          grupo.parametros.forEach((parametro, k) => {
-            if (parametro.activo) {
-              if (
-                parametro.idParametro === TipoParametro.UPLOAD ||
-                parametro.idParametro === TipoParametro.IMAGEN
-              ) {
-                if (parametro.valor === null || parametro.valor === "") {
-                  this.form
-                    .get(this.getParametroControl({ j, k }))
-                    .setValue(parametro.dato);
-                }
+        grupo.parametros.forEach((parametro, k) => {
+          if (parametro.activo) {
+            if (
+              parametro.idParametro === TipoParametro.UPLOAD ||
+              parametro.idParametro === TipoParametro.IMAGEN
+            ) {
+              if (parametro.valor === null || parametro.valor === "") {
+                this.form
+                  .get(this.getParametroControl({ j, k }))
+                  .setValue(parametro.dato);
               }
+            }
 
-              /*if (parametro.idParametro === TipoParametro.FECHA) {
+            /*if (parametro.idParametro === TipoParametro.FECHA) {
                 
                 this.form
                   .get(this.getParametroControl({ i, j, k }))
                   .setValue(new Date(parametro.valor).getTimezoneOffset());
               }*/
-              parametro.valor = String(
-                this.form.get(this.getParametroControl({ j, k })).value
-              );
-            }
-          });
+            parametro.valor = String(
+              this.form.get(this.getParametroControl({ j, k })).value
+            );
+          }
         });
       });
-      const payload = {
-        secciones: data,
-        idFormato: data[0].grupos[0].parametros[0].idFormato,
-      };
-      this._editarFormatoService.saveAssignation(payload).subscribe(() => {
-        Object.keys(this.form.controls).forEach((key) => {
-          this.form.get(key).disable();
-        });
+    });
+    const payload = {
+      secciones: data,
+      idFormato: data[0].grupos[0].parametros[0].idFormato,
+    };
+    this._editarFormatoService.saveAssignation(payload).subscribe(() => {
+      Object.keys(this.form.controls).forEach((key) => {
+        this.form.get(key).disable();
       });
-    }
+    });
+    //}
     e.preventDefault();
   }
 

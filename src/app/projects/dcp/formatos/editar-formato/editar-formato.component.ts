@@ -39,6 +39,7 @@ export class EditarFormatoComponent implements OnInit, OnDestroy {
   gp$: Observable<Formato>;
 
   private _unsubscribeAll: Subject<any> = new Subject<any>();
+  idSection: number = 0;
   constructor(
     private _router: Router,
     private _changeDetectorRef: ChangeDetectorRef,
@@ -113,16 +114,23 @@ export class EditarFormatoComponent implements OnInit, OnDestroy {
 
   loadGrupos() {
     if (this._activedRoute.snapshot.params.idSeccion) {
+      this.idSection = Number(this._activedRoute.snapshot.params.idSeccion);
       this.loading = true;
-      this._editarFormatoService
-        .getGrupos(this._activedRoute.snapshot.params.idSeccion)
-        .subscribe((response) => {
-          this.currentSeccion = this.menuData.find(
-            (e) => e.id === Number(this._activedRoute.snapshot.params.idSeccion)
-          )?.title;
-          this.loading = false;
-          this.grupos = response.body;
-        });
+      if (Number(this._activedRoute.snapshot.params.idSeccion) === 0) {
+        this.grupos = [];
+        this.loading = false;
+      } else {
+        this._editarFormatoService
+          .getGrupos(this._activedRoute.snapshot.params.idSeccion)
+          .subscribe((response) => {
+            this.currentSeccion = this.menuData.find(
+              (e) =>
+                e.id === Number(this._activedRoute.snapshot.params.idSeccion)
+            )?.title;
+            this.loading = false;
+            this.grupos = response.body;
+          });
+      }
     } else {
       this.loading = false;
 

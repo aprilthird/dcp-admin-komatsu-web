@@ -149,7 +149,7 @@
               "
               *ngIf="menuData.length === 0"
             >
-              No existe contenido.
+              No existe contenido, favor agregar una inspección.
             </h3>
 
             <h3
@@ -164,7 +164,8 @@
               "
               *ngIf="!currentSeccion && menuData.length > 0"
             >
-              Debe seleccionar una sección
+              Debe seleccionar una sección en el menú de navegación en la
+              izquierda
             </h3>
             <ng-container *ngIf="grupos.length > 0">
               <app-grupos
@@ -193,7 +194,12 @@
         "
       >
         <span class="font-medium text-secondary">
-          <button mat-button color="primary" (click)="clickNewGrupo()">
+          <button
+            mat-button
+            color="primary"
+            (click)="clickNewGrupo()"
+            *ngIf="idSection !== 0"
+          >
             <mat-icon [svgIcon]="'heroicons_solid:plus'"></mat-icon>
             Agregar grupo
           </button>
