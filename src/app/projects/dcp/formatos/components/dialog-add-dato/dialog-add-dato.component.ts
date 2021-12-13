@@ -6,7 +6,6 @@ import {
   Validators,
 } from "@angular/forms";
 import { MatDialogRef } from "@angular/material/dialog";
-import { Router, ActivatedRoute } from "@angular/router";
 import { FuseAlertType } from "@fuse/components/alert";
 import { AzureService } from "app/core/azure/azure.service";
 import { Grupo, TipoParametro } from "app/core/types/formatos.types";
@@ -60,11 +59,11 @@ export class DialogAddDatoComponent implements OnInit {
     private fb: FormBuilder,
     public dialogRef: MatDialogRef<DialogAddDatoComponent>,
     private _editarFormatoService: EditarFormatoService,
-    private _azureService: AzureService,
-    private router: Router,
-    private activeRouter: ActivatedRoute
+    private _azureService: AzureService
   ) {
-    this.tiposDatos = this._editarFormatoService.datos();
+    this.tiposDatos = this._editarFormatoService
+      .datos()
+      .filter((data) => data.id !== 4);
   }
 
   addOption(event: MatChipInputEvent): void {
@@ -215,9 +214,7 @@ export class DialogAddDatoComponent implements OnInit {
         break;
 
       case TipoParametro.FECHA:
-      case TipoParametro.UPLOAD:
       case TipoParametro.IMAGEN:
-      case TipoParametro.FIRMA:
         this.image = "";
         this.form.clearValidators();
         this.form = this.fb.group({
@@ -255,7 +252,7 @@ export class DialogAddDatoComponent implements OnInit {
         this.form = this.fb.group({
           idParametro: [values.idParametro, Validators.required],
           placeholder: [values.placeholder, Validators.required],
-          label: [values.placeholder, Validators.required],
+          label: [values.label, Validators.required],
           visible: [values.visible],
           obligatorio: [values.obligatorio],
           editable: [values.editable],
@@ -295,6 +292,7 @@ export class DialogAddDatoComponent implements OnInit {
         break;
 
       case TipoParametro.CHECKBOX:
+      case TipoParametro.FIRMA:
         this.form.clearValidators();
         this.form = this.fb.group({
           idParametro: [values.idParametro, Validators.required],
@@ -313,6 +311,9 @@ export class DialogAddDatoComponent implements OnInit {
         this.form.get("minCaracteres").disable();
         this.form.get("maxCaracteres").disable();
         this.form.get("regex").disable();
+        if (TipoParametro.FIRMA) {
+          this.form.get("placeholder").setValue("Agregar firma");
+        }
         break;
     }
 

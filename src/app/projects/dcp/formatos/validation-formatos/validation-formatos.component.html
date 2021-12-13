@@ -446,6 +446,24 @@
                                     *ngIf="parametro.visible"
                                     >{{ parametro.label }}</span
                                   >
+
+                                  <ui-upload-file
+                                    *ngIf="
+                                      parametro.valor !== '' &&
+                                      parametro.valor !== null
+                                    "
+                                    [required]="parametro.obligatorio"
+                                    [editable]="'false'"
+                                    [type]="'imagen'"
+                                    [image]="
+                                      parametro.valor !== '' &&
+                                      parametro.valor !== null
+                                        ? setImage(parametro.valor)
+                                        : setImage(parametro.dato)
+                                    "
+                                    [loading]="filesLoading[getParametroControl({j, k})]"
+                                    (sourceFile)="onChageFile($event, getParametroControl({j, k}))"
+                                  ></ui-upload-file>
                                 </div>
 
                                 <!-- LABEL -->
