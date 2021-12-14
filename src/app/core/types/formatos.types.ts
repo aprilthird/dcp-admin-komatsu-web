@@ -77,4 +77,5 @@ export interface Grupo {
   pos: GrupoPosicion;
   total: 0;
   visible: true;
+  activo?: boolean | true;
 }

@@ -44,11 +44,14 @@ export class UploadFileComponent implements OnInit, OnChanges {
   @Input() loading = false;
   @Input() required: boolean;
   @Output() sourceFile: EventEmitter<any> = new EventEmitter();
+  @Output() removeSign: EventEmitter<any> = new EventEmitter();
   @Input() image: SafeUrl = "";
   @Input() editable: boolean;
   @Input() preview: string;
+  @Input() paramIdx: number;
+  @Input() groupIdx: number;
 
-  _file: string = "";
+  _file: any = "";
   state = "default";
   dynamicFitImage: string = "unset";
   dinamycWidth: string = "100%";
@@ -81,8 +84,12 @@ export class UploadFileComponent implements OnInit, OnChanges {
   }
 
   removePicture(): void {
-    this.image = "";
-    this.sourceFile.emit();
+    if (this.type !== "sign") {
+      this.image = "";
+      this.sourceFile.emit();
+    } else {
+      this.removeSign.emit();
+    }
   }
 
   private getSantizeUrl(url: string): SafeUrl {

@@ -1,10 +1,23 @@
-<mat-expansion-panel hideToggle class="mb-5">
+<mat-expansion-panel hideToggle class="mb-5" *ngIf="data.activo">
   <mat-expansion-panel-header>
-    <mat-panel-title>
-      Grupo: {{ data.nombre }} - &nbsp;
-      <span *ngIf="data?.pos">
-        {{ data.pos === "h" ? "Horizontal" : "Vertical" }}
-      </span>
+    <mat-panel-title class="flex justify-between">
+      <div>
+        Grupo: {{ data.nombre }} - &nbsp;
+        <span *ngIf="data?.pos">
+          {{ data.pos === "h" ? "Horizontal" : "Vertical" }}
+        </span>
+      </div>
+      <button
+        class="min-w-7 w-7 min-h-7 h-7 mr-1"
+        mat-icon-button
+        matTooltip="Eliminar"
+        (click)="deleteGroup()"
+      >
+        <mat-icon
+          class="icon-size-5 text-primary-500"
+          [svgIcon]="'heroicons_outline:trash'"
+        ></mat-icon>
+      </button>
     </mat-panel-title>
   </mat-expansion-panel-header>
   <div class="flex flex-col p-0 overflow-x-auto lg:overflow-hidden">

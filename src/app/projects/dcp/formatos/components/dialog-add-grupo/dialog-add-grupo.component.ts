@@ -51,6 +51,7 @@ export class DialogAddGrupoComponent implements OnInit {
               ...response.body,
               ...this.form.value,
               parametros: [],
+              activo: true,
             });
           },
           () => {

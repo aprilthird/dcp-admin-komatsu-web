@@ -1,5 +1,4 @@
 import { Component, Input, OnInit } from "@angular/core";
-import { CdkDragDrop, moveItemInArray } from "@angular/cdk/drag-drop";
 import { MatDialog } from "@angular/material/dialog";
 import { DialogAddDatoComponent } from "../../components/dialog-add-dato/dialog-add-dato.component";
 import { Grupo, TipoParametro } from "app/core/types/formatos.types";
@@ -113,6 +112,37 @@ export class GruposComponent implements OnInit {
         data.parametros = [parametro];
         this._editarFormatoService.createDato(data).subscribe((response) => {
           this.data.parametros = response.body.filter((e) => e.activo);
+        });
+      }
+    });
+  }
+
+  deleteGroup(): void {
+    const dialogRef = this._fuseConfirmationService.open({
+      title: "Eliminar grupo",
+      message: "¿Estás seguro que desea eliminar éste grupo?",
+
+      actions: {
+        confirm: {
+          label: "Sí, eliminar",
+          color: "primary",
+        },
+        cancel: {
+          label: "No",
+        },
+      },
+      dismissible: true,
+    });
+
+    dialogRef.beforeClosed().subscribe((result) => {
+      const data = {
+        id: this.data.id,
+        activo: false,
+      };
+
+      if (result === "confirmed") {
+        this._editarFormatoService.createGrupo(data).subscribe(() => {
+          this.data.activo = false;
         });
       }
     });

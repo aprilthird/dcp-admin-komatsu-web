@@ -78,7 +78,9 @@ export class EditarFormatoService {
       )
       .pipe(
         tap((response) => {
-          this._secciones.next(response.body);
+          this._secciones.next(
+            response.body.filter((section) => section.activo)
+          );
         })
       );
   }

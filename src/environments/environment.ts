@@ -8,7 +8,7 @@ export const environment = {
   project: "dcp",
   apiUrl: "https://development-dcp.ws.solera.pe/api",
   azureAccountName: "appinformes",
-  azureContaineName: "pictures",
+  azureContaineName: "dcp",
   azureSas:
     "sp=racwdl&st=2021-10-05T16:07:46Z&se=2022-10-06T00:07:46Z&sv=2020-08-04&sr=c&sig=9MTq3NunBV%2B4lsFQ3S2KcCZkojTMh%2Frx5jrJRdouwvE%3D",
   config: {

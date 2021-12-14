@@ -228,7 +228,7 @@
                       >
                         <div class="flex justify-between items-center">
                           <p class="text-2xl font-medium mb-3 items-center">
-                            Parametros de Sección 1
+                            {{ grupo.nombre }}
                           </p>
                           <div class="flex gap-5 items-center justify-end">
                             <button
@@ -276,7 +276,14 @@
                           </div>
                         </div>
 
-                        <div class="grid flex-row">
+                        <div
+                          class="
+                            grid
+                            flex-row
+                            overflow-x-auto overflow-y-hidden
+                            w-full
+                          "
+                        >
                           <ng-container
                             *ngFor="
                               let parametro of grupo.parametros;
@@ -306,7 +313,7 @@
                                 <!-- TEXTO -->
                                 <mat-form-field
                                   *ngSwitchCase="1"
-                                  class="w-full font-semibold"
+                                  class="w-full font-semibold mr-2"
                                   floatLabel="always"
                                 >
                                   <mat-label *ngIf="parametro.visible">{{
@@ -450,11 +457,14 @@
                                   <ui-upload-file
                                     *ngIf="
                                       parametro.valor !== '' &&
-                                      parametro.valor !== null
+                                        parametro.valor !== null;
+                                      else empty
                                     "
                                     [required]="parametro.obligatorio"
                                     [editable]="'false'"
-                                    [type]="'imagen'"
+                                    [type]="'sign'"
+                                    [paramIdx]="j"
+                                    [groupIdx]="k"
                                     [image]="
                                       parametro.valor !== '' &&
                                       parametro.valor !== null
@@ -463,7 +473,17 @@
                                     "
                                     [loading]="filesLoading[getParametroControl({j, k})]"
                                     (sourceFile)="onChageFile($event, getParametroControl({j, k}))"
+                                    (removeSign)="removeSign($event, j, k)"
                                   ></ui-upload-file>
+                                  <ng-template #empty>
+                                    <img
+                                      class="w-44"
+                                      matTooltip="No existe una firma cargada"
+                                      [src]="
+                                        './assets/images/ui/no-image/no-image.svg'
+                                      "
+                                    />
+                                  </ng-template>
                                 </div>
 
                                 <!-- LABEL -->

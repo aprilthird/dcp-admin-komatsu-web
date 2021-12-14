@@ -85,7 +85,7 @@
             [required]="false"
             [close]="true"
             [editable]="true"
-            [type]="form.get('idParametro').value === 6 ? 'imagen' : 'firma'"
+            [type]="form.get('idParametro').value === 6"
             [loading]="imageLoading"
             [image]="image"
             (sourceFile)="onChageFile($event)"

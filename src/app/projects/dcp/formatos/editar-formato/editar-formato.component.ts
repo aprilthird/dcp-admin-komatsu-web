@@ -8,6 +8,7 @@ import {
 import { MatDialog } from "@angular/material/dialog";
 import { MatDrawer } from "@angular/material/sidenav";
 import { ActivatedRoute, Event, NavigationEnd, Router } from "@angular/router";
+import { FuseConfirmationService } from "@fuse/services/confirmation";
 import { FuseMediaWatcherService } from "@fuse/services/media-watcher";
 import { Formato, Grupo } from "app/core/types/formatos.types";
 import { Observable, Subject } from "rxjs";
@@ -46,19 +47,10 @@ export class EditarFormatoComponent implements OnInit, OnDestroy {
     private _fuseMediaWatcherService: FuseMediaWatcherService,
     public dialog: MatDialog,
     private _activedRoute: ActivatedRoute,
-    private _editarFormatoService: EditarFormatoService
+    private _editarFormatoService: EditarFormatoService,
+    private _fuseConfirmationService: FuseConfirmationService
   ) {
-    this._editarFormatoService.secciones$
-      .pipe(takeUntil(this._unsubscribeAll))
-      .subscribe((secciones) => {
-        this.menuData = secciones.map((e) => ({
-          id: e.id,
-          title: e.nombre,
-          type: "basic",
-          link: `/admin/formatos/editar/${this._activedRoute.snapshot.params.id}/${e.id}`,
-        }));
-      });
-
+    this.getSections();
     // this._router.routeReuseStrategy.shouldReuseRoute = () => true;
     this.ce$ = this._editarFormatoService._ce.pipe(
       takeUntil(this._unsubscribeAll)
@@ -71,12 +63,22 @@ export class EditarFormatoComponent implements OnInit, OnDestroy {
     );
   }
 
+  private getSections(): void {
+    this._editarFormatoService.secciones$
+      .pipe(takeUntil(this._unsubscribeAll))
+      .subscribe((secciones) => {
+        this.menuData = secciones.map((e) => ({
+          id: e.id,
+          title: e.nombre,
+          type: "basic",
+          link: `/admin/formatos/editar/${this._activedRoute.snapshot.params.id}/${e.id}`,
+        }));
+      });
+  }
   ngOnInit(): void {
-    // Subscribe to media query change
     this._fuseMediaWatcherService.onMediaChange$
       .pipe(takeUntil(this._unsubscribeAll))
       .subscribe(({ matchingAliases }) => {
-        // Set the drawerMode and drawerOpened
         if (matchingAliases.includes("md")) {
           this.drawerMode = "side";
           this.drawerOpened = true;
@@ -85,7 +87,6 @@ export class EditarFormatoComponent implements OnInit, OnDestroy {
           this.drawerOpened = false;
         }
 
-        // Mark for check
         this._changeDetectorRef.markForCheck();
       });
 
@@ -101,6 +102,42 @@ export class EditarFormatoComponent implements OnInit, OnDestroy {
 
     var el = document.getElementById("items");
     var sortable = Sortable.create(el);
+  }
+
+  deleteSection(menu): void {
+    const dialogRef = this._fuseConfirmationService.open({
+      title: "Eliminar sección",
+      message: "¿Estás seguro que desea eliminar ésta sección?",
+
+      actions: {
+        confirm: {
+          label: "Sí, eliminar",
+          color: "primary",
+        },
+        cancel: {
+          label: "No",
+        },
+      },
+      dismissible: true,
+    });
+
+    dialogRef.beforeClosed().subscribe((result) => {
+      const data = {
+        idFormat: Number(this._activedRoute.snapshot.params.id),
+        id: menu.id,
+        activo: false,
+      };
+
+      if (result === "confirmed") {
+        this._editarFormatoService.createSeccion(data).subscribe(() => {
+          this._editarFormatoService
+            .getSecciones({
+              idFormulario: Number(this._activedRoute.snapshot.params.id),
+            })
+            .subscribe(() => {});
+        });
+      }
+    });
   }
 
   /**

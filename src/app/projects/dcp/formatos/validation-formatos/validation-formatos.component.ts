@@ -241,6 +241,30 @@ export class ValidationFormatosComponent implements OnInit {
     }
   }
 
+  removeSign(event, groupIdx: number, paramIdx: number): void {
+    const dialogRef = this._fuseConfirmationService.open({
+      title: "Eliminar firma",
+      message: "¿Estás seguro que desea eliminar permanentemente la firma?",
+
+      actions: {
+        confirm: {
+          label: "Sí, eliminar",
+          color: "primary",
+        },
+        cancel: {
+          label: "No",
+        },
+      },
+      dismissible: true,
+    });
+
+    dialogRef.beforeClosed().subscribe((result) => {
+      if (result === "confirmed") {
+        this.submit(event, groupIdx, false, paramIdx);
+      }
+    });
+  }
+
   setImage(src: string): string {
     return this._azureService.getResourceUrlComplete(src);
   }
@@ -284,48 +308,47 @@ export class ValidationFormatosComponent implements OnInit {
         this.groups[j] = !this.groups[j];
         grupo.parametros.forEach((parametro, k) => {
           this.editGroup[`${j}`] = true;
-          this.form.get(`${this.getParametroControl({ j, k })}`).enable();
+          if (this.form.controls[`${this.getParametroControl({ j, k })}`]) {
+            this.form.get(`${this.getParametroControl({ j, k })}`).enable();
+          }
         });
       }
     });
   }
 
-  submit(e: MouseEvent, indexGroup, deleteComment?: boolean): void {
+  submit(
+    e: MouseEvent,
+    indexGroup: number,
+    deleteComment?: boolean,
+    paramIdx?: number
+  ): void {
     //if (this.form.valid) {
     const data = [...this.sections];
 
     data.forEach((seccion, i) => {
       seccion.grupos.forEach((grupo, j) => {
-        this.groups[j] = !this.groups[j];
-
+        if (indexGroup === j) {
+          this.groups[j] = !this.groups[j];
+        }
         if (deleteComment) {
           if (j === indexGroup) {
             grupo.comentarios = null;
           }
         }
-
         grupo.parametros.forEach((parametro, k) => {
           if (parametro.activo) {
             if (
               parametro.idParametro === TipoParametro.UPLOAD ||
               parametro.idParametro === TipoParametro.IMAGEN
             ) {
-              if (parametro.valor === null || parametro.valor === "") {
-                this.form
-                  .get(this.getParametroControl({ j, k }))
-                  .setValue(parametro.dato);
-              }
+              this.checkImgParam(parametro, j, k);
+            } else if (parametro.idParametro === TipoParametro.FIRMA) {
+              this.checkSignParam(paramIdx, parametro, indexGroup, k, j);
+            } else {
+              parametro.valor = String(
+                this.form.get(this.getParametroControl({ j, k })).value
+              );
             }
-
-            /*if (parametro.idParametro === TipoParametro.FECHA) {
-                
-                this.form
-                  .get(this.getParametroControl({ i, j, k }))
-                  .setValue(new Date(parametro.valor).getTimezoneOffset());
-              }*/
-            parametro.valor = String(
-              this.form.get(this.getParametroControl({ j, k })).value
-            );
           }
         });
       });
@@ -334,13 +357,48 @@ export class ValidationFormatosComponent implements OnInit {
       secciones: data,
       idFormato: data[0].grupos[0].parametros[0].idFormato,
     };
+    this.postAssignation(payload);
+    //}
+    e.preventDefault();
+  }
+
+  checkSignParam(paramIdx, parametro, indexGroup, k, j): void {
+    if (paramIdx) {
+      if (paramIdx === k && indexGroup === j) {
+        parametro.valor = null;
+        this.form.get(this.getParametroControl({ j, k })).setValue(null);
+      }
+    } else {
+      if (
+        this.form.get(this.getParametroControl({ j, k })).value &&
+        this.form.get(this.getParametroControl({ j, k })).value !== ""
+      ) {
+        parametro.valor = String(
+          this.form.get(this.getParametroControl({ j, k })).value
+        );
+      } else {
+        parametro.valor = null;
+      }
+    }
+  }
+
+  checkImgParam(parametro, j, k): void {
+    if (parametro.valor === null || parametro.valor === "") {
+      this.form
+        .get(this.getParametroControl({ j, k }))
+        .setValue(parametro.dato);
+    }
+    parametro.valor = String(
+      this.form.get(this.getParametroControl({ j, k })).value
+    );
+  }
+
+  postAssignation(payload): void {
     this._editarFormatoService.saveAssignation(payload).subscribe(() => {
       Object.keys(this.form.controls).forEach((key) => {
         this.form.get(key).disable();
       });
     });
-    //}
-    e.preventDefault();
   }
 
   validateSection(): boolean {
