@@ -164,9 +164,9 @@
                 sm:leading-10
                 truncate
               "
-              *ngIf="menuData.length === 0"
+              *ngIf="menuData.length === 0 || !validSection"
             >
-              No existe contenido, favor agregar una inspección.
+              No existe contenido, favor seleccionar una inspección
             </h3>
 
             <h3
@@ -184,7 +184,7 @@
               Debe seleccionar una sección en el menú de navegación en la
               izquierda
             </h3>
-            <ng-container *ngIf="grupos.length > 0">
+            <ng-container *ngIf="grupos.length > 0 && validSection">
               <app-grupos
                 *ngFor="let grupo of grupos"
                 [data]="grupo"
@@ -215,7 +215,7 @@
             mat-button
             color="primary"
             (click)="clickNewGrupo()"
-            *ngIf="idSection !== 0"
+            *ngIf="idSection !== 0 && validSection"
           >
             <mat-icon [svgIcon]="'heroicons_solid:plus'"></mat-icon>
             Agregar grupo

@@ -41,6 +41,8 @@ export class EditarFormatoComponent implements OnInit, OnDestroy {
 
   private _unsubscribeAll: Subject<any> = new Subject<any>();
   idSection: number = 0;
+  isSection: boolean;
+  validSection: boolean;
   constructor(
     private _router: Router,
     private _changeDetectorRef: ChangeDetectorRef,
@@ -73,6 +75,13 @@ export class EditarFormatoComponent implements OnInit, OnDestroy {
           type: "basic",
           link: `/admin/formatos/editar/${this._activedRoute.snapshot.params.id}/${e.id}`,
         }));
+        setTimeout(() => {
+          this.validSection = secciones.some(
+            (section) =>
+              section.id ===
+              Number(this._activedRoute.snapshot.params.idSeccion)
+          );
+        }, 500);
       });
   }
   ngOnInit(): void {
@@ -209,7 +218,8 @@ export class EditarFormatoComponent implements OnInit, OnDestroy {
       this._activedRoute.snapshot.params.idSeccion;
 
     dialogRef.componentInstance.success.subscribe((grupo) => {
-      this.grupos.push(grupo);
+      //this.grupos.push(grupo);
+      this.loadGrupos();
       dialogRef.close(close);
     });
   }

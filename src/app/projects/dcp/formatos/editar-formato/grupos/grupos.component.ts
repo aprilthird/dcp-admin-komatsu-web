@@ -141,7 +141,7 @@ export class GruposComponent implements OnInit {
       };
 
       if (result === "confirmed") {
-        this._editarFormatoService.createGrupo(data).subscribe(() => {
+        this._editarFormatoService.createGrupo(data).subscribe((resp) => {
           this.data.activo = false;
         });
       }
