@@ -47,7 +47,7 @@ export class DialogAddFormatoComponent implements OnInit {
   }
 
   private getServiceTypes(): void {
-    this.serviceTypes.getServiceTypes().subscribe((resp) => {
+    this.serviceTypes.getServiceType().subscribe((resp: any) => {
       this.services_type = resp.body;
     });
   }

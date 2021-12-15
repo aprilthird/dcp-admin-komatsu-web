@@ -58,8 +58,8 @@
         sm:overflow-y-auto
       "
     >
-      <ng-container *ngIf="tipos_servicios$">
-        <ng-container *ngIf="tipos_servicios$.length > 0; else empty">
+      <ng-container *ngIf="serviceTypes$ | async as tipos_servicios">
+        <ng-container *ngIf="tipos_servicios.length > 0; else empty">
           <div class="grid overflow-x-auto">
             <!-- Header -->
             <div
@@ -93,10 +93,10 @@
             </div>
 
             <!-- Rows -->
-            <ng-container *ngIf="tipos_servicios$">
+            <ng-container *ngIf="serviceTypes$ | async as tipos_servicios">
               <ng-container
                 *ngFor="
-                  let tipos_servicio of tipos_servicios$;
+                  let tipos_servicio of tipos_servicios;
                   trackBy: trackByFn
                 "
               >
@@ -120,19 +120,19 @@
 
                   <!-- Cliente -->
                   <div class="truncate">
-                    {{ tipos_servicio?.tipo_servicio }}
+                    {{ tipos_servicio?.nombre }}
                   </div>
                   <!-- Nombres -->
                   <div class="truncate">
-                    {{ tipos_servicio?.icono }}
+                    {{ setImage(tipos_servicio?.icono) }}
                   </div>
                   <!-- ID -->
                   <div class="truncate">
-                    {{ tipos_servicio?.fecha }}
+                    {{ tipos_servicio?.fechaReg | date: "dd/MM/yy h:mma" }}
                   </div>
                   <!-- Actividad -->
                   <div class="truncate">
-                    {{ tipos_servicio?.modificado }}
+                    {{ tipos_servicio?.fechaMod | date: "dd/MM/yy h:mma" }}
                   </div>
 
                   <!-- Acciones -->
@@ -152,7 +152,7 @@
               </ng-container>
             </ng-container>
           </div>
-          <!--<mat-paginator
+          <mat-paginator
             class="
               sm:absolute sm:inset-x-0 sm:bottom-0
               border-b
@@ -168,7 +168,7 @@
             [pageSizeOptions]="[5, 10, 25, 100]"
             [showFirstLastButtons]="true"
             (page)="changePage($event)"
-          ></mat-paginator>-->
+          ></mat-paginator>
         </ng-container>
       </ng-container>
 

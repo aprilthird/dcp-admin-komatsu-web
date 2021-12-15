@@ -5,49 +5,34 @@
       <mat-icon [svgIcon]="'heroicons_outline:x'"></mat-icon>
     </button>
   </div>
+
   <div mat-dialog-content class="pb-6">
     <div class="flex flex-col w-full">
       <!-- Nombre -->
 
       <mat-form-field floatLabel="always" class="w-100-p">
-        <mat-label>ID</mat-label>
-        <input matInput type="text" formControlName="id" autocomplete="off" />
-        <mat-error *ngIf="form.controls['id'].invalid">{{
-          matErrorMsg
-        }}</mat-error>
-      </mat-form-field>
-
-      <mat-form-field floatLabel="always" class="w-100-p">
         <mat-label class="font-bold">Tipo de servicio</mat-label>
-        <mat-select
-          formControlName="tipo_servicio"
-          [value]="form.controls['tipo_servicio'].value"
-        >
-          <mat-option [value]="1"> Servicio 1 </mat-option>
-        </mat-select>
+        <input matInput type="text" formControlName="nombre" />
       </mat-form-field>
 
       <div class="w-full">
-        <p class="text-gray-900 font-medium">icono</p>
+        <p class="text-gray-900 font-bold">Icono</p>
         <label class="file">
           <span>Documento</span>
           <input type="file" (change)="onChageFile($event)" />
           <mat-progress-spinner
             *ngIf="filesLoading"
-            [diameter]="24"
             [mode]="'indeterminate'"
+            [diameter]="'24'"
           ></mat-progress-spinner>
           <mat-icon
             *ngIf="!filesLoading"
-            [color]="'#94a3b8'"
+            [color]="'primary'"
             [svgIcon]="'heroicons_solid:upload'"
           ></mat-icon>
         </label>
-        <p
-          *ngIf="form.get('icono').value"
-          (click)="clickOpenFile(form.get('icono').value)"
-        >
-          Ver Icono
+        <p *ngIf="form.get('icono').value" class="mt-2 font-semibold">
+          Documento cargado
         </p>
       </div>
     </div>
@@ -79,7 +64,7 @@
         [diameter]="24"
         [mode]="'indeterminate'"
       ></mat-progress-spinner>
-      <span>Editar</span>
+      <span>Crear</span>
     </button>
   </div>
 </form>

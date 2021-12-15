@@ -1,7 +1,9 @@
 import { Component, Inject, OnInit } from "@angular/core";
-import { FormBuilder, FormControl } from "@angular/forms";
+import { FormBuilder, FormControl, Validators } from "@angular/forms";
 import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
 import { AzureService } from "app/core/azure/azure.service";
+
+//SERVICES
 import { TiposServiciosService } from "../tipos-servicios.service";
 
 @Component({
@@ -19,18 +21,25 @@ export class DialogAddTipoServicioComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any,
     private fb: FormBuilder,
     public matdialigRef: MatDialogRef<DialogAddTipoServicioComponent>,
-    private _azureService: AzureService
+    private _azureService: AzureService,
+    private tiposServiciosService: TiposServiciosService
   ) {
     this.form = this.fb.group({
-      id: new FormControl(),
-      tipo_servicio: new FormControl(),
+      id: new FormControl(0),
+      nombre: new FormControl("", Validators.required),
       icono: new FormControl(),
     });
   }
 
   ngOnInit(): void {}
 
-  submit(): void {}
+  submit(): void {
+    this.tiposServiciosService
+      .postServiceType(this.form.value)
+      .subscribe(() => {
+        this.matdialigRef.close();
+      });
+  }
 
   async onChageFile(event: any) {
     if (event) {
@@ -40,7 +49,7 @@ export class DialogAddTipoServicioComponent implements OnInit {
       this.filesLoading = true;
       try {
         const response = await this._azureService.uploadFile(blob, file.name);
-        this.form.get("icono").setValue([response.uuidFileName]);
+        this.form.get("icono").setValue(response.uuidFileName);
       } catch (e) {}
       this.filesLoading = false;
     } else {

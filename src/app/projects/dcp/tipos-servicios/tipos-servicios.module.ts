@@ -22,11 +22,13 @@ import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatSlideToggleModule } from "@angular/material/slide-toggle";
 import { MatSelectModule } from "@angular/material/select";
 import { MatCheckboxModule } from "@angular/material/checkbox";
+import { MatDialogModule } from "@angular/material/dialog";
+import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
 
 //FUSE
 import { FuseConfirmationModule } from "@fuse/services/confirmation";
 import { FuseAlertModule } from "@fuse/components/alert";
-import { DialogAddTipoServicioComponent } from './dialog-add-tipo-servicio/dialog-add-tipo-servicio.component';
+import { DialogAddTipoServicioComponent } from "./dialog-add-tipo-servicio/dialog-add-tipo-servicio.component";
 
 @NgModule({
   declarations: [TiposServiciosComponent, DialogAddTipoServicioComponent],
@@ -50,6 +52,8 @@ import { DialogAddTipoServicioComponent } from './dialog-add-tipo-servicio/dialo
     MatCheckboxModule,
     FuseConfirmationModule,
     FuseAlertModule,
+    MatDialogModule,
+    MatProgressSpinnerModule,
     SharedModule,
   ],
 })
