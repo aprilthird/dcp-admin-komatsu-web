@@ -14,6 +14,12 @@
       (click)="postValidateSection()"
     >
       <span class="ml-2 mr-1">Si, validar sección</span>
+      <mat-progress-spinner
+        *ngIf="loading"
+        [diameter]="24"
+        [mode]="'indeterminate'"
+        class="flex justify-end"
+      ></mat-progress-spinner>
     </button>
 
     <button

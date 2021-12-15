@@ -1,6 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { MatDialog } from "@angular/material/dialog";
 import { ActivatedRoute, Router } from "@angular/router";
+import { FuseConfirmationService } from "@fuse/services/confirmation";
 import { AzureService } from "app/core/azure/azure.service";
 import { Pagination } from "app/core/types/list.types";
 import { Observable, Subject } from "rxjs";
@@ -25,7 +26,8 @@ export class TiposServiciosComponent implements OnInit {
     private _routeActived: ActivatedRoute,
     public dialog: MatDialog,
     private tiposServiciosService: TiposServiciosService,
-    private _azureService: AzureService
+    private _azureService: AzureService,
+    private _fuseConfirmationService: FuseConfirmationService
   ) {
     this.getServiceType();
   }
@@ -80,7 +82,7 @@ export class TiposServiciosComponent implements OnInit {
   }
 
   clickNewTipoServicio() {
-    const dialogRef = this.dialog
+    this.dialog
       .open(DialogAddTipoServicioComponent, {
         autoFocus: false,
         width: "376px",
@@ -100,5 +102,50 @@ export class TiposServiciosComponent implements OnInit {
 
   setImage(src: string): string {
     return this._azureService.getResourceUrlComplete(src);
+  }
+
+  editServiceType(tipos_servicio): void {
+    this.dialog
+      .open(DialogAddTipoServicioComponent, {
+        autoFocus: false,
+        width: "376px",
+        data: tipos_servicio,
+      })
+      .afterClosed()
+      .subscribe(() => {
+        this.loadData();
+      });
+  }
+
+  deleteServiceType(tipos_servicio): void {
+    const dialogRef = this._fuseConfirmationService.open({
+      title: "Eliminar tipo de servicio",
+      message: "¿Estás seguro que desea eliminar dicho de servicio?",
+
+      actions: {
+        confirm: {
+          label: "Sí, eliminar",
+          color: "primary",
+        },
+        cancel: {
+          label: "No",
+        },
+      },
+      dismissible: true,
+    });
+
+    dialogRef.beforeClosed().subscribe((result) => {
+      const data = {
+        id: tipos_servicio.id,
+        activo: false,
+        icono: tipos_servicio?.icono,
+      };
+
+      if (result === "confirmed") {
+        this.tiposServiciosService.postServiceType(data).subscribe((resp) => {
+          console.log("resp tipo servicio ", resp);
+        });
+      }
+    });
   }
 }

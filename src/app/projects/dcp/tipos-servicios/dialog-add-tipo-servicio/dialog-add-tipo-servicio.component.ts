@@ -16,6 +16,7 @@ export class DialogAddTipoServicioComponent implements OnInit {
   filesLoading: boolean;
   isLoading: boolean;
   services_type: any;
+  isEdit: boolean;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -24,21 +25,28 @@ export class DialogAddTipoServicioComponent implements OnInit {
     private _azureService: AzureService,
     private tiposServiciosService: TiposServiciosService
   ) {
+    if (this.data?.id) this.isEdit = true;
     this.form = this.fb.group({
-      id: new FormControl(0),
-      nombre: new FormControl("", Validators.required),
-      icono: new FormControl(),
+      id: new FormControl(this.data?.id ? this.data?.id : 0),
+      nombre: new FormControl(
+        this.data?.nombre ? this.data?.nombre : "",
+        Validators.required
+      ),
+      icono: new FormControl(this.data?.icono ? this.data?.nombre : ""),
     });
   }
 
   ngOnInit(): void {}
 
   submit(): void {
-    this.tiposServiciosService
-      .postServiceType(this.form.value)
-      .subscribe(() => {
+    this.isLoading = true;
+    this.tiposServiciosService.postServiceType(this.form.value).subscribe(
+      () => {
+        this.isLoading = false;
         this.matdialigRef.close();
-      });
+      },
+      () => (this.isLoading = false)
+    );
   }
 
   async onChageFile(event: any) {

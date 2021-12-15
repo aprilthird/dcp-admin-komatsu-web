@@ -15,6 +15,7 @@ import { MatCheckbox } from "@angular/material/checkbox";
 import { AzureService } from "app/core/azure/azure.service";
 import { FuseConfirmationService } from "@fuse/services/confirmation";
 import { FormatosService } from "../formatos.service";
+import { UiDialogsComponent } from "app/shared/ui/ui-dialogs/ui-dialogs.component";
 
 @Component({
   selector: "app-validation-formatos",
@@ -107,12 +108,21 @@ export class ValidationFormatosComponent implements OnInit {
     ];
 
     this.sections.forEach((section, index) => {
+      console.log("section ", section);
       this.menuData[0].children.push({
         id: section.id,
         title: section.nombre,
         type: "basic",
         link: `/admin/informes/validation/${this.currentIdAsignation}/${section.id}`,
         children: [],
+        badge: {
+          title: !section.grupos[0].parametros[0].seccionValida
+            ? "warning_amber"
+            : "heroicons_outline:check-circle",
+          classes: !section.grupos[0].parametros[0].seccionValida
+            ? "text-gray-600"
+            : "text-green-600",
+        },
       });
     });
 
@@ -133,9 +143,30 @@ export class ValidationFormatosComponent implements OnInit {
       idAsignacionDetalle: idAsignacionDetalle,
       idSeccion: idSeccion,
     };
-    this.matDialog.open(DialogValidateFormatComponent, {
+    const dialogRef = this.matDialog.open(DialogValidateFormatComponent, {
       width: "500px",
       data: data,
+    });
+
+    dialogRef.componentInstance.success.subscribe((resp) => {
+      if (resp.code === 200 && resp.error === 0) {
+        this.currentSectionData.grupos[0].parametros[0].seccionValida = true;
+        this.validateSection();
+        this.setCollapsableNav();
+      } else {
+        this.matDialog
+          .open(UiDialogsComponent, {
+            width: "500px",
+            data: {
+              title: "Error",
+              message: resp.message,
+            },
+          })
+          .afterClosed()
+          .subscribe(() => this.setCollapsableNav());
+      }
+
+      dialogRef.close(close);
     });
   }
 
@@ -163,9 +194,10 @@ export class ValidationFormatosComponent implements OnInit {
         idFormato: this.sections[0].grupos[0].parametros[0].idFormato,
       };
 
-      console.log(result);
       if (result === "confirmed") {
-        this.formatosService.validateFormat(data).subscribe(() => {});
+        this.formatosService.validateFormat(data).subscribe(() => {
+          this.sections[0].grupos[0].parametros[0].formatoValido = true;
+        });
       }
     });
   }
@@ -409,10 +441,13 @@ export class ValidationFormatosComponent implements OnInit {
   }
 
   validateFormat(): boolean {
-    if (this.currentSectionData.grupos[0].parametros.length > 0) {
+    return this.currentSectionData.grupos[0].parametros.some(
+      (parametro) => parametro.formatoValido
+    );
+    /*if (this.currentSectionData.grupos[0].parametros.length > 0) {
       return this.currentSectionData.grupos[0].parametros[0].formatoValido;
     }
-    return false;
+    return false;*/
   }
 
   cancelEdit(j): void {

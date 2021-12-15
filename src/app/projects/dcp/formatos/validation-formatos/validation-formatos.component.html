@@ -147,12 +147,14 @@
                   *ngIf="validateSection()"
                   class="text-green-600 ml-2"
                   svgIcon="heroicons_outline:check-circle"
+                  [matTooltip]="'Sección validada'"
                 ></mat-icon>
 
                 <mat-icon
                   *ngIf="!validateSection()"
                   class="text-yellow-600 ml-2"
                   svgIcon="warning_amber"
+                  [matTooltip]="'Sección no está validada aún'"
                 ></mat-icon>
               </div>
             </div>
@@ -267,12 +269,12 @@
                               <span class="ml-2 mr-1">Cancelar</span>
                             </button>
 
-                            <mat-checkbox
+                            <!--<mat-checkbox
                               (click)="observateGroup(j, $event)"
                               [color]="'primary'"
                             >
                               <span class="ml-2 mr-1">Observar</span>
-                            </mat-checkbox>
+                            </mat-checkbox>-->
                           </div>
                         </div>
 

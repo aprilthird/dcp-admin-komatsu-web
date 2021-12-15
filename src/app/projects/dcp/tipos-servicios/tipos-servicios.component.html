@@ -100,55 +100,71 @@
                   trackBy: trackByFn
                 "
               >
-                <div
-                  class="
-                    inventory-grid
-                    grid
-                    items-center
-                    gap-4
-                    py-3
-                    px-6
-                    md:px-8
-                    border-b
-                    justify-between
-                  "
-                >
-                  <!-- ID -->
-                  <div class="truncate">
-                    {{ tipos_servicio?.id }}
-                  </div>
+                <ng-container *ngIf="tipos_servicio.activo">
+                  <div
+                    class="
+                      inventory-grid
+                      grid
+                      items-center
+                      gap-4
+                      py-3
+                      px-6
+                      md:px-8
+                      border-b
+                      justify-between
+                    "
+                  >
+                    <!-- ID -->
+                    <div class="truncate">
+                      {{ tipos_servicio?.id }}
+                    </div>
 
-                  <!-- Cliente -->
-                  <div class="truncate">
-                    {{ tipos_servicio?.nombre }}
-                  </div>
-                  <!-- Nombres -->
-                  <div class="truncate">
-                    {{ setImage(tipos_servicio?.icono) }}
-                  </div>
-                  <!-- ID -->
-                  <div class="truncate">
-                    {{ tipos_servicio?.fechaReg | date: "dd/MM/yy h:mma" }}
-                  </div>
-                  <!-- Actividad -->
-                  <div class="truncate">
-                    {{ tipos_servicio?.fechaMod | date: "dd/MM/yy h:mma" }}
-                  </div>
+                    <!-- Cliente -->
+                    <div class="truncate">
+                      {{ tipos_servicio?.nombre }}
+                    </div>
+                    <!-- Nombres -->
+                    <div class="truncate">
+                      {{ setImage(tipos_servicio?.icono) }}
+                    </div>
+                    <!-- ID -->
+                    <div class="truncate">
+                      {{ tipos_servicio?.fechaReg | date: "dd/MM/yy h:mma" }}
+                    </div>
+                    <!-- Actividad -->
+                    <div class="truncate">
+                      {{ tipos_servicio?.fechaMod | date: "dd/MM/yy h:mma" }}
+                    </div>
 
-                  <!-- Acciones -->
-                  <div>
-                    <a
-                      class="min-w-7 w-7 min-h-7 h-7 mr-1"
-                      mat-icon-button
-                      matTooltip="Editar"
-                    >
-                      <mat-icon
-                        class="icon-size-5 text-primary-500"
-                        [svgIcon]="'heroicons_outline:dots-vertical'"
-                      ></mat-icon>
-                    </a>
+                    <!-- Acciones -->
+                    <div>
+                      <button
+                        mat-icon-button
+                        [matMenuTriggerFor]="menu"
+                        aria-label="Toggle menu"
+                      >
+                        <mat-icon
+                          svgIcon="heroicons_outline:dots-vertical"
+                        ></mat-icon>
+                      </button>
+
+                      <mat-menu #menu="matMenu" xPosition="before">
+                        <button
+                          mat-menu-item
+                          (click)="editServiceType(tipos_servicio)"
+                        >
+                          Editar
+                        </button>
+                        <button
+                          mat-menu-item
+                          (click)="deleteServiceType(tipos_servicio)"
+                        >
+                          Eliminar
+                        </button>
+                      </mat-menu>
+                    </div>
                   </div>
-                </div>
+                </ng-container>
               </ng-container>
             </ng-container>
           </div>

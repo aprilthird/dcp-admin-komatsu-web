@@ -55,6 +55,25 @@ export class DialogAddDatoComponent implements OnInit {
   readonly separatorKeysCodes = [ENTER, COMMA] as const;
   options: any[] = [];
 
+  regexValidation = [
+    {
+      id: 1,
+      nombre: "Email",
+    },
+    {
+      id: 2,
+      nombre: "Nombre",
+    },
+    {
+      id: 3,
+      nombre: "Dirección",
+    },
+    {
+      id: 4,
+      nombre: "Teléfono",
+    },
+  ];
+
   constructor(
     private fb: FormBuilder,
     public dialogRef: MatDialogRef<DialogAddDatoComponent>,

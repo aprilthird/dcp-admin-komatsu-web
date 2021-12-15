@@ -47,6 +47,8 @@ import { MatMenuModule } from "@angular/material/menu";
 import { FotografiaComponent } from "./fotografia/fotografia.component";
 import { ImagePreviewComponent } from "./fotografia/image-preview/image-preview.component";
 
+//FUSE
+
 //CROPER
 import { ImageCropperModule } from "ngx-image-cropper";
 

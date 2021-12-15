@@ -16,7 +16,9 @@
       <mat-label>Posición</mat-label>
       <mat-select formControlName="pos">
         <ng-container *ngFor="let posicion of posiciones">
-          <mat-option [value]="posicion.id"> {{ posicion.label }} </mat-option>
+          <mat-option [value]="posicion.id">
+            {{ posicion.id | groupPosition: posicion.id }}
+          </mat-option>
         </ng-container>
       </mat-select>
     </mat-form-field>
