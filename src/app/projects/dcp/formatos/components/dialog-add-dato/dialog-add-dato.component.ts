@@ -57,20 +57,12 @@ export class DialogAddDatoComponent implements OnInit {
 
   regexValidation = [
     {
-      id: 1,
-      nombre: "Email",
-    },
-    {
       id: 2,
-      nombre: "Nombre",
+      nombre: "Validar correo",
     },
     {
       id: 3,
-      nombre: "Dirección",
-    },
-    {
-      id: 4,
-      nombre: "Teléfono",
+      nombre: "Validar DNI",
     },
   ];
 

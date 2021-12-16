@@ -1,23 +1,25 @@
 <mat-expansion-panel hideToggle class="mb-5" *ngIf="data.activo">
   <mat-expansion-panel-header>
-    <mat-panel-title class="flex justify-between">
+    <mat-panel-title class="flex items-center justify-between">
       <div>
         Grupo: {{ data.nombre }} - &nbsp;
         <span *ngIf="data?.pos">
           {{ data.pos === "h" ? "Horizontal" : "Vertical" }}
         </span>
       </div>
+
       <button
-        class="min-w-7 w-7 min-h-7 h-7 mr-1"
         mat-icon-button
-        matTooltip="Eliminar"
-        (click)="deleteGroup()"
+        [matMenuTriggerFor]="menu"
+        aria-label="Toggle menu"
       >
-        <mat-icon
-          class="icon-size-5 text-primary-500"
-          [svgIcon]="'heroicons_outline:trash'"
-        ></mat-icon>
+        <mat-icon svgIcon="heroicons_outline:dots-vertical"></mat-icon>
       </button>
+
+      <mat-menu #menu="matMenu" xPosition="before">
+        <button mat-menu-item>Editar</button>
+        <button (click)="deleteGroup()" mat-menu-item>Eliminar</button>
+      </mat-menu>
     </mat-panel-title>
   </mat-expansion-panel-header>
   <div class="flex flex-col p-0 overflow-x-auto lg:overflow-hidden">

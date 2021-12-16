@@ -52,6 +52,7 @@ export class ValidationFormatosComponent implements OnInit {
   filesLoading: {
     [key: string]: boolean;
   } = {};
+  data: any;
 
   constructor(
     private matDialog: MatDialog,
@@ -86,8 +87,8 @@ export class ValidationFormatosComponent implements OnInit {
     this.asignationService
       .getAbrirAsignacion(this.currentIdAsignation)
       .subscribe(async (resp) => {
-        console.log("asignation ", resp);
         this.sections = await resp.body.secciones;
+
         if (this.currentSeccionId) {
           this.currentSectionData = await [...this.sections].find(
             (section: any) => Number(this.currentSeccionId) === section.id
@@ -108,7 +109,6 @@ export class ValidationFormatosComponent implements OnInit {
     ];
 
     this.sections.forEach((section, index) => {
-      console.log("section ", section);
       this.menuData[0].children.push({
         id: section.id,
         title: section.nombre,
@@ -116,10 +116,14 @@ export class ValidationFormatosComponent implements OnInit {
         link: `/admin/informes/validation/${this.currentIdAsignation}/${section.id}`,
         children: [],
         badge: {
-          title: !section.grupos[0].parametros[0].seccionValida
+          title: !section.grupos[0].parametros.some(
+            (parametro) => parametro.seccionValida
+          )
             ? "warning_amber"
             : "heroicons_outline:check-circle",
-          classes: !section.grupos[0].parametros[0].seccionValida
+          classes: !section.grupos[0].parametros.some(
+            (parametro) => parametro.seccionValida
+          )
             ? "text-gray-600"
             : "text-green-600",
         },
@@ -434,20 +438,20 @@ export class ValidationFormatosComponent implements OnInit {
   }
 
   validateSection(): boolean {
-    if (this.currentSectionData.grupos[0].parametros.length > 0) {
-      return this.currentSectionData.grupos[0].parametros[0].seccionValida;
-    }
-    return false;
+    return this.currentSectionData.grupos[0].parametros.some(
+      (parametro) => parametro.seccionValida
+    );
   }
 
-  validateFormat(): boolean {
-    return this.currentSectionData.grupos[0].parametros.some(
-      (parametro) => parametro.formatoValido
-    );
-    /*if (this.currentSectionData.grupos[0].parametros.length > 0) {
-      return this.currentSectionData.grupos[0].parametros[0].formatoValido;
+  validateFormat() {
+    for (let i = 0; i < this.sections.length; i++) {
+      for (let j = 0; j < this.sections[i].grupos[0].parametros.length; j++) {
+        if (this.sections[i].grupos[0].parametros[j].formatoValido) {
+          return true;
+        }
+      }
     }
-    return false;*/
+    return false;
   }
 
   cancelEdit(j): void {

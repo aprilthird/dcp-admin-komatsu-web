@@ -34,7 +34,12 @@
                         'grid flex-row': grupo.pos === 'h'
                       }"
                     >-->
-            <div class="grid flex-row">
+            <div
+              class="grid flex-row gap-5"
+              [ngClass]="{
+                'justify-center': grupo.pos === 'v'
+              }"
+            >
               <ng-container
                 *ngFor="let parametro of grupo.parametros; let k = index"
               >
@@ -109,6 +114,7 @@
                         parametro.label
                       }}</mat-label>
                       <textarea
+                        class="resize-none"
                         matInput
                         formControlName="{{ getParametroControl({i, j, k})}}"
                         placeholder="{{ parametro.placeholder }}"
@@ -237,7 +243,7 @@
                     <!-- LABEL -->
                     <div *ngSwitchCase="8" class="w-full">
                       <p class="text-gray-900 font-medium">
-                        {{ parametro.label | uppercase }}
+                        {{ parametro.label }}
                       </p>
                     </div>
                     <!-- CHECKBOX -->

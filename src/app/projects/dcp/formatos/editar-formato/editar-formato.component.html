@@ -23,7 +23,7 @@
 
       <div class="flex flex-col section p-3 pt-1" id="items">
         <a
-          class="flex items-center justify-between section__menu h-10 mb-0.5"
+          class="flex items-center justify-between section__menu mb-0.5"
           *ngFor="let menu of menuData; let i = index"
           routerLinkActive="active"
           routerLink="{{ menu.link }}"
@@ -58,6 +58,7 @@
           Agregar Inspección
         </button>
       </div>
+      <mat-divider></mat-divider>
     </mat-drawer>
     <!-- Drawer content -->
     <mat-drawer-content class="flex flex-col" fuseScrollReset>
@@ -97,6 +98,7 @@
                         leading-7
                         sm:leading-10
                         truncate
+                        max-w-3xl
                       "
                     >
                       {{ currentSeccion }}
@@ -181,8 +183,7 @@
               "
               *ngIf="!currentSeccion && menuData.length > 0"
             >
-              Debe seleccionar una sección en el menú de navegación en la
-              izquierda
+              Debe seleccionar una inspección
             </h3>
             <ng-container *ngIf="grupos.length > 0 && validSection">
               <app-grupos

@@ -32,7 +32,7 @@
       font-weight: 500;
       opacity: 0.8;
       .mat-icon {
-        display: none !important;
+        //display: none !important;
         width: 18px;
         min-width: 18px;
         height: 18px;
@@ -40,7 +40,7 @@
       }
       &:hover {
         .mat-icon {
-          display: block !important;
+          //display: block !important;
         }
       }
 

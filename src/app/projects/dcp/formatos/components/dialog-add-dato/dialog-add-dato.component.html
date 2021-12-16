@@ -26,15 +26,14 @@
 
         <mat-form-field class="w-full md:w-1/3 md:pl-2">
           <mat-label class="font-bold flex items-center justify-start w-full"
-            ><span>Regex(validación)</span>
+            ><span>Expresión regular(validación)</span>
             <mat-icon
               matTooltip="Patrón de caracteres permitidos en el campo"
               svgIcon="heroicons_outline:information-circle"
-              class="text-black"
-            ></mat-icon>
-          </mat-label>
+              class="text-black pointer-events-auto"
+            ></mat-icon
+          ></mat-label>
 
-          <!--<input matInput formControlName="regex" maxlength="100" />-->
           <mat-select formControlName="regex">
             <mat-option
               *ngFor="let reg of regexValidation"
