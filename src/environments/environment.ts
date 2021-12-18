@@ -10,7 +10,7 @@ export const environment = {
   azureAccountName: "appinformes",
   azureContaineName: "dcp",
   azureSas:
-    "sp=racwdl&st=2021-10-05T16:07:46Z&se=2022-10-06T00:07:46Z&sv=2020-08-04&sr=c&sig=9MTq3NunBV%2B4lsFQ3S2KcCZkojTMh%2Frx5jrJRdouwvE%3D",
+    "sv=2020-08-04&ss=bfqt&srt=sco&sp=rwdlacuptfx&se=2021-12-31T07:16:26Z&st=2021-09-08T23:16:26Z&spr=https&sig=r%2FrSo5JcaI1s1jNk106fmzYZ6XckWARBRIrodzJyNwo%3D",
   config: {
     layout: "classy",
     scheme: "light",

@@ -33,7 +33,6 @@
     <input hidden #fileInput type="file" (change)="fileChangeEvent($event)" />
     <canvas
       #canvas
-      style="border: 1px solid black"
       width="300"
       height="200"
       [ngStyle]="{ display: !cropped ? 'none' : 'block' }"
@@ -92,6 +91,7 @@
       Cancelar
     </button>
     <button
+      *ngIf="!cropped"
       [disabled]="croppedImage.length === 0"
       mat-raised-button
       [color]="'primary'"
@@ -99,6 +99,22 @@
       (click)="croppedFinish()"
     >
       <span> Siguiente </span>
+    </button>
+
+    <button
+      *ngIf="cropped"
+      mat-raised-button
+      [color]="'primary'"
+      class="w-24"
+      (click)="sendImageToAzure()"
+      [disabled]="sendingImage || b64Image == ''"
+    >
+      <span *ngIf="!sendingImage"> Enviar </span>
+      <mat-progress-spinner
+        *ngIf="sendingImage"
+        [diameter]="24"
+        [mode]="'indeterminate'"
+      ></mat-progress-spinner>
     </button>
   </div>
 </div>

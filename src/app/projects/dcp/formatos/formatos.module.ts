@@ -99,6 +99,7 @@ import { ImageCropperModule } from "ngx-image-cropper";
     MatChipsModule,
     MatCheckboxModule,
     MatMenuModule,
+
     ImageCropperModule,
 
     SharedModule,

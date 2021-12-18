@@ -140,7 +140,7 @@
                   </div>
 
                   <div class="truncate">
-                    {{ actividad?.fechaMod | date: "dd/MM/yy h:mma" }}
+                    {{ actividad?.usuarioMod }}
                   </div>
 
                   <div class="truncate">
@@ -183,12 +183,19 @@
                     <mat-menu #menu="matMenu" xPosition="before">
                       <button
                         mat-menu-item
-                        (click)="redirectToValidation(actividad.id)"
+                        (click)="redirectToValidation(actividad)"
                       >
                         Ver detalle de informe
                       </button>
                       <button mat-menu-item>Generar PDF</button>
-                      <button mat-menu-item>Ver galería</button>
+                      <button
+                        mat-menu-item
+                        routerLink="/admin/informes/validation/fotografias/{{
+                          actividad.idActividad
+                        }}"
+                      >
+                        Ver galería
+                      </button>
                     </mat-menu>
                   </div>
                 </div>

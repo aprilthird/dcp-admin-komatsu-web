@@ -81,11 +81,11 @@
               ></mat-icon>
 
               <mat-menu #actionsMenu="matMenu">
-                <button mat-menu-item (click)="today()">
+                <button mat-menu-item>
                   <mat-icon [svgIcon]="'heroicons_outline:calendar'"></mat-icon>
                   <span>Go to today</span>
                 </button>
-                <button [matMenuTriggerFor]="actionsViewsMenu" mat-menu-item>
+                <button mat-menu-item>
                   <mat-icon
                     [svgIcon]="'heroicons_outline:view-grid'"
                   ></mat-icon>

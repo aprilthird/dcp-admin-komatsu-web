@@ -139,11 +139,12 @@ export class TiposServiciosComponent implements OnInit {
         id: tipos_servicio.id,
         activo: false,
         icono: tipos_servicio?.icono,
+        nombre: tipos_servicio?.nombre,
       };
 
       if (result === "confirmed") {
         this.tiposServiciosService.postServiceType(data).subscribe((resp) => {
-          console.log("resp tipo servicio ", resp);
+          this.loadData();
         });
       }
     });

@@ -16,6 +16,7 @@ import { AzureService } from "app/core/azure/azure.service";
 import { FuseConfirmationService } from "@fuse/services/confirmation";
 import { FormatosService } from "../formatos.service";
 import { UiDialogsComponent } from "app/shared/ui/ui-dialogs/ui-dialogs.component";
+import { ActivitiesService } from "../../actividades/activities.service";
 
 @Component({
   selector: "app-validation-formatos",
@@ -63,7 +64,8 @@ export class ValidationFormatosComponent implements OnInit {
     private _editarFormatoService: EditarFormatoService,
 
     private formatosService: FormatosService,
-    private _fuseConfirmationService: FuseConfirmationService
+    private _fuseConfirmationService: FuseConfirmationService,
+    private _activitiesService: ActivitiesService
   ) {
     this.getAsignationId();
 
@@ -134,7 +136,7 @@ export class ValidationFormatosComponent implements OnInit {
       id: "fotografia",
       title: "Fotografía",
       type: "basic",
-      link: `/admin/informes/validation/fotografias`,
+      link: `/admin/informes/validation/fotografias/${this._activitiesService._idActivityFormat.getValue()}`,
     });
   }
 

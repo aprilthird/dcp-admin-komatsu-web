@@ -54,6 +54,7 @@
       </div>
     </div>
   </div>
+  <mat-progress-bar [mode]="'indeterminate'" *ngIf="!loaded"></mat-progress-bar>
   <mat-drawer-container class="flex-auto h-full min-h-70">
     <!-- Drawer -->
 
@@ -77,42 +78,74 @@
 
         <!-- Main -->
 
-        <!--<div class="flex flex-wrap gap-5">
-          <div>
-            <div>
-              <div>
-                Jhernandez
-                <div>10-10-2020</div>
-              </div>
-            </div>
-            <img src="https://picsum.photos/200/300?random=1" />
-            <div>descripcion</div>
-          </div>
-          <div>
-            <div>
-              <div>
-                Jhernandez
-                <div>10-10-2020</div>
-              </div>
-            </div>
-            <img src="https://picsum.photos/200/300?random=2" />
-            <div>descripcion</div>
-          </div>
+        <div class="flex flex-wrap gap-5 p-10">
+          <ng-container *ngFor="let image of gallery; let i = index">
+            <div *ngIf="image.activo" class="bg-gray-100 rounded-sm max-w-sm">
+              <div class="flex justify-between items-center">
+                <div class="flex p-2 gap-2 overflow-hidden">
+                  <button
+                    mat-icon-button=""
+                    class="
+                      mat-focus-indicator mat-menu-trigger
+                      bg-gray-300
+                      text-black
+                      mat-icon-button mat-button-base
+                    "
+                  >
+                    <span class="mat-button-wrapper"
+                      ><span class="relative">
+                        {{ image?.nombre[0] | uppercase }}
+                      </span></span
+                    >
+                  </button>
+                  <div>
+                    <span
+                      [matTooltip]="image?.nombre"
+                      class="font-bold truncate"
+                      >{{ image?.nombre }}</span
+                    >
+                    <div>{{ image?.fechaReg | date: "dd/MM/yyyy" }}</div>
+                  </div>
+                </div>
+                <button
+                  class=""
+                  [matMenuTriggerFor]="actionsMenu"
+                  mat-icon-button
+                >
+                  <mat-icon
+                    [svgIcon]="'heroicons_outline:dots-vertical'"
+                  ></mat-icon>
 
-          <input type="file" (change)="fileChangeEvent($event)" />
-          <div>
-            <image-cropper
-              [imageChangedEvent]="imageChangedEvent"
-              [maintainAspectRatio]="true"
-              [aspectRatio]="4 / 3"
-              format="png"
-              (imageCropped)="imageCropped($event)"
-              (imageLoaded)="imageLoaded($event)"
-              (cropperReady)="cropperReady()"
-              (loadImageFailed)="loadImageFailed()"
-            ></image-cropper>
+                  <mat-menu #actionsMenu="matMenu">
+                    <button mat-menu-item (click)="preview()">
+                      <span>Editar</span>
+                    </button>
+                    <button mat-menu-item (click)="delete(image)">
+                      <span>Eliminar</span>
+                    </button>
+                  </mat-menu>
+                </button>
+              </div>
+              <img class="max-w-max" [src]="setImage(image.ruta)" />
+              <!--<img [src]="setImage(image?.ruta)" />-->
+              <!--<img src="https://picsum.photos/200/300?random=1" />-->
+              <div class="p-2">{{ image?.descripcion }}</div>
+            </div>
+          </ng-container>
+        </div>
 
-          </div>
+        <!--<input type="file" (change)="fileChangeEvent($event)" />-->
+        <!--<div>
+          <image-cropper
+            [imageChangedEvent]="imageChangedEvent"
+            [maintainAspectRatio]="true"
+            [aspectRatio]="4 / 3"
+            format="png"
+            (imageCropped)="imageCropped($event)"
+            (imageLoaded)="imageLoaded($event)"
+            (cropperReady)="cropperReady()"
+            (loadImageFailed)="loadImageFailed()"
+          ></image-cropper>
         </div>-->
       </div>
     </mat-drawer-content>

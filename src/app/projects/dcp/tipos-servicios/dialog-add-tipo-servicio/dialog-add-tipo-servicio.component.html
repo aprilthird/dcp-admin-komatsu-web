@@ -19,7 +19,7 @@
         <p class="text-gray-900 font-bold">Icono</p>
         <label class="file">
           <span>Documento</span>
-          <input type="file" (change)="onChageFile($event)" />
+          <input type="file" accept="image/*" (change)="onChageFile($event)" />
           <mat-progress-spinner
             *ngIf="filesLoading"
             [mode]="'indeterminate'"

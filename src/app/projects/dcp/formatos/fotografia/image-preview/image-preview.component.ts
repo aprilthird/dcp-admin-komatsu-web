@@ -2,15 +2,21 @@ import {
   AfterViewInit,
   Component,
   ElementRef,
+  Inject,
   OnInit,
   ViewChild,
 } from "@angular/core";
-import { MatDialog, MatDialogRef } from "@angular/material/dialog";
+import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
+import { AzureService } from "app/core/azure/azure.service";
+import { b64toBlob } from "app/shared/utils/b64ToBlob";
+import { dataURLtoFile } from "app/shared/utils/dataUrlTofile";
+import { fileToDataUri } from "app/shared/utils/fileToDataUri";
 import {
   ImageCroppedEvent,
   ImageTransform,
   LoadedImage,
 } from "ngx-image-cropper";
+import { FormatosService } from "../../formatos.service";
 
 @Component({
   selector: "app-image-preview",
@@ -35,8 +41,15 @@ export class ImagePreviewComponent implements OnInit, AfterViewInit {
   private context: CanvasRenderingContext2D;
   pruebaCroppedReady2: any;
   pruebaCroppedReady: any;
+  imageName = "";
+  image;
+  imageLoading;
+  b64Image: any = "";
+  sendingImage = false;
 
   fileChangeEvent(event: any): void {
+    const { target } = event;
+    this.imageName = target.files[0].name;
     this.imageChangedEvent = event;
   }
   async imageCropped(event: ImageCroppedEvent) {
@@ -60,7 +73,14 @@ export class ImagePreviewComponent implements OnInit, AfterViewInit {
   loadImageFailed() {
     // show message
   }
-  constructor(public matDialog: MatDialogRef<ImagePreviewComponent>) {}
+  constructor(
+    public matDialog: MatDialogRef<ImagePreviewComponent>,
+    private _azureService: AzureService,
+    private formatService: FormatosService,
+    @Inject(MAT_DIALOG_DATA) public data
+  ) {
+    this.matDialog.beforeClosed().subscribe(() => {});
+  }
 
   ngOnInit(): void {
     //this.drawOnImage();
@@ -94,14 +114,11 @@ export class ImagePreviewComponent implements OnInit, AfterViewInit {
 
     // if an image is present,
     // the image passed as parameter is drawn in the canvas
-    //console.log("param image ", image);
-    //console.log("cropped image ", this.croppedImage);
     if (image) {
       const imageWidth = image.width;
       const imageHeight = image.height;
 
       // displaying the uploaded image
-
       // enabling the brush after after the image
       // has been uploaded
 
@@ -112,74 +129,77 @@ export class ImagePreviewComponent implements OnInit, AfterViewInit {
       this.context.drawImage(image, 0, 0, imageWidth, imageHeight);
     }
 
-    /*const clearElement = document.getElementById("clear");
-    clearElement.onclick = () => {
-      this.context.clearRect(
-        0,
-        0,
-        this.fileInput.nativeElement.width,
-        this.fileInput.nativeElement.height
-      );
-    };*/
-
     let isDrawing;
 
-    this.canvas.nativeElement.onmousedown = (e) => {
+    this.canvas.nativeElement.onmousedown = (e: any) => {
       isDrawing = true;
       this.context.beginPath();
       this.context.lineWidth = 10;
       this.context.strokeStyle = "black";
       this.context.lineJoin = "round";
       this.context.lineCap = "round";
-      this.context.moveTo(e.clientX, e.clientY);
-      console.log(e);
+      this.context.moveTo(e.clientX - 220, e.clientY - 150);
+      this.b64Image = this.canvas.nativeElement.toDataURL();
     };
 
     this.canvas.nativeElement.onmousemove = (e) => {
+      //resizeEvent();
       if (isDrawing) {
-        this.context.lineTo(e.clientX, e.clientY);
+        this.context.lineTo(e.clientX - 220, e.clientY - 150);
         this.context.stroke();
       }
     };
 
     this.canvas.nativeElement.onmouseup = () => {
+      //resizeEvent();
       isDrawing = false;
       this.context.closePath();
     };
   }
 
   croppedFinish(): void {
-    if (!this.cropped) this.cropped = !this.cropped;
-    else {
+    if (!this.cropped) {
+      this.cropped = !this.cropped;
+    } else {
       this.matDialog.close();
     }
   }
-}
 
-function dataURLtoFile(dataurl, filename) {
-  var arr = dataurl.split(","),
-    mime = arr[0].match(/:(.*?);/)[1],
-    bstr = atob(arr[1]),
-    n = bstr.length,
-    u8arr = new Uint8Array(n);
+  async sendImageToAzure() {
+    this.sendingImage = true;
+    const contentType = "image/png";
+    const blob = b64toBlob(this.b64Image, contentType);
+    this.imageLoading = true;
 
-  while (n--) {
-    u8arr[n] = bstr.charCodeAt(n);
+    try {
+      const response = await this._azureService.uploadFile(blob, "png");
+      this.image = response.uuidFileName;
+      await this.sendImage();
+    } catch (e) {}
+    this.imageLoading = false;
   }
 
-  return new File([u8arr], filename, { type: mime });
-}
-
-function fileToDataUri(field) {
-  return new Promise((resolve) => {
-    const reader = new FileReader();
-
-    reader.addEventListener("load", () => {
-      resolve(reader.result);
-    });
-
-    reader.readAsDataURL(field);
-  });
+  private async sendImage() {
+    const payload = {
+      idActividadFormato: this.data.idFormatActivity,
+      activo: true,
+      nombre: this.imageName,
+      ruta: this.image,
+      mime: "string",
+      ext: "string",
+      visible: true,
+    };
+    this.formatService.postPhoto(payload).subscribe(
+      (resp) => {
+        this.sendingImage = false;
+        this.matDialog.close();
+      },
+      () => {
+        this.sendingImage = false;
+        this.matDialog.close();
+      }
+    );
+  }
 }
 
 /*function drawOnImage(image = null) {

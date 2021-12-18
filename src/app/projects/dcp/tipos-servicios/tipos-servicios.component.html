@@ -124,7 +124,10 @@
                       {{ tipos_servicio?.nombre }}
                     </div>
                     <!-- Nombres -->
-                    <div class="truncate">
+                    <div
+                      matTooltip="{{ tipos_servicio?.icono }}"
+                      class="truncate"
+                    >
                       {{ setImage(tipos_servicio?.icono) }}
                     </div>
                     <!-- ID -->

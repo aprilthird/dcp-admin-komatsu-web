@@ -54,6 +54,7 @@ const getInboxParams: GetInbox = {
 export class ActivitiesService {
   preloadedFormats: BehaviorSubject<any> = new BehaviorSubject(null);
   _activities: BehaviorSubject<any> = new BehaviorSubject(null);
+  _idActivityFormat: BehaviorSubject<number> = new BehaviorSubject(null);
 
   _pagination: BehaviorSubject<any> = new BehaviorSubject({
     length: 0,

@@ -22,7 +22,7 @@ const routes: Routes = [
         component: ValidationFormatosComponent,
       },
       {
-        path: "validation/fotografias",
+        path: "validation/fotografias/:idFormatoActividad",
         component: FotografiaComponent,
       },
       {

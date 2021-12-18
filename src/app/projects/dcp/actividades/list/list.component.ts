@@ -65,12 +65,15 @@ export class ListComponent implements OnInit {
 
   redirectToValidation(currentIdAsignation): void {
     this.asignationService
-      .getAbrirAsignacion(currentIdAsignation)
+      .getAbrirAsignacion(currentIdAsignation.id)
       .subscribe(async (resp) => {
         const sections = await resp.body.secciones;
+        this.activitiesService._idActivityFormat.next(
+          currentIdAsignation.idActividad
+        );
         if (sections.length > 0) {
           this._router.navigate([
-            `/admin/informes/validation/${currentIdAsignation}/${sections[0].id}`,
+            `/admin/informes/validation/${currentIdAsignation.id}/${sections[0].id}`,
           ]);
         }
       });

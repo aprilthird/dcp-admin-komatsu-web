@@ -18,4 +18,19 @@ export class FormatosService {
     const endpoint = environment.apiUrl + "/Mantenimiento/ValidarFormato";
     return this._httpClient.post<any>(endpoint, data);
   }
+
+  postPhoto(data): Observable<any> {
+    const endpoint = environment.apiUrl + "/Actividades/CrudGaleria";
+    return this._httpClient.post<any>(endpoint, data);
+  }
+
+  getGallery(idActividadFormato): Observable<any> {
+    const endpoint =
+      environment.apiUrl + "/Actividades/ObtenerGaleria/" + idActividadFormato;
+    return this._httpClient.get<any>(endpoint);
+  }
+
+  getSinglePicture(url: string): Observable<string> {
+    return this._httpClient.get<string>(url);
+  }
 }
