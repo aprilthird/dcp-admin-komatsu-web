@@ -10,17 +10,29 @@
       <!-- Nombre -->
       <mat-form-field class="w-full">
         <mat-label class="font-bold">CeCo</mat-label>
-        <input maxlength="20" matInput formControlName="codCeco" />
+        <mat-select formControlName="codCeco">
+          <mat-option *ngFor="let ceco of cecoData" [value]="ceco.codigo">{{
+            ceco.nombre
+          }}</mat-option>
+        </mat-select>
         <mat-error> {{ getErrorMessage("codCeco") }} </mat-error>
       </mat-form-field>
       <mat-form-field class="w-full">
         <mat-label class="font-bold">GP</mat-label>
-        <input maxlength="20" matInput formControlName="codGp" />
+        <mat-select formControlName="codGp">
+          <mat-option *ngFor="let gp of gpData" [value]="gp.codigo">{{
+            gp.nombre
+          }}</mat-option>
+        </mat-select>
         <mat-error> {{ getErrorMessage("codGp") }} </mat-error>
       </mat-form-field>
       <mat-form-field class="w-full">
         <mat-label class="font-bold">CE</mat-label>
-        <input maxlength="20" matInput formControlName="codCe" />
+        <mat-select formControlName="codCe">
+          <mat-option *ngFor="let ce of ceData" [value]="ce.codigo">{{
+            ce.nombre
+          }}</mat-option>
+        </mat-select>
         <mat-error> {{ getErrorMessage("codCe") }} </mat-error>
       </mat-form-field>
 

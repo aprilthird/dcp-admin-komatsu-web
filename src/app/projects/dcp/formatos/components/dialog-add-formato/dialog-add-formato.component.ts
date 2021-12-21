@@ -8,6 +8,9 @@ import {
 import { MatDialogRef } from "@angular/material/dialog";
 import { Router } from "@angular/router";
 import { TiposServiciosService } from "app/projects/dcp/tipos-servicios/tipos-servicios.service";
+import { forkJoin } from "rxjs";
+import { map } from "rxjs/operators";
+import { FormatosService } from "../../formatos.service";
 import { DialogAddFormatoService } from "./dialog-add-formato.service";
 
 @Component({
@@ -28,10 +31,9 @@ export class DialogAddFormatoComponent implements OnInit {
     activo: [true],
     estado: [1],
   });
-  clientsOpt: any;
-  modelosOpt: any;
-  actividadOpt: any;
-  tipo_mttoOpt: any;
+  cecoData: any;
+  gpData: any;
+  ceData: any;
   services_type: any;
 
   constructor(
@@ -39,11 +41,13 @@ export class DialogAddFormatoComponent implements OnInit {
     public dialogRef: MatDialogRef<DialogAddFormatoComponent>,
     private dialogAddFormatoService: DialogAddFormatoService,
     private router: Router,
-    private serviceTypes: TiposServiciosService
+    private serviceTypes: TiposServiciosService,
+    private formatServices: FormatosService
   ) {}
 
   ngOnInit(): void {
     this.getServiceTypes();
+    this.getCombos();
   }
 
   private getServiceTypes(): void {
@@ -85,5 +89,25 @@ export class DialogAddFormatoComponent implements OnInit {
     }
 
     return control.hasError("email") ? "Formato de correo incorrecto" : "";
+  }
+
+  getCombos(): void {
+    this.loading = true;
+    let ceco = this.formatServices
+      .obtenerGenereales(1)
+      .pipe(map((x: any) => x.body));
+    let gp = this.formatServices
+      .obtenerGenereales(2)
+      .pipe(map((x: any) => x.body));
+    let ce = this.formatServices
+      .obtenerGenereales(3)
+      .pipe(map((x: any) => x.body));
+
+    forkJoin([ceco, gp, ce]).subscribe((result: any) => {
+      this.cecoData = result[0];
+      this.gpData = result[1];
+      this.ceData = result[2];
+      this.loading = false;
+    });
   }
 }

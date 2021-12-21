@@ -33,4 +33,10 @@ export class FormatosService {
   getSinglePicture(url: string): Observable<string> {
     return this._httpClient.get<string>(url);
   }
+
+  obtenerGenereales(code: number): Observable<any> {
+    const endpoint =
+      environment.apiUrl + "/Administracion/ObtenerGenerales/" + code;
+    return this._httpClient.get(endpoint);
+  }
 }
