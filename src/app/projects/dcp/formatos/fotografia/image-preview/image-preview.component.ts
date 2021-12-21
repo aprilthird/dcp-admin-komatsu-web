@@ -6,8 +6,13 @@ import {
   OnInit,
   ViewChild,
 } from "@angular/core";
-import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
+import {
+  MatDialogRef,
+  MAT_DIALOG_DATA,
+  MatDialog,
+} from "@angular/material/dialog";
 import { AzureService } from "app/core/azure/azure.service";
+import { UiDialogsComponent } from "app/shared/ui/ui-dialogs/ui-dialogs.component";
 import { b64toBlob } from "app/shared/utils/b64ToBlob";
 import { dataURLtoFile } from "app/shared/utils/dataUrlTofile";
 import { fileToDataUri } from "app/shared/utils/fileToDataUri";
@@ -33,6 +38,8 @@ export class ImagePreviewComponent implements OnInit, AfterViewInit {
   containWithinAspectRatio = false;
   transform: ImageTransform = {};
   cropped: boolean;
+  step = 1;
+  remark = "sin remarcar";
 
   @ViewChild("canvas", { static: true }) canvas: ElementRef<HTMLCanvasElement>;
   @ViewChild("fileInput", { static: true })
@@ -51,6 +58,7 @@ export class ImagePreviewComponent implements OnInit, AfterViewInit {
     const { target } = event;
     this.imageName = target.files[0].name;
     this.imageChangedEvent = event;
+    this.step = 2;
   }
   async imageCropped(event: ImageCroppedEvent) {
     this.croppedImage = event.base64;
@@ -62,6 +70,7 @@ export class ImagePreviewComponent implements OnInit, AfterViewInit {
     const imgTmp: any = document.createElement("img");
     img.src = await fileToDataUri(file);
     imgTmp.src = await fileToDataUri(fileTmp);
+    this.readCanvasWithoutRemark(img);
     this.drawOnImage(img);
   }
   imageLoaded(image: LoadedImage) {
@@ -75,6 +84,7 @@ export class ImagePreviewComponent implements OnInit, AfterViewInit {
   }
   constructor(
     public matDialog: MatDialogRef<ImagePreviewComponent>,
+    private dialog: MatDialog,
     private _azureService: AzureService,
     private formatService: FormatosService,
     @Inject(MAT_DIALOG_DATA) public data
@@ -132,7 +142,9 @@ export class ImagePreviewComponent implements OnInit, AfterViewInit {
     let isDrawing;
 
     this.canvas.nativeElement.onmousedown = (e: any) => {
+      this.step = 3;
       isDrawing = true;
+      this.remark = "";
       this.context.beginPath();
       this.context.lineWidth = 10;
       this.context.strokeStyle = "black";
@@ -180,6 +192,8 @@ export class ImagePreviewComponent implements OnInit, AfterViewInit {
   }
 
   private async sendImage() {
+    let id = 0;
+    if (this.data?.idImage) id = this.data.idImage;
     const payload = {
       idActividadFormato: this.data.idFormatActivity,
       activo: true,
@@ -188,17 +202,42 @@ export class ImagePreviewComponent implements OnInit, AfterViewInit {
       mime: "string",
       ext: "string",
       visible: true,
+      id: id,
     };
     this.formatService.postPhoto(payload).subscribe(
       (resp) => {
         this.sendingImage = false;
         this.matDialog.close();
       },
-      () => {
+      (err) => {
+        this.dialog.open(UiDialogsComponent, {
+          data: {
+            title: "Error",
+            message: err?.error ? err.error : "Error de conexión",
+          },
+        });
         this.sendingImage = false;
         this.matDialog.close();
       }
     );
+  }
+
+  private readCanvasWithoutRemark(image = null): void {
+    if (image) {
+      const imageWidth = image.width;
+      const imageHeight = image.height;
+      this.canvas.nativeElement.width = imageWidth;
+      this.canvas.nativeElement.height = imageHeight;
+      this.context.drawImage(image, 0, 0, imageWidth, imageHeight);
+
+      this.remark = "";
+      this.context.beginPath();
+      this.context.lineWidth = 10;
+      this.context.strokeStyle = "black";
+      this.context.lineJoin = "round";
+      this.context.lineCap = "round";
+      this.b64Image = this.canvas.nativeElement.toDataURL();
+    }
   }
 }
 

@@ -5,6 +5,10 @@
       <mat-icon [svgIcon]="'heroicons_outline:x'"></mat-icon>
     </button>
   </div>
+  <div class="mb-2">
+    <span>Paso {{ step }} de 3</span>
+  </div>
+
   <div mat-dialog-content class="pb-6">
     <div
       *ngIf="imageChangedEvent.length === 0; else img"
@@ -105,11 +109,10 @@
       *ngIf="cropped"
       mat-raised-button
       [color]="'primary'"
-      class="w-24"
       (click)="sendImageToAzure()"
-      [disabled]="sendingImage || b64Image == ''"
+      [disabled]="sendingImage"
     >
-      <span *ngIf="!sendingImage"> Enviar </span>
+      <span *ngIf="!sendingImage"> Enviar {{ remark }}</span>
       <mat-progress-spinner
         *ngIf="sendingImage"
         [diameter]="24"

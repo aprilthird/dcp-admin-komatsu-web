@@ -198,9 +198,9 @@
                       <button mat-menu-item>Generar PDF</button>
                       <button
                         mat-menu-item
-                        routerLink="/admin/informes/validation/fotografias/{{
-                          actividad.idActividad
-                        }}"
+                        (click)="
+                          redirectToGallery(actividad.id, actividad.idActividad)
+                        "
                       >
                         Ver galería
                       </button>

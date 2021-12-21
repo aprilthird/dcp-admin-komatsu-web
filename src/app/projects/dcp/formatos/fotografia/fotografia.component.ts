@@ -12,6 +12,9 @@ import { ImagePreviewComponent } from "./image-preview/image-preview.component";
 //SERVICES
 import { FormatosService } from "../formatos.service";
 import { AzureService } from "app/core/azure/azure.service";
+import { ActivitiesService } from "../../actividades/activities.service";
+import { takeUntil } from "rxjs/operators";
+import { Observable, Subject } from "rxjs";
 
 @Component({
   selector: "app-fotografia",
@@ -24,6 +27,8 @@ export class FotografiaComponent implements OnInit {
   loaded = false;
   idFormatActivity: number;
   gallery: GalleryImage[] = [];
+  idFormat$: Observable<number>;
+  private _unsubscribeAll: Subject<any> = new Subject<any>();
 
   fileChangeEvent(event: any): void {
     this.imageChangedEvent = event;
@@ -45,19 +50,27 @@ export class FotografiaComponent implements OnInit {
     private activeRoute: ActivatedRoute,
     private _azureService: AzureService,
     private matDialog: MatDialog,
-    private _fuseConfirmationService: FuseConfirmationService
+    private _fuseConfirmationService: FuseConfirmationService,
+    private _activitiesService: ActivitiesService
   ) {
     this.getIdFormatActivity();
+    this.getCurrentFormat();
   }
 
   ngOnInit(): void {
     this, this.getGallery();
   }
 
-  preview(): void {
+  getCurrentFormat(): void {
+    this.idFormat$ = this._activitiesService._idFormat.pipe(
+      takeUntil(this._unsubscribeAll)
+    );
+  }
+
+  preview(idImage?: number): void {
     this.matDialog
       .open(ImagePreviewComponent, {
-        data: { idFormatActivity: this.idFormatActivity },
+        data: { idFormatActivity: this.idFormatActivity, idImage: idImage },
       })
       .afterClosed()
       .subscribe(() => this.getGallery());

@@ -29,7 +29,7 @@
             class="icon-size-5 text-secondary"
             [svgIcon]="'heroicons_solid:chevron-right'"
           ></mat-icon>
-          <span class="ml-1 text-secondary">ID 3333</span>
+          <span class="ml-1 text-secondary">{{ idFormat$ | async }}</span>
         </div>
       </div>
       <div class="mt-2 flex justify-between w-full">
@@ -117,7 +117,7 @@
                   ></mat-icon>
 
                   <mat-menu #actionsMenu="matMenu">
-                    <button mat-menu-item (click)="preview()">
+                    <button mat-menu-item (click)="preview(image?.id)">
                       <span>Editar</span>
                     </button>
                     <button mat-menu-item (click)="delete(image)">

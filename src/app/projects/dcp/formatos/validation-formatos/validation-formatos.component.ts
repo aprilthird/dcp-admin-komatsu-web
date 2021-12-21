@@ -81,6 +81,7 @@ export class ValidationFormatosComponent implements OnInit {
     this.routerActive.paramMap.subscribe((params: any) => {
       this.currentIdAsignation = params.params["id"];
       this.currentSeccionId = params.params["section"];
+      this._activitiesService._idFormat.next(Number(this.currentIdAsignation));
       this.getAsignation();
     });
   }
