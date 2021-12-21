@@ -3,6 +3,7 @@ import { RouterModule, Routes } from "@angular/router";
 import { MenuPermissionGuard } from "app/core/permission/guards/menu-permission.guard";
 import { FotografiaComponent } from "../formatos/fotografia/fotografia.component";
 import { ValidationFormatosComponent } from "../formatos/validation-formatos/validation-formatos.component";
+import { ActaConformidadComponent } from "./acta-conformidad/acta-conformidad.component";
 import { ActividadesComponent } from "./actividades.component";
 import { ListComponent } from "./list/list.component";
 
@@ -32,6 +33,10 @@ const routes: Routes = [
       {
         path: "validation/:id/:section",
         component: ValidationFormatosComponent,
+      },
+      {
+        path: "acta_conformidad/:idActividad",
+        component: ActaConformidadComponent,
       },
     ],
   },

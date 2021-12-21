@@ -7,6 +7,7 @@ import { ActividadesComponent } from "./actividades.component";
 import { FilterComponent } from "./filter/filter.component";
 import { ActividadesRoutingModule } from "./actividades-routing.mudule";
 import { ListComponent } from "./list/list.component";
+import { ActaConformidadComponent } from "./acta-conformidad/acta-conformidad.component";
 
 //MATERIAL
 
@@ -44,6 +45,7 @@ import { FuseConfirmationModule } from "@fuse/services/confirmation";
     FilterComponent,
     ListComponent,
     FilterDialogComponent,
+    ActaConformidadComponent,
   ],
   imports: [
     CommonModule,

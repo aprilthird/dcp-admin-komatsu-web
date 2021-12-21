@@ -1,0 +1,261 @@
+<div
+  class="
+    sm:inset-0
+    flex flex-col flex-auto
+    min-w-0
+    sm:overflow-hidden
+    bg-card
+    dark:bg-transparent
+  "
+>
+  <!-- Header -->
+  <div
+    class="
+      relative
+      flex flex-col
+      sm:flex-row
+      flex-0
+      sm:items-center sm:justify-between
+      py-8
+      px-6
+      md:px-8
+      border-b
+    "
+  >
+    <!-- Loader -->
+    <div class="absolute inset-x-0 bottom-0">
+      <mat-progress-bar
+        *ngIf="isLoading"
+        [mode]="'indeterminate'"
+      ></mat-progress-bar>
+    </div>
+    <!-- Title -->
+    <div class="flex flex-row justify-start items-center w-full">
+      <div class="flex flex-col activities-container">
+        <div class="text-4xl font-extrabold tracking-tight">
+          <span>Acta de conformidad</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main -->
+  <div class="flex flex-auto overflow-hidden">
+    <!-- Products list -->
+    <div
+      class="
+        flex flex-col flex-auto
+        overflow-hidden
+        sm:overflow-y-auto
+        bg-gray-100
+      "
+    >
+      <div
+        *ngIf="!isLoading"
+        class="
+          sm:col-span-2
+          md:col-span-4
+          flex flex-col flex-auto
+          p-6
+          bg-card
+          shadow
+          rounded-2xl
+          overflow-hidden
+          m-5
+        "
+      >
+        <form [formGroup]="form">
+          <div class="flex flex-row justify-start gap-10 mb-5">
+            <mat-form-field class="sm:w-1/6 w-full">
+              <mat-label class="font-bold">Cliente</mat-label>
+              <input maxlength="50" matInput formControlName="cliente" />
+            </mat-form-field>
+
+            <mat-form-field class="sm:w-1/6 w-full">
+              <mat-label class="font-bold">Orden se servicio</mat-label>
+              <input maxlength="50" matInput formControlName="os" />
+            </mat-form-field>
+          </div>
+          <hr />
+
+          <div class="mb-2">
+            <span class="font-semibold text-2xl">Datos referenciales</span>
+          </div>
+
+          <div class="flex flex-wrap justify-between gap-10 mb-5">
+            <mat-form-field class="sm:w-1/6 w-full">
+              <mat-label class="font-bold">Lugar de trabajo</mat-label>
+              <input maxlength="50" matInput formControlName="lugarTrabajo" />
+            </mat-form-field>
+
+            <mat-form-field class="sm:w-1/6 w-full">
+              <mat-label class="font-bold">Provincia</mat-label>
+              <input maxlength="50" matInput formControlName="provincia" />
+            </mat-form-field>
+
+            <mat-form-field class="sm:w-1/6 w-full">
+              <mat-label class="font-bold">Contacto</mat-label>
+              <input maxlength="50" matInput formControlName="contacto" />
+            </mat-form-field>
+
+            <mat-form-field class="sm:w-1/6 w-full">
+              <mat-label class="font-bold">Servicio</mat-label>
+              <input maxlength="50" matInput formControlName="servicio" />
+            </mat-form-field>
+
+            <mat-form-field class="sm:w-1/6 w-full">
+              <mat-label class="font-bold">Fecha</mat-label>
+              <input
+                matInput
+                [matDatepicker]="datepicker1"
+                formControlName="fecha"
+                readonly
+              />
+
+              <mat-datepicker-toggle
+                matSuffix
+                [for]="datepicker1"
+              ></mat-datepicker-toggle>
+              <mat-datepicker #datepicker1>
+                <mat-datepicker-actions>
+                  <button mat-button matDatepickerCancel>Cancel</button>
+                  <button mat-raised-button color="primary" matDatepickerApply>
+                    Aplicar
+                  </button>
+                </mat-datepicker-actions>
+              </mat-datepicker>
+            </mat-form-field>
+          </div>
+          <hr />
+
+          <div class="mb-2">
+            <span class="font-semibold text-2xl">Datos del equipo</span>
+          </div>
+
+          <div class="flex flex-wrap justify-start gap-10 mb-5">
+            <mat-form-field class="sm:w-1/6 w-full">
+              <mat-label class="font-bold">Equipo</mat-label>
+              <input matInput maxlength="50" formControlName="equipo" />
+            </mat-form-field>
+
+            <mat-form-field class="sm:w-1/6 w-full">
+              <mat-label class="font-bold">Marca</mat-label>
+              <input matInput maxlength="50" formControlName="marca" />
+            </mat-form-field>
+
+            <mat-form-field class="sm:w-1/6 w-full">
+              <mat-label class="font-bold">Serie</mat-label>
+              <input matInput maxlength="50" formControlName="serie" />
+            </mat-form-field>
+
+            <mat-form-field class="sm:w-1/6 w-full">
+              <mat-label class="font-bold">Modelo</mat-label>
+              <input matInput maxlength="50" formControlName="modelo" />
+            </mat-form-field>
+
+            <mat-form-field class="sm:w-1/6 w-full">
+              <mat-label class="font-bold">N° equipo</mat-label>
+              <input
+                matInput
+                type="number"
+                maxlength="50"
+                formControlName="nequipo"
+              />
+            </mat-form-field>
+          </div>
+
+          <div class="flex flex-wrap justify-start gap-10 mb-5">
+            <mat-form-field class="sm:w-1/6 w-full">
+              <mat-label class="font-bold">Horas/Km</mat-label>
+              <input matInput maxlength="50" formControlName="horasKm" />
+            </mat-form-field>
+
+            <mat-form-field class="sm:w-1/6 w-full">
+              <mat-label class="font-bold">Placas</mat-label>
+              <input matInput maxlength="50" formControlName="placas" />
+            </mat-form-field>
+
+            <mat-form-field class="sm:w-1/6 w-full">
+              <mat-label class="font-bold">Odómetro</mat-label>
+              <input matInput maxlength="50" formControlName="odometro" />
+            </mat-form-field>
+          </div>
+          <hr />
+
+          <div class="mb-2">
+            <span class="font-semibold text-2xl">Datos del motor</span>
+          </div>
+          <div class="flex flex-wrap justify-start gap-10 mb-5">
+            <mat-form-field class="sm:w-1/6 w-full">
+              <mat-label class="font-bold">Marca</mat-label>
+              <input matInput maxlength="50" formControlName="motorMarca" />
+            </mat-form-field>
+
+            <mat-form-field class="sm:w-1/6 w-full">
+              <mat-label class="font-bold">Modelo</mat-label>
+              <input matInput maxlength="50" formControlName="motorModelo" />
+            </mat-form-field>
+
+            <mat-form-field class="sm:w-1/6 w-full">
+              <mat-label class="font-bold">Serie</mat-label>
+              <input matInput maxlength="50" formControlName="motorSerie" />
+            </mat-form-field>
+
+            <mat-form-field class="sm:w-1/6 w-full">
+              <mat-label class="font-bold">Horas/Km</mat-label>
+              <input matInput maxlength="50" formControlName="motorHorasKm" />
+            </mat-form-field>
+
+            <mat-form-field class="sm:w-1/6 w-full">
+              <mat-label class="font-bold">CPL</mat-label>
+              <input matInput maxlength="50" formControlName="motorCpl" />
+            </mat-form-field>
+          </div>
+
+          <div class="flex flex-wrap justify-start gap-10 mb-5">
+            <mat-form-field class="sm:w-1/6 w-full">
+              <mat-label class="font-bold">Cod ECM</mat-label>
+              <input matInput maxlength="50" formControlName="motorCodEdm" />
+            </mat-form-field>
+
+            <mat-form-field class="sm:w-1/6 w-full">
+              <mat-label class="font-bold">Odómetro</mat-label>
+              <input matInput maxlength="50" formControlName="motorOdometro" />
+            </mat-form-field>
+
+            <mat-form-field class="sm:w-1/6 w-full">
+              <mat-label class="font-bold">Trabajos realizados</mat-label>
+              <input matInput maxlength="50" formControlName="trabajos" />
+            </mat-form-field>
+          </div>
+
+          <div class="flex flex-row justify-end">
+            <button
+              class="mr-8"
+              mat-raised-button
+              [color]="'secondary'"
+              routerLink="/admin/informes/list"
+            >
+              <span class="ml-2 mr-1">Atras</span>
+            </button>
+
+            <button
+              mat-raised-button
+              [color]="'primary'"
+              [disabled]="form.invalid"
+              (click)="postActa()"
+            >
+              <mat-progress-spinner
+                *ngIf="savingData"
+                [diameter]="24"
+                [mode]="'indeterminate'"
+              ></mat-progress-spinner>
+              <span class="ml-2 mr-1" *ngIf="isEdit">Guardar</span>
+              <span class="ml-2 mr-1" *ngIf="!isEdit">Crear</span>
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

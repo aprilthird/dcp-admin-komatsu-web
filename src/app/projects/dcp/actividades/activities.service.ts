@@ -174,4 +174,19 @@ export class ActivitiesService {
       environment.apiUrl + `/Actividades/ObtenerActividad/${id}`
     );
   }
+
+  postActaConformidad(data: ActaConformidad): Observable<Response[]> {
+    return this.http.post<Response[]>(
+      environment.apiUrl + "/Mantenimiento/AgregarActaConformidad",
+      data
+    );
+  }
+
+  getActaConformidad(idActividadFormato: number): Observable<any[]> {
+    return this.http.get<any[]>(
+      environment.apiUrl + `/Mantenimiento/ObtenerActa/${idActividadFormato}`
+    );
+  }
 }
+
+interface ActaConformidad {}
