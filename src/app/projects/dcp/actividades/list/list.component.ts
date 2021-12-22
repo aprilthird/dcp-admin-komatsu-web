@@ -98,7 +98,7 @@ export class ListComponent implements OnInit {
   redirectToGallery(idFormat: number, idActivityFormat: number): void {
     this.activitiesService._idFormat.next(idFormat);
     this._router.navigate([
-      `/admin/informes/validation/fotografias/${idActivityFormat}`,
+      `/admin/informes/validation/fotografias/${idFormat}`,
     ]);
   }
 

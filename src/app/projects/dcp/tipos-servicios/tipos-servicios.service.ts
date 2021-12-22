@@ -18,7 +18,7 @@ interface GetInbox {
     nombre: string;
     estado?: number | 1;
     tipo?: number;
-    fechaIni?: any | "";
+    fechaInicio?: any | "";
     fechaFin?: any | "";
     codigo: string | "";
   };
@@ -35,6 +35,8 @@ const getInboxParams: GetInbox = {
     dni: "",
     nombre: "",
     codigo: "",
+    fechaInicio: "2021-01-21T23:00:44.163Z",
+    fechaFin: "2021-12-31T23:00:44.163Z",
   },
 };
 
@@ -84,11 +86,14 @@ export class TiposServiciosService {
       };
     }
     return this._httpClient
-      .get<any[]>(environment.apiUrl + "/Administracion/ObtenerTipoServicios", {
-        page,
-        pageSize,
-        ...currentFilter,
-      })
+      .post<any[]>(
+        environment.apiUrl + "/Administracion/ObtenerTipoServicios",
+        {
+          page,
+          pageSize,
+          ...currentFilter,
+        }
+      )
       .pipe(
         tap((resp: any) => {
           this._pagination.next({
@@ -100,7 +105,8 @@ export class TiposServiciosService {
               resp.body.totalRecords / this._pagination.getValue().size
             ),
           });
-          this._serviceTypes.next(resp.body);
+          console.log("tipos de servicios ", resp.body.data);
+          this._serviceTypes.next(resp.body.data);
         })
       );
   }

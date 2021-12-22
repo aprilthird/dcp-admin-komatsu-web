@@ -137,12 +137,6 @@
                         mat-icon-button
                         matTooltip="Editar"
                         (click)="toggleDetails(usuario)"
-                        *ngIf="
-                          _permissonService.hasPermissonAccion(
-                            '/admin/ajustes/usuarios',
-                            'Editar Usuario'
-                          )
-                        "
                       >
                         <mat-icon
                           class="icon-size-5 text-primary-500"

@@ -33,6 +33,7 @@ export class DialogAddTipoServicioComponent implements OnInit {
         Validators.required
       ),
       icono: new FormControl(this.data?.icono ? this.data?.nombre : ""),
+      activo: this.data?.activo ? this.data?.activo : true,
     });
   }
 

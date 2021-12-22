@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnDestroy, OnInit } from "@angular/core";
 import { MatDialog } from "@angular/material/dialog";
 import { FuseConfirmationService } from "@fuse/services/confirmation";
 import { ActivatedRoute, RouterStateSnapshot } from "@angular/router";
@@ -21,13 +21,12 @@ import { Observable, Subject } from "rxjs";
   templateUrl: "./fotografia.component.html",
   styleUrls: ["./fotografia.component.scss"],
 })
-export class FotografiaComponent implements OnInit {
+export class FotografiaComponent implements OnInit, OnDestroy {
   imageChangedEvent: any = "";
   croppedImage: any = "";
   loaded = false;
   idFormatActivity: number;
   gallery: GalleryImage[] = [];
-  idFormat$: Observable<number>;
   private _unsubscribeAll: Subject<any> = new Subject<any>();
 
   fileChangeEvent(event: any): void {
@@ -54,23 +53,25 @@ export class FotografiaComponent implements OnInit {
     private _activitiesService: ActivitiesService
   ) {
     this.getIdFormatActivity();
-    this.getCurrentFormat();
   }
 
   ngOnInit(): void {
     this, this.getGallery();
   }
 
-  getCurrentFormat(): void {
-    this.idFormat$ = this._activitiesService._idFormat.pipe(
-      takeUntil(this._unsubscribeAll)
-    );
+  ngOnDestroy(): void {
+    this._unsubscribeAll.next();
+    this._unsubscribeAll.complete();
   }
 
-  preview(idImage?: number): void {
+  preview(idImage?: number, ruta?: string): void {
     this.matDialog
       .open(ImagePreviewComponent, {
-        data: { idFormatActivity: this.idFormatActivity, idImage: idImage },
+        data: {
+          idFormatActivity: this.idFormatActivity,
+          idImage: idImage,
+          ruta: ruta,
+        },
       })
       .afterClosed()
       .subscribe(() => this.getGallery());

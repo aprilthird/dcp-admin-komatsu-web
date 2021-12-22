@@ -21,6 +21,7 @@ import {
   ImageTransform,
   LoadedImage,
 } from "ngx-image-cropper";
+import { type } from "os";
 import { FormatosService } from "../../formatos.service";
 
 @Component({
@@ -42,7 +43,7 @@ export class ImagePreviewComponent implements OnInit, AfterViewInit {
   remark = "sin remarcar";
 
   @ViewChild("canvas", { static: true }) canvas: ElementRef<HTMLCanvasElement>;
-  @ViewChild("fileInput", { static: true })
+  @ViewChild("fileInput")
   fileInput: ElementRef<HTMLInputElement>;
 
   private context: CanvasRenderingContext2D;
@@ -87,9 +88,35 @@ export class ImagePreviewComponent implements OnInit, AfterViewInit {
     private dialog: MatDialog,
     private _azureService: AzureService,
     private formatService: FormatosService,
-    @Inject(MAT_DIALOG_DATA) public data
+    @Inject(MAT_DIALOG_DATA) public data: any
   ) {
     this.matDialog.beforeClosed().subscribe(() => {});
+    if (this.data?.idImage) {
+      /*this.image = this.setImage(this.data?.ruta);
+      this.setEditImage();
+      this.step = 2;*/
+    }
+  }
+
+  private setEditImage(): void {
+    const toDataURL = () =>
+      fetch(this.image)
+        .then((response) => response.blob())
+        .then(
+          (blob) =>
+            new Promise((resolve, reject) => {
+              const reader = new FileReader();
+              reader.onloadend = () => {
+                resolve(reader.result);
+              };
+              reader.onerror = reject;
+              reader.readAsDataURL(blob);
+            })
+        );
+
+    toDataURL().then((dataUrl) => {
+      this.imageChangedEvent = dataURLtoFile(dataUrl, "name");
+    });
   }
 
   ngOnInit(): void {
@@ -193,7 +220,10 @@ export class ImagePreviewComponent implements OnInit, AfterViewInit {
 
   private async sendImage() {
     let id = 0;
-    if (this.data?.idImage) id = this.data.idImage;
+    if (this.data?.idImage) {
+      id = this.data.idImage;
+      //this.image = this.setImage(this.data?.ruta);
+    }
     const payload = {
       idActividadFormato: this.data.idFormatActivity,
       activo: true,
@@ -238,6 +268,10 @@ export class ImagePreviewComponent implements OnInit, AfterViewInit {
       this.context.lineCap = "round";
       this.b64Image = this.canvas.nativeElement.toDataURL();
     }
+  }
+
+  setImage(src: string): string {
+    return this._azureService.getResourceUrlComplete(src);
   }
 }
 

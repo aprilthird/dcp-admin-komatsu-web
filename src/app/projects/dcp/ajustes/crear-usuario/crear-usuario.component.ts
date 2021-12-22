@@ -58,8 +58,8 @@ export class CrearUsuarioComponent implements OnInit {
     nombres: ["", Validators.required],
     apellidos: ["", Validators.required],
     correo: ["", [Validators.required, Validators.email]],
-    ad: [""],
     roles: [], // Roles será la lista general de roles
+    ad: [""],
     plataformas: new FormArray(
       [new FormControl(false), new FormControl(false)],
       minSelectedCheckboxes(1)
@@ -96,9 +96,11 @@ export class CrearUsuarioComponent implements OnInit {
       .pipe(takeUntil(this._unsubscribeAll))
       .subscribe((perfiles) => {
         this.perfiles = perfiles;
-        this.perfiles.forEach(() =>
-          this.rolesFormArray.push(new FormControl(false))
-        );
+        if (this.perfiles && this.perfiles.length > 0) {
+          this.perfiles.forEach(() =>
+            this.rolesFormArray.push(new FormControl(false))
+          );
+        }
       });
 
     if (this.activatedRoute.snapshot.params.id) {
@@ -107,13 +109,22 @@ export class CrearUsuarioComponent implements OnInit {
         .getUsuario(this.activatedRoute.snapshot.params.id)
         .pipe(takeUntil(this._unsubscribeAll))
         .subscribe((response) => {
-          const { usr, nombres, apellidos, correo, usuarioRoles, web, movil } =
-            response.body;
+          const {
+            usr,
+            nombres,
+            apellidos,
+            correo,
+            usuarioRoles,
+            web,
+            movil,
+            ad,
+          } = response.body;
           this.form.setValue({
             usr,
             nombres,
             apellidos,
             correo,
+            ad,
             psw: "",
             roles: usuarioRoles,
             usuarioRoles: this.generateRoles(usuarioRoles),
@@ -217,8 +228,10 @@ export class CrearUsuarioComponent implements OnInit {
           };
 
           setTimeout(() => {
-            this.alert = null;
-            this._router.navigateByUrl("/admin/ajustes/usuarios");
+            if (response.success) {
+              this.alert = null;
+              this._router.navigateByUrl("/admin/ajustes/usuarios");
+            }
           }, 2500);
         });
     }

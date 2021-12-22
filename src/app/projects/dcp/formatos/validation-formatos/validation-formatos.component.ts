@@ -137,7 +137,7 @@ export class ValidationFormatosComponent implements OnInit {
       id: "fotografia",
       title: "Fotografía",
       type: "basic",
-      link: `/admin/informes/validation/fotografias/${this._activitiesService._idActivityFormat.getValue()}`,
+      link: `/admin/informes/validation/fotografias/${this.currentIdAsignation}`,
     });
   }
 

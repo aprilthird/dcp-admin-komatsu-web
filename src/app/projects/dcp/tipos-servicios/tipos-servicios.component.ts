@@ -62,7 +62,7 @@ export class TiposServiciosComponent implements OnInit {
     this._router.onSameUrlNavigation = "reload";
 
     const params = this._routeActived.snapshot.params;
-    this._router.navigate(["/admin/informes/list"], {
+    this._router.navigate(["/admin/tipos_servicios"], {
       queryParams: {
         ...params,
         pageSize: pagination.pageSize,

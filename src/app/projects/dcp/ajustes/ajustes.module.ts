@@ -25,9 +25,10 @@ import { FuseConfirmationModule } from "@fuse/services/confirmation";
 import { MatListModule } from "@angular/material/list";
 import { SharedModule } from "app/shared/shared.module";
 import { CrearUsuarioComponent } from "./crear-usuario/crear-usuario.component";
+import { PerfilesComponent } from './perfiles/perfiles.component';
 
 @NgModule({
-  declarations: [AjustesComponent, UsuariosComponent, CrearUsuarioComponent],
+  declarations: [AjustesComponent, UsuariosComponent, CrearUsuarioComponent, PerfilesComponent],
   imports: [
     CommonModule,
     AjustesRoutingModule,

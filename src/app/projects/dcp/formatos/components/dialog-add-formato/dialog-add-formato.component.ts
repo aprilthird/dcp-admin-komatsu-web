@@ -52,7 +52,7 @@ export class DialogAddFormatoComponent implements OnInit {
 
   private getServiceTypes(): void {
     this.serviceTypes.getServiceType().subscribe((resp: any) => {
-      this.services_type = resp.body;
+      this.services_type = resp.body.data;
     });
   }
 

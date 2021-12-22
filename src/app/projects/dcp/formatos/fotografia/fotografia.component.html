@@ -29,7 +29,7 @@
             class="icon-size-5 text-secondary"
             [svgIcon]="'heroicons_solid:chevron-right'"
           ></mat-icon>
-          <span class="ml-1 text-secondary">{{ idFormat$ | async }}</span>
+          <span class="ml-1 text-secondary">{{ idFormatActivity }}</span>
         </div>
       </div>
       <div class="mt-2 flex justify-between w-full">
@@ -117,7 +117,10 @@
                   ></mat-icon>
 
                   <mat-menu #actionsMenu="matMenu">
-                    <button mat-menu-item (click)="preview(image?.id)">
+                    <button
+                      mat-menu-item
+                      (click)="preview(image?.id, image?.ruta)"
+                    >
                       <span>Editar</span>
                     </button>
                     <button mat-menu-item (click)="delete(image)">
