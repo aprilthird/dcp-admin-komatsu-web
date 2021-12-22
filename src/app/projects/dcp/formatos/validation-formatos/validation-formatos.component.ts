@@ -367,7 +367,7 @@ export class ValidationFormatosComponent implements OnInit {
     data.forEach((seccion, i) => {
       seccion.grupos.forEach((grupo, j) => {
         if (indexGroup === j) {
-          this.groups[j] = !this.groups[j];
+          this.groups[j] = false;
         }
         if (deleteComment) {
           if (j === indexGroup) {
