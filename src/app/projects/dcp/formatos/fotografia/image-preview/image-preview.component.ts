@@ -21,7 +21,6 @@ import {
   ImageTransform,
   LoadedImage,
 } from "ngx-image-cropper";
-import { type } from "os";
 import { FormatosService } from "../../formatos.service";
 
 @Component({
