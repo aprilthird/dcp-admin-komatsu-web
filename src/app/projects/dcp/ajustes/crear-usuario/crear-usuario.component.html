@@ -58,11 +58,11 @@
           "
         >
           <div
-            class="flex-auto user-info-container"
+            class="flex-auto md:max-h-30 max-h-60"
             [ngClass]="{ 'mb-15': submitted }"
           >
             <!-- Alerta -->
-            <div class="w-full mb-8 px-8" *ngIf="alert">
+            <div class="w-full mb-4 px-4" *ngIf="alert">
               <fuse-alert
                 [appearance]="'soft'"
                 *ngIf="alert"
@@ -107,7 +107,7 @@
                 </span>
               </div>
             </div>
-            <div class="w-full md:w-3/4 md:pl-8 pr-8 font-medium">
+            <!--<div class="w-full md:w-3/4 md:pl-8 pr-8 font-medium">
               <mat-label>Plataforma</mat-label>
               <div class="flex items-center h-10 font-normal">
                 <ng-container
@@ -131,7 +131,7 @@
               >
                 {{ getErrorMessage("plataformas") }}
               </span>
-            </div>
+            </div>-->
             <!-- Usuario -->
           </div>
           <div class="hidden md:block px-8 py-4">

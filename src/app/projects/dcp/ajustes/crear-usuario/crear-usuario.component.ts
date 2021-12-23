@@ -60,10 +60,7 @@ export class CrearUsuarioComponent implements OnInit {
     correo: ["", [Validators.required, Validators.email]],
     roles: [], // Roles será la lista general de roles
     ad: [""],
-    plataformas: new FormArray(
-      [new FormControl(false), new FormControl(false)],
-      minSelectedCheckboxes(1)
-    ),
+    plataformas: new FormArray([new FormControl(true), new FormControl(false)]),
     usuarioRoles: new FormArray([], minSelectedCheckboxes(1)), // los roles seleccionado en la web
   });
 

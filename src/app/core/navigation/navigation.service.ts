@@ -65,8 +65,7 @@ export class NavigationService {
 
           // Función permite la navegación de manera visual en la vista
           const getNavigation = (e) => {
-            console.log("-----menu------", e);
-            console.log(e.nombre, e.activo, e.nivel);
+            if (e.nombre === "Formatos") e.nombre = "Servicios";
             if (!e.activo) return [];
 
             // Si la navegación tiene ruta se agrega como permiso a dicha ruta
@@ -104,8 +103,8 @@ export class NavigationService {
             getNavigation(e)
           );
           //RUTAS ESTATICAS TEMPORALES
-          nextNavigation.default = fakeDcpNavigation;
-          nextNavigation.horizontal = fakeDcpNavigation;
+          //nextNavigation.default = fakeDcpNavigation;
+          //nextNavigation.horizontal = fakeDcpNavigation;
           this._permissionsServices.updatPermissions$ = permissions;
 
           //nextNavigation.default.reverse();

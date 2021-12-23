@@ -41,7 +41,7 @@ export class DialogAddDatoComponent implements OnInit {
     editable: [true],
     minCaracteres: [null],
     maxCaracteres: [null],
-    regex: [""],
+    regex: ["--Sin seleccionar--"],
     fila: ["", Validators.required],
     columna: ["", Validators.required],
     dato: [""],
@@ -56,6 +56,10 @@ export class DialogAddDatoComponent implements OnInit {
   options: any[] = [];
 
   regexValidation = [
+    {
+      id: 1,
+      nombre: "--Sin seleccionar--",
+    },
     {
       id: 2,
       nombre: "Validar correo",
@@ -127,6 +131,11 @@ export class DialogAddDatoComponent implements OnInit {
 
   onSubmit() {
     if (this.form.valid && !this.loading) {
+      if (!this.form.get("visible").value) {
+        this.form.get("visible").setValue(false);
+        this.form.get("obligatorio").setValue(false);
+        this.form.get("editable").setValue(false);
+      }
       this.alert.type = null;
       this.loading = true;
       const { parametros, ...data } = this.data;
@@ -226,6 +235,7 @@ export class DialogAddDatoComponent implements OnInit {
 
       case TipoParametro.FECHA:
       case TipoParametro.IMAGEN:
+      case TipoParametro.CHECKBOX:
         this.image = "";
         this.form.clearValidators();
         this.form = this.fb.group({
@@ -256,6 +266,7 @@ export class DialogAddDatoComponent implements OnInit {
         this.form.get("regex").disable();
         this.form.get("minCaracteres").disable();
         this.form.get("maxCaracteres").disable();
+        this.form.get("placeholder").disable();
         break;
 
       case TipoParametro.NUMERICO:
@@ -276,6 +287,7 @@ export class DialogAddDatoComponent implements OnInit {
         this.form.get("regex").disable();
         this.form.get("minCaracteres").disable();
         this.form.get("maxCaracteres").disable();
+
         break;
 
       case TipoParametro.LABEL:
@@ -302,7 +314,6 @@ export class DialogAddDatoComponent implements OnInit {
         this.form.get("regex").disable();
         break;
 
-      case TipoParametro.CHECKBOX:
       case TipoParametro.FIRMA:
         this.form.clearValidators();
         this.form = this.fb.group({
@@ -322,9 +333,7 @@ export class DialogAddDatoComponent implements OnInit {
         this.form.get("minCaracteres").disable();
         this.form.get("maxCaracteres").disable();
         this.form.get("regex").disable();
-        if (TipoParametro.FIRMA) {
-          this.form.get("placeholder").setValue("Agregar firma");
-        }
+        this.form.get("placeholder").setValue("Agregar firma");
         break;
     }
 

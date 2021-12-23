@@ -13,11 +13,16 @@ export class DialogAddCommentComponent implements OnInit {
 
   constructor(
     public matDialog: MatDialogRef<DialogAddCommentComponent>,
-    @Inject(MAT_DIALOG_DATA) public data,
+    @Inject(MAT_DIALOG_DATA) public data: any,
     private _editarFormatoService: EditarFormatoService
   ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    const section = this.data.data.find(
+      (x) => x.id === Number(this.data.sectionId)
+    );
+    this.comment.setValue(section.grupos[this.data.groupIndex].comentarios);
+  }
 
   async updateObservedParam() {
     return this.data.data.map((section: any) => {
