@@ -204,6 +204,18 @@
                       >
                         Ver galería
                       </button>
+
+                      <button
+                        mat-menu-item
+                        (click)="
+                          redirectToAttachDocs(
+                            actividad.id,
+                            actividad.idActividad
+                          )
+                        "
+                      >
+                        Adjuntar documentos
+                      </button>
                     </mat-menu>
                   </div>
                 </div>

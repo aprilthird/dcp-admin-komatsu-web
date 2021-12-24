@@ -15,3 +15,11 @@
       grid-template-columns: 20px 200px 150px 100px 100px 60px;
     }        
   }
+
+  ::ng-deep .mat-date-range-input-container{
+    width: 10px;
+
+    .mat-date-range-input-separator{
+      display: none;
+    }
+  }

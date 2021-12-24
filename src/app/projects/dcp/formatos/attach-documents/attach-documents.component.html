@@ -26,14 +26,14 @@
             class="icon-size-5 text-secondary"
             [svgIcon]="'heroicons_solid:chevron-right'"
           ></mat-icon>
-          <a class="ml-1 text-primary-500">Ver informe</a>
+          <a class="ml-1 text-primary-500">Gestión de documentos</a>
         </div>
         <div class="flex items-center ml-1 whitespace-nowrap">
           <mat-icon
             class="icon-size-5 text-secondary"
             [svgIcon]="'heroicons_solid:chevron-right'"
           ></mat-icon>
-          <span class="ml-1 text-secondary">{{ idFormatActivity }}</span>
+          <span class="ml-1 text-secondary"> idFormatActivity </span>
         </div>
       </div>
       <div class="mt-2 flex justify-between w-full">
@@ -48,12 +48,12 @@
             truncate
           "
         >
-          Galería
+          Documentos
         </h2>
 
-        <button mat-raised-button [color]="'primary'" (click)="preview()">
+        <button mat-raised-button [color]="'primary'" (click)="file.click()">
           <mat-icon svgIcon="heroicons_outline:plus"></mat-icon>
-          <span class="ml-2 mr-1">Agregar foto</span>
+          <span class="ml-2 mr-1">Agregar documento</span>
         </button>
       </div>
     </div>
@@ -83,8 +83,22 @@
         <!-- Main -->
 
         <div class="flex flex-wrap gap-5 p-10">
-          <ng-container *ngFor="let image of gallery; let i = index">
-            <div *ngIf="image.activo" class="bg-gray-100 rounded-sm max-w-sm">
+          <div class="w-full">
+            <label style="visibility: hidden" class="file">
+              <span>Seleccione archivo</span>
+              <input #file type="file" />
+              <mat-progress-spinner
+                [diameter]="24"
+                [mode]="'indeterminate'"
+              ></mat-progress-spinner>
+              <mat-icon
+                [color]="'#94a3b8'"
+                [svgIcon]="'heroicons_solid:upload'"
+              ></mat-icon>
+            </label>
+          </div>
+          <ng-container *ngFor="let document of documents; let i = index">
+            <div class="bg-gray-100 rounded-sm max-w-sm">
               <div class="flex justify-between items-center">
                 <div class="flex p-2 gap-2 overflow-hidden">
                   <button
@@ -98,7 +112,7 @@
                   >
                     <span class="mat-button-wrapper"
                       ><span class="relative">
-                        {{ image?.nombre[0] | uppercase }}
+                        {{ document?.nombre[0] | uppercase }}
                       </span></span
                     >
                   </button>
@@ -106,9 +120,9 @@
                     <span
                       [matTooltip]="image?.nombre"
                       class="font-bold truncate"
-                      >{{ image?.nombre }}</span
+                      >{{ document?.nombre }}</span
                     >
-                    <div>{{ image?.fechaReg | date: "dd/MM/yyyy" }}</div>
+                    <div>{{ document?.fechaReg | date: "dd/MM/yyyy" }}</div>
                   </div>
                 </div>
                 <button
@@ -121,39 +135,19 @@
                   ></mat-icon>
 
                   <mat-menu #actionsMenu="matMenu">
-                    <button
-                      mat-menu-item
-                      (click)="preview(image?.id, image?.ruta)"
-                    >
+                    <button mat-menu-item>
                       <span>Editar</span>
                     </button>
-                    <button mat-menu-item (click)="delete(image)">
+                    <button mat-menu-item>
                       <span>Eliminar</span>
                     </button>
                   </mat-menu>
                 </button>
               </div>
-              <img class="max-w-max" [src]="setImage(image.ruta)" />
-              <!--<img [src]="setImage(image?.ruta)" />-->
-              <!--<img src="https://picsum.photos/200/300?random=1" />-->
-              <div class="p-2">{{ image?.descripcion }}</div>
+              <div class="p-2">{{ document?.descripcion }}</div>
             </div>
           </ng-container>
         </div>
-
-        <!--<input type="file" (change)="fileChangeEvent($event)" />-->
-        <!--<div>
-          <image-cropper
-            [imageChangedEvent]="imageChangedEvent"
-            [maintainAspectRatio]="true"
-            [aspectRatio]="4 / 3"
-            format="png"
-            (imageCropped)="imageCropped($event)"
-            (imageLoaded)="imageLoaded($event)"
-            (cropperReady)="cropperReady()"
-            (loadImageFailed)="loadImageFailed()"
-          ></image-cropper>
-        </div>-->
       </div>
     </mat-drawer-content>
   </mat-drawer-container>

@@ -95,10 +95,17 @@ export class ListComponent implements OnInit {
     });
   }
 
-  redirectToGallery(idFormat: number, idActivityFormat: number): void {
+  redirectToGallery(idFormat: number): void {
     this.activitiesService._idFormat.next(idFormat);
     this._router.navigate([
       `/admin/informes/validation/fotografias/${idFormat}`,
+    ]);
+  }
+
+  redirectToAttachDocs(idFormat: number): void {
+    this.activitiesService._idFormat.next(idFormat);
+    this._router.navigate([
+      `/admin/informes/validation/documentos/${idFormat}`,
     ]);
   }
 

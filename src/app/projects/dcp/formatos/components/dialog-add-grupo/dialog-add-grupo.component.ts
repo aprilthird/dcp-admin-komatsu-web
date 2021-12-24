@@ -10,9 +10,12 @@ import { EditarFormatoService } from "../../editar-formato/editar-formato.servic
   styleUrls: ["./dialog-add-grupo.component.scss"],
 })
 export class DialogAddGrupoComponent implements OnInit {
+  @Input("data") data: any;
   @Input() idFormato: number;
   @Input() idSeccion: number;
   @Output() success: EventEmitter<Grupo> = new EventEmitter();
+
+  id = 0;
 
   posiciones = [
     { id: "h", label: "Horizontal" },
@@ -31,33 +34,53 @@ export class DialogAddGrupoComponent implements OnInit {
     public dialogRef: MatDialogRef<DialogAddGrupoComponent>
   ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    if (this.data) {
+      this.form.controls["pos"].disable();
+      this.id = this.data.id;
+    }
+  }
 
   onSubmit() {
     if (this.form.valid && !this.loading) {
       this.loading = true;
-      this.editarFormatoService
-        .createGrupo({
+      let payload: any;
+      if (this.data) {
+        payload = {
+          ...this.data,
+          nombre: this.form.controls["nombre"].value,
+          id: this.id,
+          idFormato: this.idFormato,
+          idSeccion: this.data.idSeccion,
+          parametros: this.data.parametros,
+          activo: true,
+        };
+      } else {
+        payload = {
           ...this.form.value,
           id: 0,
           idFormato: Number(this.idFormato),
           idSeccion: Number(this.idSeccion),
           parametros: [],
-        })
-        .subscribe(
-          (response) => {
-            this.loading = false;
-            this.success.emit({
-              ...response.body,
-              ...this.form.value,
-              parametros: [],
-              activo: true,
-            });
-          },
-          () => {
-            this.loading = false;
-          }
-        );
+        };
+      }
+
+      this.editarFormatoService.createGrupo(payload).subscribe(
+        (response) => {
+          this.loading = false;
+          this.success.emit({
+            ...response.body,
+            ...this.form.value,
+            parametros: [],
+            activo: true,
+          });
+          this.dialogRef.close();
+        },
+        () => {
+          this.loading = false;
+          this.dialogRef.close();
+        }
+      );
     }
   }
 

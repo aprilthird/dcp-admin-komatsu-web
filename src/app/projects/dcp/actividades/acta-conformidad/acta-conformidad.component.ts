@@ -24,8 +24,6 @@ export class ActaConformidadComponent implements OnInit {
   idActa: number;
   actaData: any;
   form: FormGroup = this.fb.group({
-    cliente: ["", [Validators.required]],
-    os: ["", Validators.required],
     lugarTrabajo: ["", Validators.required],
     provincia: [""],
     contacto: [""],
@@ -35,6 +33,8 @@ export class ActaConformidadComponent implements OnInit {
     marca: ["", Validators.required],
     serie: ["", Validators.required],
     modelo: ["", Validators.required],
+    cliente: ["", [Validators.required]],
+    os: ["", Validators.required],
     nequipo: [],
     horasKm: [""],
     placas: [""],
@@ -47,6 +47,7 @@ export class ActaConformidadComponent implements OnInit {
     motorCodEdm: [""],
     motorOdometro: [""],
     trabajos: [""],
+    id: [0],
   });
   savingData: boolean;
 
@@ -83,7 +84,7 @@ export class ActaConformidadComponent implements OnInit {
 
   postActa(): void {
     this.savingData = true;
-    this.form.addControl("fechaActa", new FormControl("2021/12/10"));
+    this.form.addControl("fechaActa", new FormControl("2021-12-22T05:00:00"));
     if (this.isEdit) {
       this.form.addControl("idActividadFormato", new FormControl(this.idActa));
     }
@@ -109,6 +110,21 @@ export class ActaConformidadComponent implements OnInit {
 
   private setFormValues(data): void {
     if (data && data?.cliente) {
+      this.form.controls["cliente"].disable();
+      this.form.controls["os"].disable();
+      this.form.controls["nequipo"].disable();
+      this.form.controls["horasKm"].disable();
+      this.form.controls["placas"].disable();
+      this.form.controls["odometro"].disable();
+      this.form.controls["motorMarca"].disable();
+      this.form.controls["motorSerie"].disable();
+      this.form.controls["motorModelo"].disable();
+      this.form.controls["motorHorasKm"].disable();
+      this.form.controls["motorCpl"].disable();
+      this.form.controls["motorCodEdm"].disable();
+      this.form.controls["motorOdometro"].disable();
+      this.form.controls["trabajos"].disable();
+
       this.isEdit = true;
       const {
         cliente,
@@ -134,6 +150,7 @@ export class ActaConformidadComponent implements OnInit {
         motorCodEdm,
         motorOdometro,
         trabajos,
+        id,
       } = data;
 
       this.form.setValue({
@@ -160,6 +177,7 @@ export class ActaConformidadComponent implements OnInit {
         motorCodEdm,
         motorOdometro,
         trabajos,
+        id,
       });
     }
   }

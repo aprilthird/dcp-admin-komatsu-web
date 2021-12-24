@@ -51,6 +51,7 @@ import { ImagePreviewComponent } from "./fotografia/image-preview/image-preview.
 
 //CROPER
 import { ImageCropperModule } from "ngx-image-cropper";
+import { AttachDocumentsComponent } from './attach-documents/attach-documents.component';
 
 @NgModule({
   declarations: [
@@ -71,6 +72,7 @@ import { ImageCropperModule } from "ngx-image-cropper";
     DialogAddCommentComponent,
     FotografiaComponent,
     ImagePreviewComponent,
+    AttachDocumentsComponent,
   ],
   imports: [
     CommonModule,

@@ -4,6 +4,8 @@ import { DialogAddDatoComponent } from "../../components/dialog-add-dato/dialog-
 import { Grupo, TipoParametro } from "app/core/types/formatos.types";
 import { FuseConfirmationService } from "@fuse/services/confirmation";
 import { EditarFormatoService } from "../editar-formato.service";
+import { DialogAddGrupoComponent } from "../../components/dialog-add-grupo/dialog-add-grupo.component";
+import { ActivatedRoute } from "@angular/router";
 
 @Component({
   selector: "app-grupos",
@@ -16,7 +18,8 @@ export class GruposComponent implements OnInit {
   constructor(
     private dialog: MatDialog,
     private _fuseConfirmationService: FuseConfirmationService,
-    private _editarFormatoService: EditarFormatoService
+    private _editarFormatoService: EditarFormatoService,
+    private activatedRoute: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
@@ -146,5 +149,19 @@ export class GruposComponent implements OnInit {
         });
       }
     });
+  }
+
+  updateGroup(): void {
+    let idFormat: number;
+    this.activatedRoute.params.subscribe(
+      (params) => (idFormat = Number(params["id"]))
+    );
+    const dialogRef = this.dialog.open(DialogAddGrupoComponent, {
+      autoFocus: false,
+      width: "376px",
+    });
+
+    dialogRef.componentInstance.data = this.data;
+    dialogRef.componentInstance.idFormato = idFormat;
   }
 }

@@ -1,9 +1,11 @@
 import { Component, OnInit } from "@angular/core";
+import { FormControl, FormGroup } from "@angular/forms";
 import { MatDialog } from "@angular/material/dialog";
 import { ActivatedRoute, Router } from "@angular/router";
 import { FuseConfirmationService } from "@fuse/services/confirmation";
 import { AzureService } from "app/core/azure/azure.service";
 import { Pagination } from "app/core/types/list.types";
+import { setFormatDate } from "app/shared/utils/datesFormat";
 import { Observable, Subject } from "rxjs";
 import { takeUntil } from "rxjs/operators";
 import { FilterDialogComponent } from "../actividades/filter/filter-dialog/filter-dialog.component";
@@ -19,7 +21,13 @@ export class TiposServiciosComponent implements OnInit {
   isLoading: boolean;
   serviceTypes$: Observable<any>;
   pagination$: Observable<Pagination>;
+  dateRange$: Observable<any>;
   private _unsubscribeAll: Subject<any> = new Subject<any>();
+
+  dateRange = new FormGroup({
+    startDate: new FormControl({ value: null }),
+    endDate: new FormControl({ value: null }),
+  });
 
   constructor(
     private _router: Router,
@@ -34,6 +42,9 @@ export class TiposServiciosComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadData();
+    this.dateRange$ = this.tiposServiciosService.dateRage$.pipe(
+      takeUntil(this._unsubscribeAll)
+    );
   }
 
   getServiceType(): void {
@@ -148,5 +159,16 @@ export class TiposServiciosComponent implements OnInit {
         });
       }
     });
+  }
+  changeDate(): void {
+    const startDate = new Date(this.dateRange.controls["startDate"].value);
+    const endDate = new Date(this.dateRange.controls["endDate"].value);
+    if (Number(setFormatDate(endDate).split("-")[0]) > 2020) {
+      this.tiposServiciosService._rangeDate.next({
+        fechaInicio: setFormatDate(startDate),
+        fechaFin: setFormatDate(endDate),
+      });
+      this.loadData();
+    }
   }
 }

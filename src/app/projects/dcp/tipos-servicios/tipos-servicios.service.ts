@@ -3,8 +3,11 @@ import { Injectable } from "@angular/core";
 import { ParamsPagination } from "app/core/types/http.types";
 import { Pagination } from "app/core/types/list.types";
 import { environment } from "environments/environment";
-import { BehaviorSubject, Observable } from "rxjs";
-import { tap } from "rxjs/operators";
+import moment from "moment";
+import { BehaviorSubject, Observable, timer } from "rxjs";
+import { debounceTime, tap } from "rxjs/operators";
+
+let startDate = moment();
 
 interface GetInbox {
   page: number | 0;
@@ -35,16 +38,24 @@ const getInboxParams: GetInbox = {
     dni: "",
     nombre: "",
     codigo: "",
-    fechaInicio: "2021-01-21T23:00:44.163Z",
-    fechaFin: "2021-12-31T23:00:44.163Z",
+    fechaFin: startDate.format("yyyy-MM-DD"),
+    fechaInicio: startDate.subtract(14, "days").format("yyyy-MM-DD"),
   },
 };
 
+interface DateRange {
+  fechaFin: Date;
+  fechaInicio: Date;
+}
 @Injectable({
   providedIn: "root",
 })
 export class TiposServiciosService {
   _serviceTypes: BehaviorSubject<any> = new BehaviorSubject(null);
+  _rangeDate: BehaviorSubject<any> = new BehaviorSubject({
+    fechaInicio: getInboxParams.filter.fechaInicio,
+    fechaFin: getInboxParams.filter.fechaFin,
+  });
   _pagination: BehaviorSubject<any> = new BehaviorSubject({
     length: 0,
     size: 10,
@@ -68,6 +79,14 @@ export class TiposServiciosService {
     return this._pagination.asObservable();
   }
 
+  get dateRage$(): Observable<DateRange> {
+    return this._rangeDate.asObservable();
+  }
+
+  set dateRage$(dateRange) {
+    this._rangeDate.next(dateRange);
+  }
+
   getServiceType(
     { page, pageSize }: ParamsPagination | any = {
       page: 0,
@@ -76,15 +95,12 @@ export class TiposServiciosService {
   ): Observable<any[]> {
     let currentFilter;
 
-    if (!page) {
-      currentFilter = { ...getInboxParams };
-    } else {
-      currentFilter = {
-        ...getInboxParams,
-        page,
-        pageSize,
-      };
-    }
+    currentFilter = {
+      ...getInboxParams,
+      filter: this._rangeDate.getValue(),
+      page,
+      pageSize,
+    };
     return this._httpClient
       .post<any[]>(
         environment.apiUrl + "/Administracion/ObtenerTipoServicios",
@@ -95,6 +111,7 @@ export class TiposServiciosService {
         }
       )
       .pipe(
+        debounceTime(1000),
         tap((resp: any) => {
           this._pagination.next({
             ...this._pagination.getValue(),
@@ -105,7 +122,6 @@ export class TiposServiciosService {
               resp.body.totalRecords / this._pagination.getValue().size
             ),
           });
-          console.log("tipos de servicios ", resp.body.data);
           this._serviceTypes.next(resp.body.data);
         })
       );

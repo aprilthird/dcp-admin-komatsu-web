@@ -17,7 +17,7 @@
       </button>
 
       <mat-menu #menu="matMenu" xPosition="before">
-        <button mat-menu-item>Editar</button>
+        <button mat-menu-item (click)="updateGroup()">Editar</button>
         <button (click)="deleteGroup()" mat-menu-item>Eliminar</button>
       </mat-menu>
     </mat-panel-title>

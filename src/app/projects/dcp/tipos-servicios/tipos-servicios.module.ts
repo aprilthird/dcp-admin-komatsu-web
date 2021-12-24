@@ -24,11 +24,18 @@ import { MatSelectModule } from "@angular/material/select";
 import { MatCheckboxModule } from "@angular/material/checkbox";
 import { MatDialogModule } from "@angular/material/dialog";
 import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
+import { MatDatepickerModule } from "@angular/material/datepicker";
 
 //FUSE
 import { FuseConfirmationModule } from "@fuse/services/confirmation";
 import { FuseAlertModule } from "@fuse/components/alert";
 import { DialogAddTipoServicioComponent } from "./dialog-add-tipo-servicio/dialog-add-tipo-servicio.component";
+
+import {
+  NgxMatDatetimePickerModule,
+  NgxMatNativeDateModule,
+  NgxMatTimepickerModule,
+} from "@angular-material-components/datetime-picker";
 
 @NgModule({
   declarations: [TiposServiciosComponent, DialogAddTipoServicioComponent],
@@ -54,6 +61,11 @@ import { DialogAddTipoServicioComponent } from "./dialog-add-tipo-servicio/dialo
     FuseAlertModule,
     MatDialogModule,
     MatProgressSpinnerModule,
+    NgxMatDatetimePickerModule,
+    NgxMatNativeDateModule,
+    NgxMatTimepickerModule,
+    MatDatepickerModule,
+
     SharedModule,
   ],
 })

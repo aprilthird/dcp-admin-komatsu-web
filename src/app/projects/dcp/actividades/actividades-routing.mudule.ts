@@ -1,6 +1,7 @@
 import { NgModule } from "@angular/core";
 import { RouterModule, Routes } from "@angular/router";
 import { MenuPermissionGuard } from "app/core/permission/guards/menu-permission.guard";
+import { AttachDocumentsComponent } from "../formatos/attach-documents/attach-documents.component";
 import { FotografiaComponent } from "../formatos/fotografia/fotografia.component";
 import { ValidationFormatosComponent } from "../formatos/validation-formatos/validation-formatos.component";
 import { ActaConformidadComponent } from "./acta-conformidad/acta-conformidad.component";
@@ -25,6 +26,10 @@ const routes: Routes = [
       {
         path: "validation/fotografias/:idFormatoActividad",
         component: FotografiaComponent,
+      },
+      {
+        path: "validation/documentos/:idFormatoActividad",
+        component: AttachDocumentsComponent,
       },
       {
         path: "validation/:id",
