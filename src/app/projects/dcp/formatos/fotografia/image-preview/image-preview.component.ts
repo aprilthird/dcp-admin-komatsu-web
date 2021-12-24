@@ -12,6 +12,8 @@ import {
   MatDialog,
 } from "@angular/material/dialog";
 import { AzureService } from "app/core/azure/azure.service";
+import { UserService } from "app/core/user/user.service";
+import { User } from "app/core/user/user.types";
 import { UiDialogsComponent } from "app/shared/ui/ui-dialogs/ui-dialogs.component";
 import { b64toBlob } from "app/shared/utils/b64ToBlob";
 import { dataURLtoFile } from "app/shared/utils/dataUrlTofile";
@@ -21,6 +23,8 @@ import {
   ImageTransform,
   LoadedImage,
 } from "ngx-image-cropper";
+import { Subject } from "rxjs";
+import { takeUntil } from "rxjs/operators";
 import { FormatosService } from "../../formatos.service";
 
 @Component({
@@ -53,6 +57,8 @@ export class ImagePreviewComponent implements OnInit, AfterViewInit {
   imageLoading;
   b64Image: any = "";
   sendingImage = false;
+  private _unsubscribeAll: Subject<any> = new Subject<any>();
+  user: User;
 
   fileChangeEvent(event: any): void {
     const { target } = event;
@@ -87,6 +93,7 @@ export class ImagePreviewComponent implements OnInit, AfterViewInit {
     private dialog: MatDialog,
     private _azureService: AzureService,
     private formatService: FormatosService,
+    private _userService: UserService,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
     this.matDialog.beforeClosed().subscribe(() => {});
@@ -118,12 +125,21 @@ export class ImagePreviewComponent implements OnInit, AfterViewInit {
     });
   }
 
+  getUserInfo(): void {
+    this._userService.user$
+      .pipe(takeUntil(this._unsubscribeAll))
+      .subscribe((user: User) => {
+        this.user = user;
+      });
+  }
+
   ngOnInit(): void {
     //this.drawOnImage();
   }
 
   ngAfterViewInit() {
     this.context = this.canvas.nativeElement.getContext("2d");
+    this.getUserInfo();
   }
 
   rotateRight() {
@@ -226,7 +242,7 @@ export class ImagePreviewComponent implements OnInit, AfterViewInit {
     const payload = {
       idActividadFormato: this.data.idFormatActivity,
       activo: true,
-      nombre: this.imageName,
+      nombre: this.user.nombres[0].toUpperCase() + this.user.apellidos,
       ruta: this.image,
       mime: "string",
       ext: "string",
