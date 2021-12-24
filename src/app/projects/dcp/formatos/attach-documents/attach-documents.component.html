@@ -33,7 +33,7 @@
             class="icon-size-5 text-secondary"
             [svgIcon]="'heroicons_solid:chevron-right'"
           ></mat-icon>
-          <span class="ml-1 text-secondary"> idFormatActivity </span>
+          <span class="ml-1 text-secondary"> {{ id }} </span>
         </div>
       </div>
       <div class="mt-2 flex justify-between w-full">
@@ -83,68 +83,68 @@
         <!-- Main -->
 
         <div class="flex flex-wrap gap-5 p-10">
-          <div class="w-full">
+          <div class="w-full h-0">
             <label style="visibility: hidden" class="file">
               <span>Seleccione archivo</span>
-              <input #file type="file" />
-              <mat-progress-spinner
-                [diameter]="24"
-                [mode]="'indeterminate'"
-              ></mat-progress-spinner>
-              <mat-icon
-                [color]="'#94a3b8'"
-                [svgIcon]="'heroicons_solid:upload'"
-              ></mat-icon>
+              <input (change)="onChageFile($event)" #file type="file" />
             </label>
           </div>
           <ng-container *ngFor="let document of documents; let i = index">
-            <div class="bg-gray-100 rounded-sm max-w-sm">
-              <div class="flex justify-between items-center">
-                <div class="flex p-2 gap-2 overflow-hidden">
-                  <button
-                    mat-icon-button=""
-                    class="
-                      mat-focus-indicator mat-menu-trigger
-                      bg-gray-300
-                      text-black
-                      mat-icon-button mat-button-base
-                    "
-                  >
-                    <span class="mat-button-wrapper"
-                      ><span class="relative">
-                        {{ document?.nombre[0] | uppercase }}
-                      </span></span
+            <div
+              *ngIf="document.activo && document.tipo === 1"
+              class="bg-gray-100 rounded-sm w-64"
+            >
+              <div class="bg-gray-100 rounded-sm max-w-sm">
+                <div class="flex justify-between items-center">
+                  <div class="flex p-2 gap-2 overflow-hidden">
+                    <button
+                      mat-icon-button=""
+                      class="
+                        mat-focus-indicator mat-menu-trigger
+                        bg-gray-300
+                        text-black
+                        mat-icon-button mat-button-base
+                      "
                     >
-                  </button>
-                  <div>
-                    <span
-                      [matTooltip]="image?.nombre"
-                      class="font-bold truncate"
-                      >{{ document?.nombre }}</span
-                    >
-                    <div>{{ document?.fechaReg | date: "dd/MM/yyyy" }}</div>
+                      <span class="mat-button-wrapper"
+                        ><span class="relative">
+                          {{ document?.nombre[0] | uppercase }}
+                        </span></span
+                      >
+                    </button>
+                    <div>
+                      <span
+                        [matTooltip]="document?.nombre"
+                        class="font-bold truncate"
+                        >{{ document?.nombre }}</span
+                      >
+                      <div>{{ document?.fechaReg | date: "dd/MM/yyyy" }}</div>
+                    </div>
                   </div>
-                </div>
-                <button
-                  class=""
-                  [matMenuTriggerFor]="actionsMenu"
-                  mat-icon-button
-                >
-                  <mat-icon
-                    [svgIcon]="'heroicons_outline:dots-vertical'"
-                  ></mat-icon>
+                  <button
+                    class=""
+                    [matMenuTriggerFor]="actionsMenu"
+                    mat-icon-button
+                  >
+                    <mat-icon
+                      [svgIcon]="'heroicons_outline:dots-vertical'"
+                    ></mat-icon>
 
-                  <mat-menu #actionsMenu="matMenu">
-                    <button mat-menu-item>
-                      <span>Editar</span>
-                    </button>
-                    <button mat-menu-item>
-                      <span>Eliminar</span>
-                    </button>
-                  </mat-menu>
-                </button>
+                    <mat-menu #actionsMenu="matMenu">
+                      <button
+                        mat-menu-item
+                        (click)="clickOpenFile(document?.ruta)"
+                      >
+                        <span>Descargar</span>
+                      </button>
+                      <button mat-menu-item (click)="delete(document)">
+                        <span>Eliminar</span>
+                      </button>
+                    </mat-menu>
+                  </button>
+                </div>
+                <div class="p-2">{{ document?.descripcion }}</div>
               </div>
-              <div class="p-2">{{ document?.descripcion }}</div>
             </div>
           </ng-container>
         </div>

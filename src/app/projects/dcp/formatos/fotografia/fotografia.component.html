@@ -84,7 +84,10 @@
 
         <div class="flex flex-wrap gap-5 p-10">
           <ng-container *ngFor="let image of gallery; let i = index">
-            <div *ngIf="image.activo" class="bg-gray-100 rounded-sm max-w-sm">
+            <div
+              *ngIf="image.activo && image.tipo === 0"
+              class="bg-gray-100 rounded-sm max-w-sm"
+            >
               <div class="flex justify-between items-center">
                 <div class="flex p-2 gap-2 overflow-hidden">
                   <button

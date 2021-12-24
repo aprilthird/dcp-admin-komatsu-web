@@ -106,7 +106,7 @@ export class FotografiaComponent implements OnInit, OnDestroy {
           descripcion: image.ruta,
           nombre: image.nombre,
         };
-        this.formatosService.postPhoto(paylod).subscribe((resp) => {
+        this.formatosService.postDocument(paylod).subscribe((resp) => {
           this.getGallery();
         });
       }

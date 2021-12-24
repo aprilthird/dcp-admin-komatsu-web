@@ -19,7 +19,7 @@ export class FormatosService {
     return this._httpClient.post<any>(endpoint, data);
   }
 
-  postPhoto(data): Observable<any> {
+  postDocument(data): Observable<any> {
     const endpoint = environment.apiUrl + "/Actividades/CrudGaleria";
     return this._httpClient.post<any>(endpoint, data);
   }

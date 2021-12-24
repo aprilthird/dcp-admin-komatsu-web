@@ -233,7 +233,7 @@ export class ImagePreviewComponent implements OnInit, AfterViewInit {
       visible: true,
       id: id,
     };
-    this.formatService.postPhoto(payload).subscribe(
+    this.formatService.postDocument(payload).subscribe(
       (resp) => {
         this.sendingImage = false;
         this.matDialog.close();
