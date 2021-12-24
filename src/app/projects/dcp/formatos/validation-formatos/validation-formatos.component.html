@@ -190,11 +190,7 @@
             <ng-container>
               <form [formGroup]="form" novalidate>
                 <div class="flex flex-col items-center">
-                  <div
-                    class="min-w-80 w-full"
-                    *ngIf="currentSectionData"
-                    style="padding: 10px"
-                  >
+                  <div class="min-w-80 w-full p-2" *ngIf="currentSectionData">
                     <ng-container
                       *ngFor="
                         let grupo of currentSectionData.grupos;
@@ -288,6 +284,7 @@
                             flex-row
                             overflow-x-auto overflow-y-hidden
                             w-full
+                            each-parametro
                           "
                         >
                           <ng-container
@@ -297,7 +294,7 @@
                             "
                           >
                             <div
-                              class="flex w-60 min-w-60"
+                              class="flex w-60 min-w-60 items-center"
                               [ngClass]="{
                                 'mb-3': grupo.pos === 'v',
                                 'mr-3': grupo.pos === 'h'
@@ -313,13 +310,12 @@
                                   (parametro.columna + 1)
                               }"
                               *ngIf="parametro.activo"
-                              style="align-items: center"
                             >
                               <ng-container [ngSwitch]="parametro.idParametro">
                                 <!-- TEXTO -->
                                 <mat-form-field
                                   *ngSwitchCase="1"
-                                  class="w-full font-semibold mr-2"
+                                  class="w-full font-semibold"
                                   floatLabel="always"
                                 >
                                   <mat-label *ngIf="parametro.visible">{{
