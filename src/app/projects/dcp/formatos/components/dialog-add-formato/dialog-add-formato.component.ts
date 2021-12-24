@@ -27,6 +27,7 @@ export class DialogAddFormatoComponent implements OnInit {
     codCe: ["", Validators.required],
     idTipoServicio: ["", Validators.required],
     nombre: ["", Validators.required],
+    descripcion: [""],
     visible: [true],
     activo: [true],
     estado: [1],
@@ -35,6 +36,7 @@ export class DialogAddFormatoComponent implements OnInit {
   gpData: any;
   ceData: any;
   services_type: any;
+  filesLoading: boolean;
 
   constructor(
     private fb: FormBuilder,
@@ -53,6 +55,26 @@ export class DialogAddFormatoComponent implements OnInit {
   private getServiceTypes(): void {
     this.serviceTypes.getServiceType().subscribe((resp: any) => {
       this.services_type = resp.body.data;
+    });
+  }
+
+  private getCombos(): void {
+    this.loading = true;
+    let ceco = this.formatServices
+      .obtenerGenereales(1)
+      .pipe(map((x: any) => x.body));
+    let gp = this.formatServices
+      .obtenerGenereales(2)
+      .pipe(map((x: any) => x.body));
+    let ce = this.formatServices
+      .obtenerGenereales(3)
+      .pipe(map((x: any) => x.body));
+
+    forkJoin([ceco, gp, ce]).subscribe((result: any) => {
+      this.cecoData = result[0];
+      this.gpData = result[1];
+      this.ceData = result[2];
+      this.loading = false;
     });
   }
 
@@ -89,25 +111,5 @@ export class DialogAddFormatoComponent implements OnInit {
     }
 
     return control.hasError("email") ? "Formato de correo incorrecto" : "";
-  }
-
-  getCombos(): void {
-    this.loading = true;
-    let ceco = this.formatServices
-      .obtenerGenereales(1)
-      .pipe(map((x: any) => x.body));
-    let gp = this.formatServices
-      .obtenerGenereales(2)
-      .pipe(map((x: any) => x.body));
-    let ce = this.formatServices
-      .obtenerGenereales(3)
-      .pipe(map((x: any) => x.body));
-
-    forkJoin([ceco, gp, ce]).subscribe((result: any) => {
-      this.cecoData = result[0];
-      this.gpData = result[1];
-      this.ceData = result[2];
-      this.loading = false;
-    });
   }
 }

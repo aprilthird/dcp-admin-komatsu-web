@@ -38,7 +38,7 @@ export class AttachDocumentsComponent implements OnInit {
     this.getDocument();
   }
 
-  getDocument(): void {
+  private getDocument(): void {
     this.formatService.getGallery(this.id).subscribe((resp) => {
       this.documents = resp.body;
       this.loaded = true;
@@ -127,7 +127,7 @@ export class AttachDocumentsComponent implements OnInit {
     });
   }
 
-  clickOpenFile(resourceName) {
+  clickOpenFile(resourceName): void {
     window.open(
       this._azureService.getResourceUrlComplete(resourceName),
       "blank"

@@ -52,6 +52,12 @@
         <input maxlength="100" matInput formControlName="nombre" />
         <mat-error> {{ getErrorMessage("nombre") }} </mat-error>
       </mat-form-field>
+
+      <mat-form-field class="w-full">
+        <mat-label class="font-bold">Documento</mat-label>
+        <input maxlength="100" matInput formControlName="descripcion" />
+        <mat-error> {{ getErrorMessage("descripcion") }} </mat-error>
+      </mat-form-field>
     </div>
   </div>
   <div mat-dialog-actions class="flex justify-end px-6 bg-gray-100">
