@@ -38,10 +38,11 @@ export class DialogAddGrupoComponent implements OnInit {
     if (this.data) {
       this.form.controls["pos"].disable();
       this.id = this.data.id;
+      this.form.controls["nombre"].setValue(this.data?.nombre);
     }
   }
 
-  onSubmit() {
+  async onSubmit() {
     if (this.form.valid && !this.loading) {
       this.loading = true;
       let payload: any;

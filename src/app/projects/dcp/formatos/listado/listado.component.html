@@ -36,7 +36,11 @@
         <mat-icon svgIcon="heroicons_outline:filter"></mat-icon>
         <span class="ml-2 mr-1">Filtrar</span>
       </button>
-      <button mat-raised-button [color]="'secondary'" (click)="openFilter()">
+      <button
+        mat-raised-button
+        [color]="'secondary'"
+        routerLink="/admin/tipos_servicios"
+      >
         <mat-icon svgIcon="heroicons_outline:document-download"></mat-icon>
         <span class="ml-2 mr-1">Agregar tipo de servicio</span>
       </button>

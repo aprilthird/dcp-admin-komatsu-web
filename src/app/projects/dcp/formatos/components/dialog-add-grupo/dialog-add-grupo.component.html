@@ -1,6 +1,6 @@
 <form [formGroup]="form">
   <div mat-dialog-title class="flex justify-between items-center">
-    <h4>Agregar grupo</h4>
+    <h4>{{ !data ? "Agregar" : "Editar" }} grupo</h4>
     <button mat-icon-button type="button" (click)="dialogRef.close()">
       <mat-icon [svgIcon]="'heroicons_outline:x'"></mat-icon>
     </button>
@@ -45,7 +45,8 @@
       [disabled]="form.invalid"
       (click)="onSubmit()"
     >
-      <span *ngIf="!loading"> Crear </span>
+      <span *ngIf="!data"> Crear </span>
+      <span *ngIf="data"> Editar </span>
       <mat-progress-spinner
         *ngIf="loading"
         [diameter]="24"

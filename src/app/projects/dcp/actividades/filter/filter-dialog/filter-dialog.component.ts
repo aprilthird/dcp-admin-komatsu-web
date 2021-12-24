@@ -39,10 +39,10 @@ export class FilterDialogComponent implements OnInit {
 
   ngOnInit(): void {
     this.getFilters();
-    this.getInboxes();
+    //this.getInboxes();
   }
 
-  getInboxes(): void {
+  /*getInboxes(): void {
     this.loading = true;
     let equipo = this.serviceAct.getList(2).pipe(map((x: any) => x.body.data));
     let modelos = this.serviceAct.getList(5).pipe(map((x: any) => x.body.data));
@@ -54,7 +54,7 @@ export class FilterDialogComponent implements OnInit {
       this.actividadOpt = result[2];
       this.loading = false;
     });
-  }
+  }*/
 
   applyFilters(): void {
     this.listadoService
