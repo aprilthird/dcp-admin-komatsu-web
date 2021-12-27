@@ -1,11 +1,10 @@
 import { Injectable } from "@angular/core";
 import {
-  Router,
   Resolve,
   RouterStateSnapshot,
   ActivatedRouteSnapshot,
 } from "@angular/router";
-import { forkJoin, Observable, of } from "rxjs";
+import { forkJoin, Observable } from "rxjs";
 import { EditarFormatoService } from "../editar-formato/editar-formato.service";
 
 @Injectable({
@@ -18,7 +17,7 @@ export class AsignarFormatoResolver implements Resolve<boolean> {
     state: RouterStateSnapshot
   ): Observable<any> {
     return forkJoin([
-      this._editarFormatoService.getFormato({id: route.params.id}),
-    ])
+      this._editarFormatoService.getFormato({ id: route.params.id }),
+    ]);
   }
 }

@@ -8,6 +8,7 @@ import {
 import { MatDialog } from "@angular/material/dialog";
 import { ActivatedRoute, Router } from "@angular/router";
 import { UiDialogsComponent } from "app/shared/ui/ui-dialogs/ui-dialogs.component";
+import { Subject } from "rxjs";
 
 //SERVICES
 import { ActivitiesService } from "../activities.service";
@@ -22,7 +23,6 @@ export class ActaConformidadComponent implements OnInit {
   isEdit = false;
   loadLoading = false;
   idActa: number;
-  actaData: any;
   form: FormGroup = this.fb.group({
     lugarTrabajo: ["", Validators.required],
     provincia: [""],
@@ -50,6 +50,7 @@ export class ActaConformidadComponent implements OnInit {
     id: [0],
   });
   savingData: boolean;
+  private _unsubscribeAll: Subject<any> = new Subject<any>();
 
   constructor(
     private fb: FormBuilder,
@@ -71,15 +72,17 @@ export class ActaConformidadComponent implements OnInit {
     });
   }
 
-  private getActa(): void {
-    this.activitiesService
-      .getActaConformidad(this.idActa)
-      .subscribe((resp: any) => {
-        console.log("resp acta ", resp);
-        this.setFormValues(resp.body);
+  ngOnDestroy(): void {
+    this._unsubscribeAll.next();
+    this._unsubscribeAll.complete();
+  }
 
-        this.isLoading = false;
-      });
+  private getActa(): void {
+    this.activitiesService.getActaConformidad(this.idActa).subscribe((resp) => {
+      this.setFormValues(resp.body);
+
+      this.isLoading = false;
+    });
   }
 
   postActa(): void {
@@ -89,7 +92,7 @@ export class ActaConformidadComponent implements OnInit {
       this.form.addControl("idActividadFormato", new FormControl(this.idActa));
     }
     this.activitiesService.postActaConformidad(this.form.value).subscribe(
-      (resp: any) => {
+      (resp) => {
         this.savingData = false;
         this.router.navigate(["/admin/informes/list"]);
       },

@@ -2,6 +2,7 @@ import { Component, Inject, OnInit } from "@angular/core";
 import { FormBuilder, FormControl, Validators } from "@angular/forms";
 import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
 import { AzureService } from "app/core/azure/azure.service";
+import { Subject } from "rxjs";
 
 //SERVICES
 import { TiposServiciosService } from "../tipos-servicios.service";
@@ -17,6 +18,7 @@ export class DialogAddTipoServicioComponent implements OnInit {
   isLoading: boolean;
   services_type: any;
   isEdit: boolean;
+  private _unsubscribeAll: Subject<any> = new Subject<any>();
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -38,6 +40,11 @@ export class DialogAddTipoServicioComponent implements OnInit {
   }
 
   ngOnInit(): void {}
+
+  ngOnDestroy(): void {
+    this._unsubscribeAll.next();
+    this._unsubscribeAll.complete();
+  }
 
   submit(): void {
     this.isLoading = true;

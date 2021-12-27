@@ -2,8 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { FormBuilder, FormControl, FormGroup } from "@angular/forms";
 import { MatDialogRef } from "@angular/material/dialog";
 import { ListadoService } from "app/projects/dcp/formatos/listado/listado.services";
-import { forkJoin } from "rxjs";
-import { map } from "rxjs/operators";
+import { Subject } from "rxjs";
 import { ActivitiesService } from "../../activities.service";
 import { FilterI } from "../../../../../shared/models/filters-model";
 
@@ -21,6 +20,8 @@ export class FilterDialogComponent implements OnInit {
   actividadOpt: any;
   equipoOpt: any;
   filterService: FilterI;
+
+  private _unsubscribeAll: Subject<any> = new Subject<any>();
 
   constructor(
     private fb: FormBuilder,
@@ -40,6 +41,11 @@ export class FilterDialogComponent implements OnInit {
   ngOnInit(): void {
     this.getFilters();
     //this.getInboxes();
+  }
+
+  ngOnDestroy(): void {
+    this._unsubscribeAll.next();
+    this._unsubscribeAll.complete();
   }
 
   /*getInboxes(): void {

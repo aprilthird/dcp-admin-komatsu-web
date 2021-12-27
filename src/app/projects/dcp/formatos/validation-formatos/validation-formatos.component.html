@@ -140,7 +140,14 @@
           <!-- Title -->
           <div
             *ngIf="currentSectionData"
-            class="flex flex-row justify-between items-center w-full"
+            class="
+              flex
+              md:flex-row
+              flex-col
+              justify-between
+              items-center
+              w-full
+            "
           >
             <div class="flex flex-col activities-container">
               <div class="text-4xl font-extrabold tracking-tight">
@@ -167,7 +174,7 @@
               *ngIf="!validateSection()"
               mat-raised-button
               [color]="'secondary'"
-              class="text-green-600"
+              class="text-green-600 md:item-center item-start"
               (click)="validate()"
             >
               <mat-icon svgIcon="heroicons_outline:check-circle"></mat-icon>

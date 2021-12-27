@@ -1,6 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { Pagination } from "app/core/types/list.types";
+import { environment } from "environments/environment";
 import { Observable, Subject } from "rxjs";
 import { takeUntil } from "rxjs/operators";
 import { EditarFormatoService } from "../../formatos/editar-formato/editar-formato.service";
@@ -107,6 +108,20 @@ export class ListComponent implements OnInit {
     this._router.navigate([
       `/admin/informes/validation/documentos/${idFormat}`,
     ]);
+  }
+
+  printPdf(actividad): void {
+    fetch(environment.apiUrl + "/Reportes/GenerarPdf/" + actividad.id)
+      .then((resp) => resp.blob())
+      .then((blob) => {
+        let url = window.URL.createObjectURL(blob);
+        let a = document.createElement("a");
+        a.href = url;
+        a.download = actividad.codEquipo + ".pdf";
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+      });
   }
 
   ngOnDestroy(): void {

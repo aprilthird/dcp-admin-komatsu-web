@@ -5,6 +5,7 @@ import { ActivatedRoute } from "@angular/router";
 import { FuseConfirmationService } from "@fuse/services/confirmation";
 import { AzureService } from "app/core/azure/azure.service";
 import { UiDialogsComponent } from "app/shared/ui/ui-dialogs/ui-dialogs.component";
+import { Subject } from "rxjs";
 import { FormatosService } from "../formatos.service";
 
 @Component({
@@ -21,6 +22,7 @@ export class AttachDocumentsComponent implements OnInit {
   });
   filesLoading: boolean;
   id: number;
+  private _unsubscribeAll: Subject<any> = new Subject<any>();
 
   constructor(
     private formatService: FormatosService,
@@ -36,6 +38,11 @@ export class AttachDocumentsComponent implements OnInit {
       (params) => (this.id = Number(params["idFormatoActividad"]))
     );
     this.getDocument();
+  }
+
+  ngOnDestroy(): void {
+    this._unsubscribeAll.next();
+    this._unsubscribeAll.complete();
   }
 
   private getDocument(): void {

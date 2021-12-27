@@ -8,7 +8,7 @@ import {
 import { MatDialogRef } from "@angular/material/dialog";
 import { Router } from "@angular/router";
 import { TiposServiciosService } from "app/projects/dcp/tipos-servicios/tipos-servicios.service";
-import { forkJoin } from "rxjs";
+import { forkJoin, Subject } from "rxjs";
 import { map } from "rxjs/operators";
 import { FormatosService } from "../../formatos.service";
 import { DialogAddFormatoService } from "./dialog-add-formato.service";
@@ -37,6 +37,7 @@ export class DialogAddFormatoComponent implements OnInit {
   ceData: any;
   services_type: any;
   filesLoading: boolean;
+  private _unsubscribeAll: Subject<any> = new Subject<any>();
 
   constructor(
     private fb: FormBuilder,
@@ -52,6 +53,11 @@ export class DialogAddFormatoComponent implements OnInit {
     this.getCombos();
   }
 
+  ngOnDestroy(): void {
+    this._unsubscribeAll.next();
+    this._unsubscribeAll.complete();
+  }
+
   private getServiceTypes(): void {
     this.serviceTypes.getServiceType().subscribe((resp: any) => {
       this.services_type = resp.body.data;
@@ -62,15 +68,11 @@ export class DialogAddFormatoComponent implements OnInit {
     this.loading = true;
     let ceco = this.formatServices
       .obtenerGenereales(1)
-      .pipe(map((x: any) => x.body));
-    let gp = this.formatServices
-      .obtenerGenereales(2)
-      .pipe(map((x: any) => x.body));
-    let ce = this.formatServices
-      .obtenerGenereales(3)
-      .pipe(map((x: any) => x.body));
+      .pipe(map((x) => x.body));
+    let gp = this.formatServices.obtenerGenereales(2).pipe(map((x) => x.body));
+    let ce = this.formatServices.obtenerGenereales(3).pipe(map((x) => x.body));
 
-    forkJoin([ceco, gp, ce]).subscribe((result: any) => {
+    forkJoin([ceco, gp, ce]).subscribe((result) => {
       this.cecoData = result[0];
       this.gpData = result[1];
       this.ceData = result[2];

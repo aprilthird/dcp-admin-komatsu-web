@@ -6,6 +6,7 @@ import { FuseConfirmationService } from "@fuse/services/confirmation";
 import { EditarFormatoService } from "../editar-formato.service";
 import { DialogAddGrupoComponent } from "../../components/dialog-add-grupo/dialog-add-grupo.component";
 import { ActivatedRoute } from "@angular/router";
+import { Subject } from "rxjs";
 
 @Component({
   selector: "app-grupos",
@@ -14,6 +15,7 @@ import { ActivatedRoute } from "@angular/router";
 })
 export class GruposComponent implements OnInit {
   @Input("data") data: Grupo;
+  private _unsubscribeAll: Subject<any> = new Subject<any>();
 
   constructor(
     private dialog: MatDialog,
@@ -24,6 +26,11 @@ export class GruposComponent implements OnInit {
 
   ngOnInit(): void {
     this.data.parametros = this.data.parametros.filter((e) => e.activo);
+  }
+
+  ngOnDestroy(): void {
+    this._unsubscribeAll.next();
+    this._unsubscribeAll.complete();
   }
 
   clickNewDato() {
@@ -87,7 +94,6 @@ export class GruposComponent implements OnInit {
    * Delete product
    */
   clickDeleteParametro(parametro): void {
-    console.log(this.data);
     const dialogRef = this._fuseConfirmationService.open({
       title: "Eliminar Dato",
       message: "¿Estás seguro que deseas eliminar el dato?",

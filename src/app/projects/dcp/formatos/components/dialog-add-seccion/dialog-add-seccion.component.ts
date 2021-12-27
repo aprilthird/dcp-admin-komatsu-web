@@ -1,6 +1,14 @@
-import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
+import {
+  AfterViewInit,
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+} from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { MatDialogRef } from "@angular/material/dialog";
+import { Subject } from "rxjs";
 import { EditarFormatoService } from "../../editar-formato/editar-formato.service";
 
 @Component({
@@ -8,9 +16,12 @@ import { EditarFormatoService } from "../../editar-formato/editar-formato.servic
   templateUrl: "./dialog-add-seccion.component.html",
   styleUrls: ["./dialog-add-seccion.component.scss"],
 })
-export class DialogAddSeccionComponent implements OnInit {
+export class DialogAddSeccionComponent implements OnInit, AfterViewInit {
   @Input() idFormato: number;
+  @Input() currentSection: any;
   @Output() success: EventEmitter<void> = new EventEmitter();
+  private _unsubscribeAll: Subject<any> = new Subject<any>();
+  payload: any;
 
   loading: boolean = false;
 
@@ -24,14 +35,19 @@ export class DialogAddSeccionComponent implements OnInit {
     public dialogRef: MatDialogRef<DialogAddSeccionComponent>
   ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.readSectionData();
+  }
+
+  ngAfterViewInit(): void {}
 
   onSubmit() {
     if (this.form.valid && !this.loading) {
       this.loading = true;
       this.editarFormatoService
         .createSeccion({
-          ...this.form.value,
+          ...this.payload,
+          nombre: this.form.controls["nombre"].value,
           idFormato: Number(this.idFormato),
         })
         .subscribe(
@@ -43,6 +59,20 @@ export class DialogAddSeccionComponent implements OnInit {
             this.loading = false;
           }
         );
+    }
+  }
+
+  ngOnDestroy(): void {
+    this._unsubscribeAll.next();
+    this._unsubscribeAll.complete();
+  }
+
+  private readSectionData(): void {
+    if (this.currentSection) {
+      this.form.controls["nombre"].setValue(this.currentSection.nombre);
+      this.payload = this.currentSection;
+    } else {
+      this.payload = this.form.value;
     }
   }
 

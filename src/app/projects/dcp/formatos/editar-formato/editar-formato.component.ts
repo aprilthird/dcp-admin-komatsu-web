@@ -7,7 +7,7 @@ import {
 } from "@angular/core";
 import { MatDialog } from "@angular/material/dialog";
 import { MatDrawer } from "@angular/material/sidenav";
-import { ActivatedRoute, Event, NavigationEnd, Router } from "@angular/router";
+import { ActivatedRoute, NavigationEnd, Router } from "@angular/router";
 import { FuseConfirmationService } from "@fuse/services/confirmation";
 import { FuseMediaWatcherService } from "@fuse/services/media-watcher";
 import { Formato, Grupo } from "app/core/types/formatos.types";
@@ -43,6 +43,7 @@ export class EditarFormatoComponent implements OnInit, OnDestroy {
   idSection: number = 0;
   isSection: boolean;
   validSection: boolean;
+  allsections: any = [];
   constructor(
     private _router: Router,
     private _changeDetectorRef: ChangeDetectorRef,
@@ -69,6 +70,7 @@ export class EditarFormatoComponent implements OnInit, OnDestroy {
     this._editarFormatoService.secciones$
       .pipe(takeUntil(this._unsubscribeAll))
       .subscribe((secciones) => {
+        this.allsections = secciones;
         this.menuData = secciones.map((e) => ({
           id: e.id,
           title: e.nombre,
@@ -146,6 +148,28 @@ export class EditarFormatoComponent implements OnInit, OnDestroy {
             .subscribe(() => {});
         });
       }
+    });
+  }
+
+  updateSection(idxSection: number): void {
+    let sectionData = this.allsections.find(
+      (section) => section.index === idxSection
+    );
+    const dialogRef = this.dialog.open(DialogAddSeccionComponent, {
+      autoFocus: false,
+      width: "376px",
+    });
+    dialogRef.componentInstance.currentSection = sectionData;
+    dialogRef.componentInstance.idFormato =
+      this._activedRoute.snapshot.params.id;
+    dialogRef.componentInstance.success.subscribe(() => {
+      this._editarFormatoService
+        .getSecciones({
+          idFormulario: this._activedRoute.snapshot.params.id,
+          reload: true,
+        })
+        .subscribe(() => {});
+      dialogRef.close();
     });
   }
 

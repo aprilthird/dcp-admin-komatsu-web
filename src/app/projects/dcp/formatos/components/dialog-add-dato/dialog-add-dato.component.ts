@@ -12,6 +12,7 @@ import { Grupo, TipoParametro } from "app/core/types/formatos.types";
 import { EditarFormatoService } from "../../editar-formato/editar-formato.service";
 import { COMMA, ENTER } from "@angular/cdk/keycodes";
 import { MatChipInputEvent } from "@angular/material/chips";
+import { Subject } from "rxjs";
 
 @Component({
   selector: "app-dialog-add-dato",
@@ -69,6 +70,7 @@ export class DialogAddDatoComponent implements OnInit {
       nombre: "Validar DNI",
     },
   ];
+  private _unsubscribeAll: Subject<any> = new Subject<any>();
 
   constructor(
     private fb: FormBuilder,
@@ -342,6 +344,11 @@ export class DialogAddDatoComponent implements OnInit {
       this.form.get("columna").setValue(1);
       this.form.get("columna").disable();
     }
+  }
+
+  ngOnDestroy(): void {
+    this._unsubscribeAll.next();
+    this._unsubscribeAll.complete();
   }
 
   getErrorMessage(input: string) {

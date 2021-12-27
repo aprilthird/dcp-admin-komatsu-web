@@ -42,7 +42,7 @@
             </button>
 
             <mat-menu #menu="matMenu" xPosition="before">
-              <button mat-menu-item>Editar</button>
+              <button mat-menu-item (click)="updateSection(i)">Editar</button>
               <button (click)="deleteSection(menuData[i])" mat-menu-item>
                 Eliminar
               </button>

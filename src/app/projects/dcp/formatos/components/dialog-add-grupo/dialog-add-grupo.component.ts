@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { MatDialogRef } from "@angular/material/dialog";
 import { Grupo } from "app/core/types/formatos.types";
+import { Subject } from "rxjs";
 import { EditarFormatoService } from "../../editar-formato/editar-formato.service";
 
 @Component({
@@ -14,6 +15,7 @@ export class DialogAddGrupoComponent implements OnInit {
   @Input() idFormato: number;
   @Input() idSeccion: number;
   @Output() success: EventEmitter<Grupo> = new EventEmitter();
+  private _unsubscribeAll: Subject<any> = new Subject<any>();
 
   id = 0;
 
@@ -40,6 +42,11 @@ export class DialogAddGrupoComponent implements OnInit {
       this.id = this.data.id;
       this.form.controls["nombre"].setValue(this.data?.nombre);
     }
+  }
+
+  ngOnDestroy(): void {
+    this._unsubscribeAll.next();
+    this._unsubscribeAll.complete();
   }
 
   async onSubmit() {

@@ -17,6 +17,7 @@ import { FuseConfirmationService } from "@fuse/services/confirmation";
 import { FormatosService } from "../formatos.service";
 import { UiDialogsComponent } from "app/shared/ui/ui-dialogs/ui-dialogs.component";
 import { ActivitiesService } from "../../actividades/activities.service";
+import { Subject } from "rxjs";
 
 @Component({
   selector: "app-validation-formatos",
@@ -54,6 +55,7 @@ export class ValidationFormatosComponent implements OnInit {
     [key: string]: boolean;
   } = {};
   data: any;
+  private _unsubscribeAll: Subject<any> = new Subject<any>();
 
   constructor(
     private matDialog: MatDialog,
@@ -75,6 +77,11 @@ export class ValidationFormatosComponent implements OnInit {
   ngOnInit(): void {
     this.drawerMode = "side";
     this.drawerOpened = true;
+  }
+
+  ngOnDestroy(): void {
+    this._unsubscribeAll.next();
+    this._unsubscribeAll.complete();
   }
 
   private getAsignationId(): void {
@@ -363,7 +370,7 @@ export class ValidationFormatosComponent implements OnInit {
   ): void {
     //if (this.form.valid) {
     const data = [...this.sections];
-
+    //console.log("this form ", this.form.value);
     data.forEach((seccion, i) => {
       seccion.grupos.forEach((grupo, j) => {
         if (indexGroup === j) {
@@ -382,8 +389,14 @@ export class ValidationFormatosComponent implements OnInit {
             ) {
               this.checkImgParam(parametro, j, k);
             } else if (parametro.idParametro === TipoParametro.FIRMA) {
-              this.checkSignParam(paramIdx, parametro, indexGroup, k, j);
+              if (parametro.data) {
+                this.checkSignParam(paramIdx, parametro, indexGroup, k, j);
+              }
             } else {
+              console.log("--- ", parametro.activo);
+              console.log("--- ", parametro.label);
+              //Object.keys(this.form.value).forEach((key) => console.log(key));
+              //console.log(this.getParametroControl({ j, k }));
               parametro.valor = String(
                 this.form.get(this.getParametroControl({ j, k })).value
               );
@@ -409,6 +422,7 @@ export class ValidationFormatosComponent implements OnInit {
         this.form.get(this.getParametroControl({ j, k })).setValue(null);
       }
     } else {
+      console.log("form ", this.form.value);
       if (
         this.form.get(this.getParametroControl({ j, k })).value &&
         this.form.get(this.getParametroControl({ j, k })).value !== ""

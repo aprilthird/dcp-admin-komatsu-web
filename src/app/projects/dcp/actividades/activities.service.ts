@@ -4,13 +4,8 @@ import { ParamsPagination } from "app/core/types/http.types";
 import { Pagination } from "app/core/types/list.types";
 import { Response } from "app/shared/models/general-model";
 import { environment } from "environments/environment";
-import { filter } from "lodash";
-import { type } from "os";
 import { BehaviorSubject, Observable } from "rxjs";
 import { tap } from "rxjs/operators";
-
-import { ActivitiesData } from "../fake-db/activities/activity-fake-db";
-import { Activity } from "./models/activities-model";
 
 import { Activity as ActivityI } from "./models/activities-model";
 
@@ -121,13 +116,6 @@ export class ActivitiesService {
     );
   }
 
-  postCargaIndividual(data: ActivityI): Observable<Response[]> {
-    return this.http.post<Response[]>(
-      environment.apiUrl + "/Actividades/CargaIndividual",
-      data
-    );
-  }
-
   getActivities(
     { page, pageSize }: ParamsPagination | any = {
       page: 0,
@@ -170,23 +158,23 @@ export class ActivitiesService {
       );
   }
 
-  getActivity(id: number): Observable<any[]> {
-    return this.http.get<any[]>(
-      environment.apiUrl + `/Actividades/ObtenerActividad/${id}`
-    );
-  }
-
-  postActaConformidad(data: ActaConformidad): Observable<Response[]> {
-    return this.http.post<Response[]>(
+  postActaConformidad(data: ActaConformidad): Observable<Response> {
+    return this.http.post<Response>(
       environment.apiUrl + "/Mantenimiento/AgregarActaConformidad",
       data
     );
   }
 
-  getActaConformidad(idActividadFormato: number): Observable<any[]> {
-    return this.http.get<any[]>(
+  getActaConformidad(idActividadFormato: number): Observable<Response> {
+    return this.http.get<Response>(
       environment.apiUrl + `/Mantenimiento/ObtenerActa/${idActividadFormato}`
     );
+  }
+
+  printPdf(idActividadFormato): Observable<any> {
+    const endpoint =
+      environment.apiUrl + "/Reportes/GenerarPdf/" + idActividadFormato;
+    return this.http.get<Response>(endpoint);
   }
 }
 

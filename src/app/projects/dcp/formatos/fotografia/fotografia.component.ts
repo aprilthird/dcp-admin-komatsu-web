@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from "@angular/core";
 import { MatDialog } from "@angular/material/dialog";
 import { FuseConfirmationService } from "@fuse/services/confirmation";
-import { ActivatedRoute, RouterStateSnapshot } from "@angular/router";
+import { ActivatedRoute } from "@angular/router";
 
 //Thrid libraries
 import { ImageCroppedEvent, LoadedImage } from "ngx-image-cropper";
@@ -13,8 +13,7 @@ import { ImagePreviewComponent } from "./image-preview/image-preview.component";
 import { FormatosService } from "../formatos.service";
 import { AzureService } from "app/core/azure/azure.service";
 import { ActivitiesService } from "../../actividades/activities.service";
-import { takeUntil } from "rxjs/operators";
-import { Observable, Subject } from "rxjs";
+import { Subject } from "rxjs";
 
 @Component({
   selector: "app-fotografia",

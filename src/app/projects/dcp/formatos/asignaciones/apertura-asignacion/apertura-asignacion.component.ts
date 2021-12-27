@@ -6,12 +6,13 @@ import {
   Validators,
 } from "@angular/forms";
 import { EditarFormatoService } from "../../editar-formato/editar-formato.service";
-import { ActivatedRoute, Route } from "@angular/router";
+import { ActivatedRoute } from "@angular/router";
 
 //CONFIG
 import { TipoParametro } from "app/core/types/formatos.types";
 import { AzureService } from "app/core/azure/azure.service";
 import { ListadoAsignacionesService } from "../asignaciones.service";
+import { Subject } from "rxjs";
 
 @Component({
   selector: "app-apertura-asignacion",
@@ -28,6 +29,8 @@ export class AperturaAsignacionComponent implements OnInit {
   } = {};
   editLoading: boolean;
   f: boolean;
+
+  private _unsubscribeAll: Subject<any> = new Subject<any>();
 
   constructor(
     private _editarFormatoService: EditarFormatoService,
@@ -47,6 +50,11 @@ export class AperturaAsignacionComponent implements OnInit {
         this.generateForm();
         this.loading = false;
       });
+  }
+
+  ngOnDestroy(): void {
+    this._unsubscribeAll.next();
+    this._unsubscribeAll.complete();
   }
 
   generateForm() {

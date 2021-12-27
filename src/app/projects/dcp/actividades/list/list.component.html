@@ -195,7 +195,9 @@
                       >
                         Acta de conformidad
                       </button>
-                      <button mat-menu-item>Generar PDF</button>
+                      <button mat-menu-item (click)="printPdf(actividad)">
+                        Generar PDF
+                      </button>
                       <button
                         mat-menu-item
                         (click)="

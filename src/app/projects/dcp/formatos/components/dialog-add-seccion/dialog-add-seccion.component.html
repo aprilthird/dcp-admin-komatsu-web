@@ -35,7 +35,9 @@
       [color]="'primary'"
       class="w-24"
     >
-      <span *ngIf="!loading"> Crear </span>
+      <span *ngIf="!currentSection"> Crear </span>
+      <span *ngIf="currentSection"> Editar </span>
+
       <mat-progress-spinner
         *ngIf="loading"
         [diameter]="24"

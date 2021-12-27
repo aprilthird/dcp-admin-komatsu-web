@@ -1,11 +1,9 @@
 import { Component, OnInit } from "@angular/core";
-import { MatDialog, MatDialogModule } from "@angular/material/dialog";
+import { MatDialog } from "@angular/material/dialog";
 import { ActivatedRoute, Router } from "@angular/router";
 import { Pagination } from "app/core/types/list.types";
 import { Observable, Subject } from "rxjs";
 import { takeUntil } from "rxjs/operators";
-import { DialogPrevisualizarComponent } from "../components/dialog-previsualizar/dialog-previsualizar.component";
-import { AperturaAsignacionComponent } from "./apertura-asignacion/apertura-asignacion.component";
 import { ListadoAsignacionesService } from "./asignaciones.service";
 
 @Component({

@@ -1,13 +1,9 @@
-import { ChangeDetectorRef, Component, OnInit, ViewChild } from "@angular/core";
-import { MatDrawer } from "@angular/material/sidenav";
+import { Component, OnInit } from "@angular/core";
 import {
-  NavigationStart,
   Router,
   Event as NavigationEvent,
   NavigationEnd,
 } from "@angular/router";
-import { FuseNavigationItem } from "@fuse/components/navigation";
-import { FuseMediaWatcherService } from "@fuse/services/media-watcher";
 import {
   validateRenderShrinkScreen,
   validateShrinkScreen,

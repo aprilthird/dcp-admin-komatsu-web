@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Inject, OnInit, Output } from "@angular/core";
 import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
+import { Subject } from "rxjs";
 import { FormatosService } from "../../formatos.service";
 
 @Component({
@@ -10,6 +11,7 @@ import { FormatosService } from "../../formatos.service";
 export class DialogValidateFormatComponent implements OnInit {
   @Output() success: EventEmitter<any> = new EventEmitter();
   loading: boolean;
+  private _unsubscribeAll: Subject<any> = new Subject<any>();
 
   constructor(
     public matDialog: MatDialogRef<DialogValidateFormatComponent>,
@@ -18,6 +20,10 @@ export class DialogValidateFormatComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {}
+  ngOnDestroy(): void {
+    this._unsubscribeAll.next();
+    this._unsubscribeAll.complete();
+  }
 
   postValidateSection(): void {
     this.loading = true;

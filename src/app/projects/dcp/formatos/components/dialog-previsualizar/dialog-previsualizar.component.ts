@@ -1,6 +1,5 @@
 import { Component, Inject, Input, OnInit } from "@angular/core";
 import {
-  FormArray,
   FormBuilder,
   FormControl,
   FormGroup,
@@ -9,6 +8,7 @@ import {
 import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
 import { AzureService } from "app/core/azure/azure.service";
 import { TipoParametro } from "app/core/types/formatos.types";
+import { Subject } from "rxjs";
 import { ListadoAsignacionesService } from "../../asignaciones/asignaciones.service";
 import { EditarFormatoService } from "../../editar-formato/editar-formato.service";
 
@@ -30,6 +30,7 @@ export class DialogPrevisualizarComponent implements OnInit {
 
   data: any;
   options: string[] = [];
+  private _unsubscribeAll: Subject<any> = new Subject<any>();
 
   constructor(
     private fb: FormBuilder,
@@ -58,6 +59,11 @@ export class DialogPrevisualizarComponent implements OnInit {
           this.loading = false;
         });
     }
+  }
+
+  ngOnDestroy(): void {
+    this._unsubscribeAll.next();
+    this._unsubscribeAll.complete();
   }
 
   generateForm() {

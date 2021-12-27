@@ -1,10 +1,8 @@
 import { Component, OnInit } from "@angular/core";
 import { MatDialog } from "@angular/material/dialog";
 import { ActivatedRoute, Router } from "@angular/router";
-import { FuseConfirmationService } from "@fuse/services/confirmation";
 import { Formato } from "app/core/types/formatos.types";
 import { Usuario } from "app/core/types/user.types";
-import { UsuariosService } from "app/projects/dcp-fake/seguridad/usuarios/usuarios.service";
 import { Observable, Subject } from "rxjs";
 import { takeUntil } from "rxjs/operators";
 import { DialogAddAsignarComponent } from "../components/dialog-add-asignar/dialog-add-asignar.component";
