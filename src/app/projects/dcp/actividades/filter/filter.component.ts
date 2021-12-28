@@ -18,12 +18,15 @@ export class FilterComponent implements OnInit {
 
   @Output() range: EventEmitter<any> = new EventEmitter();
   @Input() inbox: string;
+  isFilter: boolean;
   constructor(
     private matDialog: MatDialog,
     private _activitiesService: ActivitiesService
   ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.isFiltered();
+  }
 
   openFilter(): void {
     if (this.inbox === "informe") {
@@ -53,4 +56,12 @@ export class FilterComponent implements OnInit {
           .subscribe(() => {});
     }
   }
+
+  private isFiltered(): void {
+    this._activitiesService._isFilter.subscribe(
+      (isFilter) => (this.isFilter = isFilter)
+    );
+  }
+
+  deleteFilters() {}
 }

@@ -1,7 +1,13 @@
 <div class="flex gap-5">
-  <button mat-raised-button [color]="'secondary'" (click)="openFilter()">
+  <button
+    mat-raised-button
+    [color]="!isFilter ? 'secondary' : 'primary'"
+    (click)="openFilter()"
+    [matTooltip]="!isFilter ? 'Filtrar' : 'Ver filtros'"
+  >
     <mat-icon svgIcon="heroicons_outline:filter"></mat-icon>
-    <span class="ml-2 mr-1">Filtrar</span>
+    <span *ngIf="!isFilter" class="ml-2 mr-1">Filtrar</span>
+    <span *ngIf="isFilter" class="ml-2 mr-1">Filtrado</span>
   </button>
 
   <button mat-raised-button [color]="'secondary'" (click)="picker.open()">

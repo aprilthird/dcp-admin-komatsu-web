@@ -2,15 +2,15 @@ import moment from "moment";
 let startDate = moment();
 
 interface GetInbox {
-  page: number | 0;
-  pageSize: number | 10;
-  offset: number | 0;
-  next: number | 0;
+  page: number;
+  pageSize: number;
+  offset: number;
+  next: number;
   filter: {
     id: number;
     tipo?: number;
-    fechaInicio?: any | "";
-    fechaFin?: any | "";
+    fechaInicio?: any;
+    fechaFin?: any;
     codigo: string;
     idTipoServicio?: number;
     idEstado?: number;

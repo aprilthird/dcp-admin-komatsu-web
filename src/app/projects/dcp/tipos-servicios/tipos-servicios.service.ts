@@ -10,20 +10,20 @@ import { debounceTime, tap } from "rxjs/operators";
 let startDate = moment();
 
 interface GetInbox {
-  page: number | 0;
-  pageSize: number | 10;
-  offset: number | 0;
-  next: number | 0;
+  page: number;
+  pageSize: number;
+  offset: number;
+  next: number;
   filter: {
     id: number;
     idUsuario: number;
     dni: string;
     nombre: string;
-    estado?: number | 1;
+    estado?: number;
     tipo?: number;
-    fechaInicio?: any | "";
-    fechaFin?: any | "";
-    codigo: string | "";
+    fechaInicio?: any;
+    fechaFin?: any;
+    codigo: string;
   };
 }
 

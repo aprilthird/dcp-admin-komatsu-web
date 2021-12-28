@@ -24,6 +24,7 @@ export class ActivitiesService {
     idTipoServicio: 0,
     idEstado: 0,
   });
+  _isFilter: BehaviorSubject<boolean> = new BehaviorSubject(false);
 
   _pagination: BehaviorSubject<any> = new BehaviorSubject({
     length: 0,
@@ -94,6 +95,9 @@ export class ActivitiesService {
       pageSize: 10,
     }
   ): Observable<any[]> {
+    if (idTipoServicio || idEstado !== 0 || codigo !== "")
+      this._isFilter.next(true);
+    else this._isFilter.next(false);
     this._inputFilter.next({
       idTipoServicio,
       idEstado,
