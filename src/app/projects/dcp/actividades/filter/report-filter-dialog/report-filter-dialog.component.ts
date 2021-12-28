@@ -5,6 +5,7 @@ import { TiposServiciosService } from "app/projects/dcp/tipos-servicios/tipos-se
 import { Observable, Subject } from "rxjs";
 import { takeUntil } from "rxjs/operators";
 import { ActivitiesService } from "../../activities.service";
+import { General } from "../../config/activitties-cofig";
 
 @Component({
   selector: "app-report-filter-dialog",
@@ -15,8 +16,8 @@ export class ReportFilterDialogComponent implements OnInit {
   form: FormGroup;
   loading: boolean;
   typeServices$: Observable<any>;
+  states: any = [];
   private _unsubscribeAll: Subject<any> = new Subject<any>();
-  states = states;
 
   constructor(
     private fb: FormBuilder,
@@ -25,9 +26,9 @@ export class ReportFilterDialogComponent implements OnInit {
     private _activitiesService: ActivitiesService
   ) {
     this.form = this.fb.group({
-      os: new FormControl(""),
-      idTipo: new FormControl(),
-      estado: new FormControl(""),
+      codigo: new FormControl(""),
+      idTipoServicio: new FormControl(0),
+      idEstado: new FormControl(0),
     });
   }
 
@@ -36,6 +37,26 @@ export class ReportFilterDialogComponent implements OnInit {
       this.typeServices$ = this._tiposServiciosService.serviceTypes$.pipe(
         takeUntil(this._unsubscribeAll)
       );
+    });
+
+    this.getStatuses();
+    this.getCurrentFilters();
+  }
+
+  ngOnDestroy(): void {
+    this._unsubscribeAll.next();
+    this._unsubscribeAll.complete();
+  }
+
+  private getStatuses(): void {
+    this._activitiesService.getStatus(General.status).subscribe((resp) => {
+      this.states = resp.body;
+    });
+  }
+
+  private getCurrentFilters(): void {
+    this._activitiesService._inputFilter.subscribe((filters) => {
+      this.form.patchValue(filters);
     });
   }
 
@@ -48,20 +69,11 @@ export class ReportFilterDialogComponent implements OnInit {
   }
 
   deleteFilters(): void {
-    Object.keys(this.form.value).forEach((x) =>
-      this.form.controls[x].setValue("")
-    );
+    Object.keys(this.form.value).forEach((x) => {
+      if (x === "codigo") this.form.controls[x].setValue("");
+      else this.form.controls[x].setValue(0);
+    });
+
+    this.filter();
   }
 }
-
-const states = [
-  {
-    id: 1,
-    name: "Terminada",
-  },
-
-  { id: 2, name: "En procesado" },
-  { id: 3, name: "Sin empezar" },
-  { id: 4, name: "Observada" },
-  { id: 5, name: "Programada" },
-];

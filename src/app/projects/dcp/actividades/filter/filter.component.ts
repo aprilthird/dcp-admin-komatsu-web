@@ -37,19 +37,20 @@ export class FilterComponent implements OnInit {
     const startDate = new Date(this.dateRange.controls["startDate"].value);
     const endDate = new Date(this.dateRange.controls["endDate"].value);
     if (Number(setFormatDate(endDate).split("-")[0]) > 2020) {
-      this._activitiesService._rangeDate.next({
+      /*this._activitiesService._rangeDate.next({
         fechaInicio: setFormatDate(startDate),
         fechaFin: setFormatDate(endDate),
-      });
-      console.log(setFormatDate(startDate), setFormatDate(endDate));
-      this.loadInbox();
+      });*/
+      this.loadInbox(setFormatDate(startDate), setFormatDate(endDate));
     }
   }
 
-  loadInbox() {
+  loadInbox(fechaInicio: string, fechaFin: string) {
     switch (this.inbox) {
       case "informe":
-        return this._activitiesService.getActivities().subscribe(() => {});
+        return this._activitiesService
+          .getActivities({ fechaInicio, fechaFin })
+          .subscribe(() => {});
     }
   }
 }

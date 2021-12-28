@@ -39,7 +39,7 @@ const getInboxParams: GetInbox = {
     nombre: "",
     codigo: "",
     fechaFin: startDate.format("yyyy-MM-DD"),
-    fechaInicio: startDate.subtract(14, "days").format("yyyy-MM-DD"),
+    fechaInicio: startDate.subtract(90, "days").format("yyyy-MM-DD"),
   },
 };
 
@@ -56,6 +56,7 @@ export class TiposServiciosService {
     fechaInicio: getInboxParams.filter.fechaInicio,
     fechaFin: getInboxParams.filter.fechaFin,
   });
+
   _pagination: BehaviorSubject<any> = new BehaviorSubject({
     length: 0,
     size: 10,

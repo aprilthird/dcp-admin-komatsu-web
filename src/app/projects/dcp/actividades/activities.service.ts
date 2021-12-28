@@ -4,66 +4,25 @@ import { ParamsPagination } from "app/core/types/http.types";
 import { Pagination } from "app/core/types/list.types";
 import { Response } from "app/shared/models/general-model";
 import { environment } from "environments/environment";
-import moment from "moment";
 import { BehaviorSubject, Observable } from "rxjs";
 import { tap } from "rxjs/operators";
-
-import { Activity as ActivityI } from "./models/activities-model";
-let startDate = moment();
-
-//FILTER CONFIG
-
-interface GetInbox {
-  page: number | 0;
-  pageSize: number | 10;
-  offset: number | 0;
-  next: number | 0;
-  filter: {
-    id: number;
-    idUsuario: number;
-    dni: string;
-    nombre: string;
-    estado?: string | "";
-    idTipo?: number;
-    tipo?: number;
-    fechaInicio?: any | "";
-    fechaFin?: any | "";
-    codigo: string | "";
-    os?: string | "";
-  };
-}
-
-const getInboxParams: GetInbox = {
-  page: 0,
-  pageSize: 10,
-  offset: 0,
-  next: 0,
-  filter: {
-    id: 0,
-    idUsuario: 0,
-    idTipo: 0,
-    estado: "",
-    dni: "",
-    nombre: "",
-    codigo: "",
-    fechaFin: startDate.format("yyyy-MM-DD"),
-    fechaInicio: startDate.subtract(14, "days").format("yyyy-MM-DD"),
-    os: "",
-  },
-};
+import { getInboxParams } from "./models/activity-filter";
 
 @Injectable({
   providedIn: "root",
 })
 export class ActivitiesService {
-  preloadedFormats: BehaviorSubject<any> = new BehaviorSubject(null);
   _activities: BehaviorSubject<any> = new BehaviorSubject(null);
-  _idActivityFormat: BehaviorSubject<number> = new BehaviorSubject(null);
   _idFormat: BehaviorSubject<number> = new BehaviorSubject(null);
 
   _rangeDate: BehaviorSubject<any> = new BehaviorSubject({
     fechaInicio: getInboxParams.filter.fechaInicio,
     fechaFin: getInboxParams.filter.fechaFin,
+  });
+  _inputFilter: BehaviorSubject<any> = new BehaviorSubject({
+    codigo: "",
+    idTipoServicio: 0,
+    idEstado: 0,
   });
 
   _pagination: BehaviorSubject<any> = new BehaviorSubject({
@@ -76,14 +35,6 @@ export class ActivitiesService {
   });
 
   constructor(private http: HttpClient) {}
-
-  get preloadedFormats$(): Observable<any> {
-    return this.preloadedFormats.asObservable();
-  }
-
-  set preloadedFormats$(data) {
-    this.preloadedFormats.next(data);
-  }
 
   get activities$(): Observable<any> {
     return this._activities.asObservable();
@@ -116,7 +67,6 @@ export class ActivitiesService {
   }
 
   getTipoMtto(tipo, idClaseActividad?): Observable<any[]> {
-    console.log("id clase actividad ", idClaseActividad);
     return this.http.post<any[]>(
       environment.apiUrl + "/Administracion/BandejaMaestrosPaginado",
       {
@@ -131,16 +81,39 @@ export class ActivitiesService {
   }
 
   getActivities(
-    { page, pageSize, idTipo, estado, os }: ParamsPagination | any = {
+    {
+      page,
+      pageSize,
+      idTipoServicio = 0,
+      idEstado = 0,
+      codigo = "",
+      fechaInicio = getInboxParams.filter.fechaInicio,
+      fechaFin = getInboxParams.filter.fechaFin,
+    }: ParamsPagination | any = {
       page: 0,
       pageSize: 10,
     }
   ): Observable<any[]> {
-    let currentFilter;
+    this._inputFilter.next({
+      idTipoServicio,
+      idEstado,
+      codigo,
+    });
 
-    currentFilter = {
+    this._rangeDate.next({
+      fechaInicio,
+      fechaFin,
+    });
+    let currentFilter = {
       ...getInboxParams,
-      filter: { ...this._rangeDate.getValue(), idTipo, estado, os },
+      filter: {
+        ...getInboxParams.filter,
+        fechaInicio,
+        fechaFin,
+        idTipoServicio,
+        idEstado,
+        codigo,
+      },
       page,
       pageSize,
     };
@@ -169,7 +142,7 @@ export class ActivitiesService {
       );
   }
 
-  postActaConformidad(data: ActaConformidad): Observable<Response> {
+  postActaConformidad(data): Observable<Response> {
     return this.http.post<Response>(
       environment.apiUrl + "/Mantenimiento/AgregarActaConformidad",
       data
@@ -187,6 +160,10 @@ export class ActivitiesService {
       environment.apiUrl + "/Reportes/GenerarPdf/" + idActividadFormato;
     return this.http.get<Response>(endpoint);
   }
-}
 
-interface ActaConformidad {}
+  getStatus(type: string): Observable<any> {
+    const endpoint =
+      environment.apiUrl + "/Administracion/ObtenerEstados/" + type;
+    return this.http.get<Response>(endpoint);
+  }
+}
