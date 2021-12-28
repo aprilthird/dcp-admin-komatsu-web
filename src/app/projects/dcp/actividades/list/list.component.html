@@ -146,7 +146,7 @@
                   </div>
 
                   <div class="truncate">
-                    {{ actividad?.usuarioMod }}
+                    {{ actividad?.fechaMod | date: "dd-MM-yy h:mma" }}
                   </div>
 
                   <div class="truncate">
@@ -165,10 +165,15 @@
                         rounded-full
                         tracking-wide
                         uppercase
-                        bg-green-200
                         text-green-800
                         dark:bg-green-600 dark:text-green-50
                       "
+                      [ngClass]="{
+                        'bg-green-200': actividad?.nestado === 'Validada',
+                        'bg-red-200': actividad?.nestado === 'Observada',
+                        'bg-gray-200': actividad?.nestado === 'Sin Empezar',
+                        'bg-yellow-200': actividad?.nestado === 'En Proceso'
+                      }"
                     >
                       <span class="leading-relaxed whitespace-nowrap">
                         {{ actividad?.nestado }}</span
