@@ -2,9 +2,10 @@ import { Component, OnInit } from "@angular/core";
 import { FormBuilder, FormControl, FormGroup } from "@angular/forms";
 import { MatDialogRef } from "@angular/material/dialog";
 import { ListadoService } from "app/projects/dcp/formatos/listado/listado.services";
-import { Subject } from "rxjs";
+import { forkJoin, Subject } from "rxjs";
 import { ActivitiesService } from "../../activities.service";
-import { FilterI } from "../../../../../shared/models/filters-model";
+import { FormatosService } from "app/projects/dcp/formatos/formatos.service";
+import { map } from "rxjs/operators";
 
 @Component({
   selector: "app-filter-dialog",
@@ -12,35 +13,46 @@ import { FilterI } from "../../../../../shared/models/filters-model";
   styleUrls: ["./filter-dialog.component.scss"],
 })
 export class FilterDialogComponent implements OnInit {
-  filters = Filters;
-
   form: FormGroup;
   loading: boolean;
-  modelosOpt: any;
-  actividadOpt: any;
-  equipoOpt: any;
-  filterService: FilterI;
-
   private _unsubscribeAll: Subject<any> = new Subject<any>();
+  cecos: any = [];
+  ces: any = [];
+  gps: any = [];
 
   constructor(
     private fb: FormBuilder,
     public matdialigRef: MatDialogRef<FilterDialogComponent>,
     private serviceAct: ActivitiesService,
-    private listadoService: ListadoService
+    private listadoService: ListadoService,
+    private formatServices: FormatosService
   ) {
     this.form = this.fb.group({
-      modelo: new FormControl(""),
-      equipo: new FormControl(""),
-      actividad: new FormControl(""),
-      tipo_solicitud: new FormControl(""),
-      estados: new FormControl(""),
+      codCeco: new FormControl(""),
+      codGp: new FormControl(""),
+      codCe: new FormControl(""),
+      //idTipo: new FormControl(""),
     });
   }
 
   ngOnInit(): void {
-    this.getFilters();
-    //this.getInboxes();
+    this.getCombos();
+  }
+
+  private getCombos(): void {
+    this.loading = true;
+    let ceco = this.formatServices
+      .obtenerGenereales(1)
+      .pipe(map((x) => x.body));
+    let gp = this.formatServices.obtenerGenereales(2).pipe(map((x) => x.body));
+    let ce = this.formatServices.obtenerGenereales(3).pipe(map((x) => x.body));
+
+    forkJoin([ceco, gp, ce]).subscribe((result) => {
+      this.cecos = result[0];
+      this.gps = result[1];
+      this.ces = result[2];
+      this.loading = false;
+    });
   }
 
   ngOnDestroy(): void {
@@ -48,25 +60,10 @@ export class FilterDialogComponent implements OnInit {
     this._unsubscribeAll.complete();
   }
 
-  /*getInboxes(): void {
-    this.loading = true;
-    let equipo = this.serviceAct.getList(2).pipe(map((x: any) => x.body.data));
-    let modelos = this.serviceAct.getList(5).pipe(map((x: any) => x.body.data));
-    let c_act = this.serviceAct.getList(7).pipe(map((x: any) => x.body.data));
-
-    forkJoin([equipo, modelos, c_act]).subscribe((result: any) => {
-      this.equipoOpt = result[0];
-      this.modelosOpt = result[1];
-      this.actividadOpt = result[2];
-      this.loading = false;
-    });
-  }*/
-
   applyFilters(): void {
     this.listadoService
       .getFormatos({
-        idClaseActividad: this.form.controls["actividad"].value,
-        estado: this.form.controls["estados"].value,
+        ...this.form.value,
       })
       .subscribe((resp) => {
         this.listadoService._filter.next(this.form.value);
@@ -80,33 +77,4 @@ export class FilterDialogComponent implements OnInit {
       this.listadoService._filter.next(null);
     });
   }
-
-  getFilters(): void {
-    this.listadoService._filter.subscribe((resp) => {
-      this.filterService = resp;
-      if (this.filterService) {
-        this.setFilter(resp);
-      }
-    });
-  }
-
-  setFilter(filter: FilterI): void {
-    this.form.controls["modelo"].setValue(filter.modelo);
-    this.form.controls["equipo"].setValue(filter.equipo);
-    this.form.controls["actividad"].setValue(filter.actividad);
-    this.form.controls["estado"].setValue(filter.estado);
-  }
 }
-
-const Filters = {
-  estados: [
-    {
-      id: 1,
-      name: "Activo",
-    },
-    {
-      id: 0,
-      name: "Inactivo",
-    },
-  ],
-};

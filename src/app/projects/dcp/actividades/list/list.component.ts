@@ -1,6 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { Pagination } from "app/core/types/list.types";
+import { ExportExcelService } from "app/shared/utils/export-excel.ts.service";
 import { environment } from "environments/environment";
 import { Observable, Subject } from "rxjs";
 import { takeUntil } from "rxjs/operators";
@@ -19,6 +20,7 @@ export class ListComponent implements OnInit {
   isLoading = false;
 
   activities$: Observable<any>;
+  dateRange$: Observable<any>;
   isEdit: boolean;
 
   start = new Date().toLocaleDateString("es-ES");
@@ -28,13 +30,17 @@ export class ListComponent implements OnInit {
     private activitiesService: ActivitiesService,
     private asignationService: EditarFormatoService,
     private _router: Router,
-    private _routeActived: ActivatedRoute
+    private _routeActived: ActivatedRoute,
+    private exportExcelService: ExportExcelService
   ) {
     this.getActivities();
   }
 
   ngOnInit(): void {
     this.loadData();
+    this.dateRange$ = this.activitiesService._rangeDate.pipe(
+      takeUntil(this._unsubscribeAll)
+    );
   }
 
   getActivities(): void {
@@ -122,6 +128,13 @@ export class ListComponent implements OnInit {
         a.click();
         a.remove();
       });
+  }
+
+  exportToExcel(): void {
+    this.exportExcelService.exportAsExcelFile(
+      this.activitiesService._activities.getValue(),
+      "Informes"
+    );
   }
 
   ngOnDestroy(): void {

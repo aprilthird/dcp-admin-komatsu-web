@@ -32,11 +32,17 @@
         <div class="text-4xl font-extrabold tracking-tight">
           Bandeja de informes
         </div>
-        <a class="prose font-bold">De semana {{ start }} al {{ end }}</a>
+        <a class="prose font-bold"
+          >De semana {{ (dateRange$ | async).fechaInicio }} al
+          {{ (dateRange$ | async).fechaFin }}</a
+        >
       </div>
       <div class="flex flex-wrap gap-5 mt-5 xl:my-none">
-        <app-filter (range)="daterange($event)"></app-filter>
-        <button mat-raised-button [color]="'primary'">
+        <app-filter
+          (range)="daterange($event)"
+          [inbox]="'informe'"
+        ></app-filter>
+        <button (click)="exportToExcel()" mat-raised-button [color]="'primary'">
           <mat-icon
             [svgIcon]="'heroicons_outline:document-download'"
           ></mat-icon>

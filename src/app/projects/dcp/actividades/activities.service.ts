@@ -4,10 +4,12 @@ import { ParamsPagination } from "app/core/types/http.types";
 import { Pagination } from "app/core/types/list.types";
 import { Response } from "app/shared/models/general-model";
 import { environment } from "environments/environment";
+import moment from "moment";
 import { BehaviorSubject, Observable } from "rxjs";
 import { tap } from "rxjs/operators";
 
 import { Activity as ActivityI } from "./models/activities-model";
+let startDate = moment();
 
 //FILTER CONFIG
 
@@ -21,11 +23,13 @@ interface GetInbox {
     idUsuario: number;
     dni: string;
     nombre: string;
-    estado?: number | 1;
+    estado?: string | "";
+    idTipo?: number;
     tipo?: number;
-    fechaIni?: any | "";
+    fechaInicio?: any | "";
     fechaFin?: any | "";
     codigo: string | "";
+    os?: string | "";
   };
 }
 
@@ -37,9 +41,14 @@ const getInboxParams: GetInbox = {
   filter: {
     id: 0,
     idUsuario: 0,
+    idTipo: 0,
+    estado: "",
     dni: "",
     nombre: "",
     codigo: "",
+    fechaFin: startDate.format("yyyy-MM-DD"),
+    fechaInicio: startDate.subtract(14, "days").format("yyyy-MM-DD"),
+    os: "",
   },
 };
 
@@ -51,6 +60,11 @@ export class ActivitiesService {
   _activities: BehaviorSubject<any> = new BehaviorSubject(null);
   _idActivityFormat: BehaviorSubject<number> = new BehaviorSubject(null);
   _idFormat: BehaviorSubject<number> = new BehaviorSubject(null);
+
+  _rangeDate: BehaviorSubject<any> = new BehaviorSubject({
+    fechaInicio: getInboxParams.filter.fechaInicio,
+    fechaFin: getInboxParams.filter.fechaFin,
+  });
 
   _pagination: BehaviorSubject<any> = new BehaviorSubject({
     length: 0,
@@ -117,22 +131,19 @@ export class ActivitiesService {
   }
 
   getActivities(
-    { page, pageSize }: ParamsPagination | any = {
+    { page, pageSize, idTipo, estado, os }: ParamsPagination | any = {
       page: 0,
       pageSize: 10,
     }
   ): Observable<any[]> {
     let currentFilter;
 
-    if (!page) {
-      currentFilter = { ...getInboxParams };
-    } else {
-      currentFilter = {
-        ...getInboxParams,
-        page,
-        pageSize,
-      };
-    }
+    currentFilter = {
+      ...getInboxParams,
+      filter: { ...this._rangeDate.getValue(), idTipo, estado, os },
+      page,
+      pageSize,
+    };
     return this.http
       .post<any[]>(
         environment.apiUrl + "/Actividades/BandejaInformesPaginado",

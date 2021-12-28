@@ -14,43 +14,37 @@
       <!-- Nombre -->
 
       <mat-form-field floatLabel="always" class="w-100-p">
-        <mat-label>CeCo</mat-label>
-        <mat-select formControlName="codCeco" placeholder="Seleccione un ceco">
-          <mat-option *ngFor="let ceco of cecos" [value]="ceco.codigo">{{
-            ceco.nombre
-          }}</mat-option>
+        <mat-label>OS</mat-label>
+        <input matInput placeholder="Ingrese la OS" formControlName="os" />
+      </mat-form-field>
+
+      <mat-form-field floatLabel="always" class="w-100-p">
+        <mat-label class="font-bold">Tipo de servicio</mat-label>
+        <mat-select
+          formControlName="idTipo"
+          placeholder="Seleccione un tipo de servicio"
+        >
+          <ng-container *ngIf="typeServices$ | async as typeServices">
+            <mat-option *ngFor="let type of typeServices" [value]="type.id">{{
+              type.nombre
+            }}</mat-option>
+          </ng-container>
         </mat-select>
       </mat-form-field>
 
       <mat-form-field floatLabel="always" class="w-100-p">
-        <mat-label class="font-bold">CE</mat-label>
-        <mat-select formControlName="codCe" placeholder="Seleccione un ce">
-          <mat-option *ngFor="let ce of ces" [value]="ce.codigo">{{
-            ce.nombre
+        <mat-label class="font-bold">Estado</mat-label>
+        <mat-select formControlName="estado" placeholder="Seleccione un estado">
+          <mat-option *ngFor="let state of states" [value]="state.name">{{
+            state.name
           }}</mat-option>
         </mat-select>
       </mat-form-field>
 
-      <mat-form-field floatLabel="always" class="w-100-p">
-        <mat-label class="font-bold">GP</mat-label>
-        <mat-select formControlName="codGp" placeholder="Ingrese una actividad">
-          <mat-option *ngFor="let gp of gps" [value]="gp.id">{{
-            gp.nombre
-          }}</mat-option>
-        </mat-select>
-      </mat-form-field>
-
-      <!--<mat-form-field floatLabel="always" class="w-100-p">
-        <mat-label class="font-bold">Tipo servicios</mat-label>
-        <mat-select formControlName="idTipo" placeholder="Seleccione un gp">
-          <mat-option *ngFor="let service of services" [value]="service.id">{{
-            service.nombre
-          }}</mat-option>
-        </mat-select>
-      </mat-form-field>-->
-
-      <a class="underline cursor-pointer" (click)="wipeFilters()">
-        <span class="font-semibold">Eliminar filtros</span>
+      <a class="underline cursor-pointer">
+        <span class="font-semibold" (click)="deleteFilters()"
+          >Eliminar filtros</span
+        >
       </a>
     </div>
   </div>
@@ -70,9 +64,9 @@
     </button>
     <button
       mat-raised-button
+      (click)="filter()"
       [color]="'primary'"
       class="w-32"
-      (click)="applyFilters()"
     >
       <span> Aplicar filtros </span>
     </button>

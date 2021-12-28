@@ -49,6 +49,9 @@ export class ListadoService {
       pageSize,
       idClaseActividad,
       estado,
+      codCeco,
+      codGp,
+      codCe,
       ...filter
     }: ParamsPagination | any = {
       page: 0,
@@ -67,6 +70,9 @@ export class ListadoService {
             estado,
             fechaInicio: "2021-10-06",
             fechaFin: "2021-12-31",
+            codCeco,
+            codGp,
+            codCe,
           },
         }
       )

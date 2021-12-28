@@ -1,8 +1,10 @@
-import { Component, EventEmitter, OnInit, Output } from "@angular/core";
+import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
 import { FormControl, FormGroup } from "@angular/forms";
 import { MatDialog } from "@angular/material/dialog";
+import { setFormatDate } from "app/shared/utils/datesFormat";
+import { ActivitiesService } from "../activities.service";
 import { FilterDialogComponent } from "./filter-dialog/filter-dialog.component";
-
+import { ReportFilterDialogComponent } from "./report-filter-dialog/report-filter-dialog.component";
 @Component({
   selector: "app-filter",
   templateUrl: "./filter.component.html",
@@ -15,14 +17,39 @@ export class FilterComponent implements OnInit {
   });
 
   @Output() range: EventEmitter<any> = new EventEmitter();
-  constructor(private matDialog: MatDialog) {}
+  @Input() inbox: string;
+  constructor(
+    private matDialog: MatDialog,
+    private _activitiesService: ActivitiesService
+  ) {}
 
   ngOnInit(): void {}
 
   openFilter(): void {
-    this.matDialog.open(FilterDialogComponent, { width: "370px" });
+    if (this.inbox === "informe") {
+      this.matDialog.open(ReportFilterDialogComponent, { width: "370px" });
+    } else {
+      this.matDialog.open(FilterDialogComponent, { width: "370px" });
+    }
   }
   changeDate(): void {
     this.range.emit(this.dateRange.value);
+    const startDate = new Date(this.dateRange.controls["startDate"].value);
+    const endDate = new Date(this.dateRange.controls["endDate"].value);
+    if (Number(setFormatDate(endDate).split("-")[0]) > 2020) {
+      this._activitiesService._rangeDate.next({
+        fechaInicio: setFormatDate(startDate),
+        fechaFin: setFormatDate(endDate),
+      });
+      console.log(setFormatDate(startDate), setFormatDate(endDate));
+      this.loadInbox();
+    }
+  }
+
+  loadInbox() {
+    switch (this.inbox) {
+      case "informe":
+        return this._activitiesService.getActivities().subscribe(() => {});
+    }
   }
 }
