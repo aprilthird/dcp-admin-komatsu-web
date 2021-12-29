@@ -16,7 +16,8 @@ import { FilterI } from "../../../../shared/models/filters-model";
 })
 export class ListadoService {
   _formatos: BehaviorSubject<any[]> = new BehaviorSubject(null);
-  _filter: BehaviorSubject<FilterI> = new BehaviorSubject(null);
+  _filter: BehaviorSubject<any> = new BehaviorSubject(null);
+  _isFilter: BehaviorSubject<boolean> = new BehaviorSubject(false);
   _pagination: BehaviorSubject<any> = new BehaviorSubject({
     length: 0,
     size: 10,
@@ -52,13 +53,16 @@ export class ListadoService {
       codCeco,
       codGp,
       codCe,
-      ...filter
     }: ParamsPagination | any = {
       page: 0,
       pageSize: 10,
     }
   ): Observable<PaginationResponse<Formato[]>> {
-    console.log("filter - ", filter);
+    console.log(codCe, codCeco, codGp);
+    if ((!codCeco && !codGp && !codCe) || (codCeco && codGp && codCe === ""))
+      this._isFilter.next(false);
+    else this._isFilter.next(true);
+    this._filter.next({ codCeco, codGp, codCe });
     return this._httpClient
       .post<PaginationResponse<Formato[]>>(
         environment.apiUrl + "/Core/ObtenerFormatosPaginado",

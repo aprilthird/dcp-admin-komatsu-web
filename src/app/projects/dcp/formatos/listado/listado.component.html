@@ -32,9 +32,15 @@
     <!-- Actions -->
     <div class="flex flex-shrink-0 items-center mt-6 sm:mt-0 sm:ml-4 gap-5">
       <!-- Add product button -->
-      <button mat-raised-button [color]="'secondary'" (click)="openFilter()">
+      <button
+        mat-raised-button
+        [color]="!isFilter ? 'secondary' : 'primary'"
+        [matTooltip]="!isFilter ? 'Filtrar' : 'Ver filtros'"
+        (click)="openFilter()"
+      >
         <mat-icon svgIcon="heroicons_outline:filter"></mat-icon>
-        <span class="ml-2 mr-1">Filtrar</span>
+        <span *ngIf="!isFilter" class="ml-2 mr-1">Filtrar</span>
+        <span *ngIf="isFilter" class="ml-2 mr-1">Filtrado</span>
       </button>
       <button
         mat-raised-button

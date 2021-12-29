@@ -19,6 +19,7 @@ export class ListadoComponent implements OnInit, OnDestroy {
   formatos$: Observable<any[]>;
   pagination$: Observable<Pagination>;
   private _unsubscribeAll: Subject<any> = new Subject<any>();
+  isFilter: boolean;
 
   constructor(
     private _router: Router,
@@ -35,6 +36,7 @@ export class ListadoComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.loadData();
+    this.isFiltered();
   }
 
   loadData() {
@@ -76,6 +78,12 @@ export class ListadoComponent implements OnInit, OnDestroy {
         page: pagination.pageIndex,
       },
     });
+  }
+
+  private isFiltered(): void {
+    this._listadoService._isFilter.subscribe(
+      (isFilter) => (this.isFilter = isFilter)
+    );
   }
 
   openFilter(): void {

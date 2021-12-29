@@ -3,7 +3,6 @@ import { FormBuilder, FormControl, FormGroup } from "@angular/forms";
 import { MatDialogRef } from "@angular/material/dialog";
 import { ListadoService } from "app/projects/dcp/formatos/listado/listado.services";
 import { forkJoin, Subject } from "rxjs";
-import { ActivitiesService } from "../../activities.service";
 import { FormatosService } from "app/projects/dcp/formatos/formatos.service";
 import { map } from "rxjs/operators";
 
@@ -19,11 +18,11 @@ export class FilterDialogComponent implements OnInit {
   cecos: any = [];
   ces: any = [];
   gps: any = [];
+  isFilter: any;
 
   constructor(
     private fb: FormBuilder,
     public matdialigRef: MatDialogRef<FilterDialogComponent>,
-    private serviceAct: ActivitiesService,
     private listadoService: ListadoService,
     private formatServices: FormatosService
   ) {
@@ -31,12 +30,18 @@ export class FilterDialogComponent implements OnInit {
       codCeco: new FormControl(""),
       codGp: new FormControl(""),
       codCe: new FormControl(""),
-      //idTipo: new FormControl(""),
     });
   }
 
   ngOnInit(): void {
     this.getCombos();
+    this.getFilters();
+  }
+
+  getFilters(): void {
+    this.listadoService._filter.subscribe((filter) => {
+      this.form.patchValue(filter);
+    });
   }
 
   private getCombos(): void {
@@ -66,15 +71,14 @@ export class FilterDialogComponent implements OnInit {
         ...this.form.value,
       })
       .subscribe((resp) => {
-        this.listadoService._filter.next(this.form.value);
         this.matdialigRef.close();
       });
   }
 
   wipeFilters(): void {
-    Object.keys(this.form.controls).forEach((key) => {
-      this.form.get(key).setValue("");
-      this.listadoService._filter.next(null);
+    Object.keys(this.form.value).forEach((key) => {
+      this.form.controls[key].setValue(null);
     });
+    this.applyFilters();
   }
 }
