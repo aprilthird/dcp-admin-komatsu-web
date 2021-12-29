@@ -12,13 +12,13 @@
 
   <button mat-raised-button [color]="'secondary'" (click)="picker.open()">
     <!--<mat-icon svgIcon="heroicons_outline:calendar"></mat-icon>-->
-    <span class="ml-2 mr-1">Elegir fecha</span>
+
     <mat-date-range-input
       [formGroup]="dateRange"
       #rangepicker
       [rangePicker]="picker"
       hidden
-      class="mat-date-ranage-input-width"
+      class="max-w-1"
     >
       <input
         matStartDate
@@ -36,6 +36,7 @@
         (dateChange)="changeDate()"
       />
     </mat-date-range-input>
+    <span class="ml-2 mr-1">Elegir fecha</span>
     <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
     <mat-date-range-picker #picker></mat-date-range-picker>
   </button>
