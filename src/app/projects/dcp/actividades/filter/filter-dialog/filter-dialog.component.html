@@ -14,7 +14,7 @@
       <!-- Nombre -->
 
       <mat-form-field floatLabel="always" class="w-100-p">
-        <mat-label>CeCo</mat-label>
+        <mat-label class="font-bold">CeCo</mat-label>
         <mat-select formControlName="codCeco" placeholder="Seleccione un ceco">
           <mat-option *ngFor="let ceco of cecos" [value]="ceco.codigo">{{
             ceco.nombre
@@ -34,7 +34,7 @@
       <mat-form-field floatLabel="always" class="w-100-p">
         <mat-label class="font-bold">GP</mat-label>
         <mat-select formControlName="codGp" placeholder="Ingrese una actividad">
-          <mat-option *ngFor="let gp of gps" [value]="gp.id">{{
+          <mat-option *ngFor="let gp of gps" [value]="gp.codigo">{{
             gp.nombre
           }}</mat-option>
         </mat-select>

@@ -56,6 +56,8 @@ export class ValidationFormatosComponent implements OnInit {
   } = {};
   data: any;
   private _unsubscribeAll: Subject<any> = new Subject<any>();
+  //formatValidate: boolean;
+  //allSectionValidated: boolean = true;
 
   constructor(
     private matDialog: MatDialog,
@@ -118,7 +120,7 @@ export class ValidationFormatosComponent implements OnInit {
       },
     ];
 
-    this.sections.forEach((section, index) => {
+    this.sections.forEach((section) => {
       this.menuData[0].children.push({
         id: section.id,
         title: section.nombre,
@@ -126,15 +128,18 @@ export class ValidationFormatosComponent implements OnInit {
         link: `/admin/informes/validation/${this.currentIdAsignation}/${section.id}`,
         children: [],
         badge: {
-          title: !section.grupos[0].parametros.some(
-            (parametro) => parametro.seccionValida
-          )
-            ? "warning_amber"
-            : "heroicons_outline:check-circle",
-          classes: !section.grupos[0].parametros.some(
-            (parametro) => parametro.seccionValida
-          )
-            ? "text-gray-600"
+          title:
+            !section.grupos[0].parametros.some(
+              (parametro) => parametro.seccionValida
+            ) && section.grupos.some((group) => group.observado)
+              ? "warning_amber"
+              : section.grupos[0].parametros.some(
+                  (parametro) => parametro.seccionValida
+                )
+              ? "heroicons_outline:check-circle"
+              : "",
+          classes: section.grupos.some((group) => group.observado)
+            ? "text-yellow-600"
             : "text-green-600",
         },
       });
@@ -146,6 +151,9 @@ export class ValidationFormatosComponent implements OnInit {
       type: "basic",
       link: `/admin/informes/validation/fotografias/${this.currentIdAsignation}`,
     });
+
+    this.validateFormat();
+    //this.validateAllSection();
   }
 
   validate(): void {
@@ -459,6 +467,26 @@ export class ValidationFormatosComponent implements OnInit {
     return this.currentSectionData.grupos[0].parametros.some(
       (parametro) => parametro.seccionValida
     );
+  }
+
+  /*validateAllSection() {
+    this.sections.forEach((section) => {
+      section.grupos.forEach((group) => {
+        group.parametros.forEach((parameter) => {
+          if (!parameter.seccionValida) {
+            this.allSectionValidated = false;
+          }
+        });
+      });
+    });
+  }*/
+
+  isSectionObserved(): boolean {
+    return this.currentSectionData.grupos.some((group) => group.observado);
+  }
+
+  isGroupObserved(groupIdx: number): boolean {
+    return this.currentSectionData.grupos[groupIdx].observado;
   }
 
   validateFormat() {
