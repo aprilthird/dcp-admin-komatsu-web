@@ -49,11 +49,14 @@ export class ListadoComponent implements OnInit, OnDestroy {
   }
 
   clickNewFormato(serviceData?) {
-    const dialogRef = this.dialog.open(DialogAddFormatoComponent, {
-      autoFocus: false,
-      width: "376px",
-      data: serviceData,
-    });
+    const dialogRef = this.dialog
+      .open(DialogAddFormatoComponent, {
+        autoFocus: false,
+        width: "376px",
+        data: serviceData,
+      })
+      .afterClosed()
+      .subscribe(() => this.loadData());
   }
 
   /**

@@ -66,6 +66,7 @@ export class CrearUsuarioComponent implements OnInit {
 
   private _unsubscribeAll: Subject<any> = new Subject<any>();
   submitted: boolean;
+  dataUserToEdit: any = {};
 
   get rolesFormArray() {
     return this.form.controls.usuarioRoles as FormArray;
@@ -106,6 +107,8 @@ export class CrearUsuarioComponent implements OnInit {
         .getUsuario(this.activatedRoute.snapshot.params.id)
         .pipe(takeUntil(this._unsubscribeAll))
         .subscribe((response) => {
+          this.dataUserToEdit = response.body;
+          //this.form.patchValue(response.body);
           const {
             usr,
             nombres,
@@ -206,8 +209,10 @@ export class CrearUsuarioComponent implements OnInit {
     });
 
     body.usuarioRoles = requestRoles;
+
     this.crearUsuarioService
       .saveUsuario({
+        ...this.dataUserToEdit,
         ...body,
         web: plataformas[0],
         movil: plataformas[1],
