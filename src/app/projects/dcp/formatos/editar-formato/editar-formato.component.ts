@@ -151,9 +151,9 @@ export class EditarFormatoComponent implements OnInit, OnDestroy {
     });
   }
 
-  updateSection(idxSection: number): void {
+  updateSection(nameSection: string): void {
     let sectionData = this.allsections.find(
-      (section) => section.index === idxSection
+      (section) => section.nombre === nameSection
     );
     const dialogRef = this.dialog.open(DialogAddSeccionComponent, {
       autoFocus: false,
