@@ -115,7 +115,7 @@ export class ListComponent implements OnInit {
   }
 
   printPdf(actividad): void {
-    fetch(environment.apiUrl + "/Reportes/GenerarPdf/" + actividad.id)
+    fetch(environment.apiUrl + "/Reportes/GenerarInforme/" + actividad.id)
       .then((resp) => resp.blob())
       .then((blob) => {
         let url = window.URL.createObjectURL(blob);
