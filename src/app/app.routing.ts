@@ -6,8 +6,12 @@ import { MenuPermissionGuard } from "./core/permission/guards/menu-permission.gu
 import { LayoutComponent } from "./layout/layout.component";
 
 export const commonRoutes = [
-  { path: "", pathMatch: "full", redirectTo: "admin" },
-  { path: "signed-in-redirect", pathMatch: "full", redirectTo: "admin" },
+  { path: "", pathMatch: "full", redirectTo: "admin/informes/list" },
+  {
+    path: "signed-in-redirect",
+    pathMatch: "full",
+    redirectTo: "admin/informes/list",
+  },
   {
     path: "",
     canActivate: [NoAuthGuard],

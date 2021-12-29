@@ -1,12 +1,11 @@
 import { HttpErrorResponse } from "@angular/common/http";
 import { Component, OnInit, ViewChild, ViewEncapsulation } from "@angular/core";
 import { FormBuilder, FormGroup, NgForm, Validators } from "@angular/forms";
-import { ActivatedRoute, Router } from "@angular/router";
+import { Router } from "@angular/router";
 import { fuseAnimations } from "@fuse/animations";
 import { FuseAlertType } from "@fuse/components/alert";
 import { AuthService } from "app/core/auth/auth.service";
 import { NavigationService } from "app/core/navigation/navigation.service";
-import { HttpResponse } from "app/core/types/http.types";
 import { environment } from "environments/environment";
 
 @Component({
@@ -31,7 +30,6 @@ export class AuthSignInComponent implements OnInit {
    * Constructor
    */
   constructor(
-    private _activatedRoute: ActivatedRoute,
     private _authService: AuthService,
     private _formBuilder: FormBuilder,
     private _router: Router,
@@ -92,10 +90,6 @@ export class AuthSignInComponent implements OnInit {
         });
       },
       (error: HttpErrorResponse) => {
-        if (!error.error["code"]) {
-          error.error["message"] =
-            "Por favor, revisa tu conexión a internet y vuelve a intentarlo";
-        }
         // Re-enable the form
         this.signInForm.enable();
 
@@ -105,7 +99,11 @@ export class AuthSignInComponent implements OnInit {
         // Set the alert
         this.alert = {
           type: "error",
-          message: error.error["message"],
+          message: error.error["message"]
+            ? error.error["message"]
+            : error.error["code"]
+            ? error.error["code"]
+            : "Por favor, revisa tu conexión a internet y vuelve a intentarlo",
         };
 
         // Show the alert

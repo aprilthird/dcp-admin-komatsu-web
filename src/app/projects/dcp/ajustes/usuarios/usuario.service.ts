@@ -52,8 +52,8 @@ export class UsuariosService {
           page,
           pageSize,
           filter: {
-            fechaInicio: "2021-10-07T17:52:19.010Z",
-            fechaFin: "2021-12-25T17:52:19.010Z",
+            fechaInicio: "2019-10-07T17:52:19.010Z",
+            fechaFin: "2022-12-31T17:52:19.010Z",
           },
         }
       )
