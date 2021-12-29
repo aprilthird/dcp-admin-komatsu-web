@@ -56,8 +56,8 @@ export class ValidationFormatosComponent implements OnInit {
   } = {};
   data: any;
   private _unsubscribeAll: Subject<any> = new Subject<any>();
-  //formatValidate: boolean;
-  //allSectionValidated: boolean = true;
+  isNotValidationButtonAble: boolean = true;
+  allSectionValidates = [];
 
   constructor(
     private matDialog: MatDialog,
@@ -121,6 +121,13 @@ export class ValidationFormatosComponent implements OnInit {
     ];
 
     this.sections.forEach((section) => {
+      this.allSectionValidates = [];
+      this.allSectionValidates.push(
+        section.grupos[0].parametros.some(
+          (parametro) => parametro.seccionValida
+        )
+      );
+
       this.menuData[0].children.push({
         id: section.id,
         title: section.nombre,
@@ -153,7 +160,14 @@ export class ValidationFormatosComponent implements OnInit {
     });
 
     this.validateFormat();
-    //this.validateAllSection();
+    this.isNotValidationButtonAble = this.isAllSectionvalid();
+  }
+
+  private isAllSectionvalid(): boolean {
+    for (let i = 0; i < this.allSectionValidates.length; i++) {
+      if (!this.allSectionValidates[i]) return false;
+    }
+    return true;
   }
 
   validate(): void {

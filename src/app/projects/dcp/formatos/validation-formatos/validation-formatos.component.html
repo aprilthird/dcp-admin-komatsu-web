@@ -79,7 +79,7 @@
           class="text-white"
           mat-raised-button
           [color]="'primary'"
-          [disabled]="!validateSection()"
+          [disabled]="!isNotValidationButtonAble"
           (click)="postValidateFormat()"
         >
           <mat-icon
