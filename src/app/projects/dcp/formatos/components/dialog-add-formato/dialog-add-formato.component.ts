@@ -1,11 +1,11 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, Inject, OnInit } from "@angular/core";
 import {
   FormBuilder,
   FormControl,
   FormGroup,
   Validators,
 } from "@angular/forms";
-import { MatDialogRef } from "@angular/material/dialog";
+import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
 import { Router } from "@angular/router";
 import { TiposServiciosService } from "app/projects/dcp/tipos-servicios/tipos-servicios.service";
 import { forkJoin, Subject } from "rxjs";
@@ -41,6 +41,7 @@ export class DialogAddFormatoComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
+    @Inject(MAT_DIALOG_DATA) public data,
     public dialogRef: MatDialogRef<DialogAddFormatoComponent>,
     private dialogAddFormatoService: DialogAddFormatoService,
     private router: Router,
@@ -51,6 +52,7 @@ export class DialogAddFormatoComponent implements OnInit {
   ngOnInit(): void {
     this.getServiceTypes();
     this.getCombos();
+    this.isEdit();
   }
 
   ngOnDestroy(): void {
@@ -83,16 +85,45 @@ export class DialogAddFormatoComponent implements OnInit {
   onSubmit() {
     if (!this.loading && this.form.valid) {
       this.loading = true;
-      this.trimFields();
-      this.dialogAddFormatoService
-        .agregarFormato(this.trimFields())
-        .subscribe((response) => {
-          this.router
-            .navigateByUrl("/admin/formatos/editar/" + response.body.id + "/0")
-            .then(() => {
-              this.dialogRef.close();
-            });
-        });
+      if (this.data) {
+        this.dialogAddFormatoService
+          .agregarFormato({ ...this.data, ...this.form.value })
+          .subscribe(() => {
+            this.dialogRef.close();
+          });
+      } else {
+        this.trimFields();
+        this.dialogAddFormatoService
+          .agregarFormato(this.trimFields())
+          .subscribe((response) => {
+            this.router
+              .navigateByUrl(
+                "/admin/formatos/editar/" + response.body.id + "/0"
+              )
+              .then(() => {
+                this.dialogRef.close();
+              });
+          });
+      }
+    }
+  }
+
+  isEdit(): void {
+    if (this.data) {
+      const { codCe, codCeco, codGp, idTipoServicio, nombre, descripcion } =
+        this.data;
+      this.form.patchValue({
+        codCe,
+        codCeco,
+        codGp,
+        idTipoServicio,
+        nombre,
+        descripcion,
+      });
+      this.form.controls["codCeco"].disable();
+      this.form.controls["codGp"].disable();
+      this.form.controls["codCe"].disable();
+      this.form.controls["idTipoServicio"].disable();
     }
   }
 

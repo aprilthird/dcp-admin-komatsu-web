@@ -81,7 +81,8 @@
       (click)="onSubmit()"
       [disabled]="form.invalid"
     >
-      <span *ngIf="!loading"> Crear </span>
+      <span *ngIf="!data"> Crear </span>
+      <span *ngIf="data"> Editar </span>
       <mat-progress-spinner
         *ngIf="loading"
         [diameter]="24"
