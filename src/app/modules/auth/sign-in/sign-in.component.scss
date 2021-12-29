@@ -21,4 +21,8 @@
   background-image: url('/assets/images/fondo.jpg');
   background-size: cover;
   background-repeat: no-repeat;
+
+  .svg-image {
+    background-color: rgb(0, 0, 0, 0.4) !important
+  }
 }
