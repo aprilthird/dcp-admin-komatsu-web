@@ -36,7 +36,7 @@ const getInboxParams: GetInbox = {
     dni: "",
     nombre: "",
     codigo: "",
-    fechaFin: moment().add(1, "days").format("yyyy-MM-DD"),
+    fechaFin: moment().format("yyyy-MM-DD"),
     fechaInicio: moment().subtract(90, "days").format("yyyy-MM-DD"),
   },
 };
