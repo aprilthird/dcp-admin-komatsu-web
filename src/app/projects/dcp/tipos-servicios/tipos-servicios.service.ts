@@ -3,7 +3,8 @@ import { Injectable } from "@angular/core";
 import { ParamsPagination } from "app/core/types/http.types";
 import { Pagination } from "app/core/types/list.types";
 import { environment } from "environments/environment";
-import moment from "moment";
+import moment, { months } from "moment";
+import { Days } from "rrule/dist/esm/src/rrule";
 import { BehaviorSubject, Observable, timer } from "rxjs";
 import { debounceTime, tap } from "rxjs/operators";
 
@@ -38,7 +39,7 @@ const getInboxParams: GetInbox = {
     dni: "",
     nombre: "",
     codigo: "",
-    fechaFin: startDate.format("yyyy-MM-DD"),
+    fechaFin: startDate.add(1, "d").format("yyyy-MM-DD"),
     fechaInicio: startDate.subtract(90, "days").format("yyyy-MM-DD"),
   },
 };
