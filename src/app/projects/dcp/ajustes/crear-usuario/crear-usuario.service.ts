@@ -12,6 +12,7 @@ import { tap } from "rxjs/operators";
 export class CrearUsuarioService {
   _perfiles: BehaviorSubject<Perfil[]> = new BehaviorSubject(null);
   _loading: BehaviorSubject<boolean> = new BehaviorSubject(false);
+  _isValidUsr: BehaviorSubject<boolean> = new BehaviorSubject(false);
   constructor(private _httpClient: HttpClient) {}
 
   get loading$(): Observable<boolean> {
@@ -28,6 +29,10 @@ export class CrearUsuarioService {
 
   set perfiles(next) {
     this._perfiles.next(next);
+  }
+
+  get isValidUsr$(): Observable<boolean> {
+    return this._isValidUsr.asObservable();
   }
 
   /**
@@ -71,5 +76,10 @@ export class CrearUsuarioService {
           this._loading.next(false);
         })
       );
+  }
+
+  validateUser(usr: string): Observable<Response> {
+    const endpoint = environment.apiUrl + "/Seguridad/ValidarUsuarioAD/" + usr;
+    return this._httpClient.get<Response>(endpoint);
   }
 }

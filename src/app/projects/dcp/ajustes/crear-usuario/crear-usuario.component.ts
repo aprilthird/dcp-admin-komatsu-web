@@ -176,67 +176,85 @@ export class CrearUsuarioComponent implements OnInit {
     return response;
   }
 
-  onSubmit() {
-    this.form.controls["usr"].enable();
-    //if (this.form.valid) {
-    const { psw, ...body }: any = { ...this.form.value };
-    const { plataformas } = body;
-    const requestRoles = [];
+  async onSubmit() {
+    let validUsr = await this.validateUsr(this.form.controls["usr"].value);
+    if (validUsr) {
+      this.form.controls["usr"].enable();
+      //if (this.form.valid) {
+      const { psw, ...body }: any = { ...this.form.value };
+      const { plataformas } = body;
+      const requestRoles = [];
 
-    body.usuarioRoles.forEach((isCheck, i) => {
-      if (this.isEdit || (!this.isEdit && isCheck)) {
-        const newRol = {
-          idRol: this.perfiles[i].id,
-          activo: isCheck,
-          idUsuario: this.isEdit
-            ? Number(this.activatedRoute.snapshot.params.id)
-            : 0,
-        };
+      body.usuarioRoles.forEach((isCheck, i) => {
+        if (this.isEdit || (!this.isEdit && isCheck)) {
+          const newRol = {
+            idRol: this.perfiles[i].id,
+            activo: isCheck,
+            idUsuario: this.isEdit
+              ? Number(this.activatedRoute.snapshot.params.id)
+              : 0,
+          };
 
-        const findRol = body.roles
-          ? body.roles.find((role) => role.idRol === this.perfiles[i].id)
-          : -1;
+          const findRol = body.roles
+            ? body.roles.find((role) => role.idRol === this.perfiles[i].id)
+            : -1;
 
-        if (typeof findRol !== "undefined") {
-          newRol["id"] = findRol.id;
-          requestRoles.push(newRol);
-        } else if (isCheck) {
-          // Si es un rol nuevo asociado al usuario debe estar seleccionado
-          newRol["id"] = 0;
-          requestRoles.push(newRol);
-        }
-      }
-    });
-
-    body.usuarioRoles = requestRoles;
-
-    this.crearUsuarioService
-      .saveUsuario({
-        ...this.dataUserToEdit,
-        ...body,
-        web: plataformas[0],
-        movil: plataformas[1],
-        psw: this.isEdit ? "0000" : psw, // Se envia 0000 por defecto pero esto no actualiza la contraseña
-      })
-      .subscribe((response) => {
-        this.submitted = true;
-        this.alert = {
-          type: response.success ? "success" : "error",
-          message: response.success
-            ? `Se ha ${
-                this.isEdit ? "editado" : "creado"
-              } correctamente el usuario`
-            : response.message,
-        };
-
-        setTimeout(() => {
-          if (response.success) {
-            this.alert = null;
-            this._router.navigateByUrl("/admin/ajustes/usuarios");
+          if (typeof findRol !== "undefined") {
+            newRol["id"] = findRol.id;
+            requestRoles.push(newRol);
+          } else if (isCheck) {
+            // Si es un rol nuevo asociado al usuario debe estar seleccionado
+            newRol["id"] = 0;
+            requestRoles.push(newRol);
           }
-        }, 2500);
+        }
       });
+
+      body.usuarioRoles = requestRoles;
+
+      this.crearUsuarioService
+        .saveUsuario({
+          ...this.dataUserToEdit,
+          ...body,
+          web: plataformas[0],
+          movil: plataformas[1],
+          psw: this.isEdit ? "0000" : psw, // Se envia 0000 por defecto pero esto no actualiza la contraseña
+        })
+        .subscribe((response) => {
+          this.submitted = true;
+          this.alert = {
+            type: response.success ? "success" : "error",
+            message: response.success
+              ? `Se ha ${
+                  this.isEdit ? "editado" : "creado"
+                } correctamente el usuario`
+              : response.message,
+          };
+
+          setTimeout(() => {
+            if (response.success) {
+              this.alert = null;
+              this._router.navigateByUrl("/admin/ajustes/usuarios");
+            }
+          }, 2500);
+        });
+    } else {
+      this.submitted = true;
+      this.alert = {
+        type: "error",
+        message: "El nombre de usuario ya existe, favor seleccionar otro!",
+      };
+    }
+
     //}
+  }
+
+  private async validateUsr(usr: string): Promise<boolean> {
+    return new Promise((res, rej) => {
+      return this.crearUsuarioService
+        .validateUser(usr)
+        .subscribe((resp) => res(!resp.body ? true : false));
+    });
   }
 
   getErrorMessage(input: string) {
