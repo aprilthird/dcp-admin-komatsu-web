@@ -32,9 +32,9 @@ export class DialogAddCommentComponent implements OnInit {
   }
 
   async updateObservedParam() {
-    return this.data.data.map((section: any) => {
+    this.data.data.map((section: any) => {
       if (section.id === Number(this.data.sectionId)) {
-        return section.grupos.map((group: any, index: number) => {
+        section.grupos.map((group: any, index: number) => {
           if (index === Number(this.data.groupIndex)) {
             group.comentarios = this.comment.value;
             group.observar = true;
@@ -48,6 +48,7 @@ export class DialogAddCommentComponent implements OnInit {
 
   async submit() {
     await this.updateObservedParam();
+    await this.setIdActividadFormatoToAllParams();
 
     const payload = {
       secciones: this.data.data,
@@ -57,5 +58,15 @@ export class DialogAddCommentComponent implements OnInit {
     this._editarFormatoService
       .saveAssignation(payload)
       .subscribe(() => this.matDialog.close());
+  }
+
+  async setIdActividadFormatoToAllParams() {
+    this.data.data.map((section) => {
+      section.grupos.map((group) => {
+        group.parametros.map((param) => {
+          param.idActividadFormato = this.data.idActividadFormato;
+        });
+      });
+    });
   }
 }
