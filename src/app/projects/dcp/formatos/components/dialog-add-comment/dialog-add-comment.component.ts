@@ -39,6 +39,7 @@ export class DialogAddCommentComponent implements OnInit {
             group.comentarios = this.comment.value;
             group.observar = true;
             group.observado = true;
+            group.idActividadFormato = this.data.idActividadFormato;
           }
         });
       }

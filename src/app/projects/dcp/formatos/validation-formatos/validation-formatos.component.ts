@@ -58,6 +58,7 @@ export class ValidationFormatosComponent implements OnInit {
   private _unsubscribeAll: Subject<any> = new Subject<any>();
   isNotValidationButtonAble: boolean = true;
   allSectionValidates = [];
+  idActividadFormato: number;
 
   constructor(
     private matDialog: MatDialog,
@@ -100,6 +101,7 @@ export class ValidationFormatosComponent implements OnInit {
       .getAbrirAsignacion(this.currentIdAsignation)
       .subscribe(async (resp) => {
         this.sections = await resp.body.secciones;
+        this.idActividadFormato = resp.body.id;
 
         if (this.currentSeccionId) {
           this.currentSectionData = await [...this.sections].find(
@@ -521,6 +523,7 @@ export class ValidationFormatosComponent implements OnInit {
       data: this.sections,
       groupIndex: groupIdx,
       sectionId: this.currentSeccionId,
+      idActividadFormato: this.idActividadFormato,
       idFormato: this.sections[0].grupos[0].parametros[0].idFormato,
     };
     this.matDialog.open(DialogAddCommentComponent, {
