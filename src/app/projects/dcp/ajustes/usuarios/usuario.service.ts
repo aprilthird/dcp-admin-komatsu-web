@@ -9,6 +9,7 @@ import { Pagination } from "app/core/types/list.types";
 import { Usuario } from "app/core/types/user.types";
 import { SharedService } from "app/shared/shared.service";
 import { environment } from "environments/environment";
+import moment from "moment";
 import { BehaviorSubject, Observable } from "rxjs";
 import { tap } from "rxjs/operators";
 
@@ -52,8 +53,8 @@ export class UsuariosService {
           page,
           pageSize,
           filter: {
-            fechaInicio: "2019-10-07T17:52:19.010Z",
-            fechaFin: "2022-12-31T17:52:19.010Z",
+            fechaInicio: moment().subtract(1, "years").format("yyyy-MM-DD"),
+            fechaFin: moment().format("yyyy-MM-DD"),
           },
         }
       )

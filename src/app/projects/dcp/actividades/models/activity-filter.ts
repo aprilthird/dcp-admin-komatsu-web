@@ -1,5 +1,4 @@
 import moment from "moment";
-let startDate = moment();
 
 interface GetInbox {
   page: number;
@@ -25,8 +24,8 @@ export const getInboxParams: GetInbox = {
   filter: {
     id: 0,
     codigo: "",
-    fechaFin: startDate.add(1, "d").format("yyyy-MM-DD"),
-    fechaInicio: startDate.subtract(14, "days").format("yyyy-MM-DD"),
+    fechaFin: moment().format("yyyy-MM-DD"),
+    fechaInicio: moment().subtract(14, "days").format("yyyy-MM-DD"),
     idTipoServicio: 0,
     idEstado: 0,
   },

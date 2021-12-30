@@ -7,6 +7,7 @@ import {
 } from "app/core/types/http.types";
 import { Pagination } from "app/core/types/list.types";
 import { environment } from "environments/environment";
+import moment from "moment";
 import { BehaviorSubject, Observable } from "rxjs";
 import { tap } from "rxjs/operators";
 import { FilterI } from "../../../../shared/models/filters-model";
@@ -72,8 +73,8 @@ export class ListadoService {
           filter: {
             idClaseActividad,
             estado,
-            fechaInicio: "2021-10-06",
-            fechaFin: "2021-12-31",
+            fechaInicio: moment().subtract(1, "years").format("yyyy-MM-DD"),
+            fechaFin: moment().format("yyyy-MM-DD"),
             codCeco,
             codGp,
             codCe,

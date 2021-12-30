@@ -411,14 +411,8 @@ export class ValidationFormatosComponent implements OnInit {
             ) {
               this.checkImgParam(parametro, j, k);
             } else if (parametro.idParametro === TipoParametro.FIRMA) {
-              if (parametro.data) {
-                this.checkSignParam(paramIdx, parametro, indexGroup, k, j);
-              }
+              this.checkSignParam(paramIdx, parametro, indexGroup, k, j);
             } else {
-              console.log("--- ", parametro.activo);
-              console.log("--- ", parametro.label);
-              //Object.keys(this.form.value).forEach((key) => console.log(key));
-              //console.log(this.getParametroControl({ j, k }));
               parametro.valor = String(
                 this.form.get(this.getParametroControl({ j, k })).value
               );
@@ -434,17 +428,18 @@ export class ValidationFormatosComponent implements OnInit {
     };
     this.postAssignation(payload);
     //}
-    e.preventDefault();
+    if (typeof paramIdx !== "number") {
+      e.preventDefault();
+    }
   }
 
   checkSignParam(paramIdx, parametro, indexGroup, k, j): void {
-    if (paramIdx) {
+    if (typeof paramIdx === "number") {
       if (paramIdx === k && indexGroup === j) {
         parametro.valor = null;
         this.form.get(this.getParametroControl({ j, k })).setValue(null);
       }
     } else {
-      console.log("form ", this.form.value);
       if (
         this.form.get(this.getParametroControl({ j, k })).value &&
         this.form.get(this.getParametroControl({ j, k })).value !== ""

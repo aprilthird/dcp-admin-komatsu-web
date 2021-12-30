@@ -250,10 +250,11 @@ export class CrearUsuarioComponent implements OnInit {
   }
 
   private async validateUsr(usr: string): Promise<boolean> {
-    return new Promise((res, rej) => {
-      return this.crearUsuarioService
-        .validateUser(usr)
-        .subscribe((resp) => res(!resp.body ? true : false));
+    return new Promise((res) => {
+      return this.crearUsuarioService.validateUser(usr).subscribe(
+        (resp) => res(!resp.body ? true : false),
+        () => res(true)
+      );
     });
   }
 
