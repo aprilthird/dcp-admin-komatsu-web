@@ -24,7 +24,6 @@ export class DialogAddDatoComponent implements OnInit {
   @Input() edit: any;
   @Output() success: EventEmitter<any> = new EventEmitter();
   image: string = "";
-  //
   loading: boolean = false;
   tiposDatos: any;
 
