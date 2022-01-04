@@ -9,7 +9,11 @@
     <!-- Nombre -->
     <mat-form-field class="w-full">
       <mat-label>Nombre</mat-label>
-      <input matInput formControlName="nombre" />
+      <input
+        (keydown.enter)="preventDefault()"
+        matInput
+        formControlName="nombre"
+      />
       <mat-error> {{ getErrorMessage("nombre") }} </mat-error>
     </mat-form-field>
     <mat-form-field class="lex flex-col md:flex-row w-full">
@@ -28,13 +32,7 @@
     <button
       (click)="dialogRef.close()"
       mat-button
-      class="
-        ml-4
-        bg-gray-50
-        border-solid border border-accent-300
-        text-gray-700
-        shadow-none
-      "
+      class="ml-4 bg-gray-50 border-solid border border-accent-300 text-gray-700 shadow-none"
     >
       Cancelar
     </button>

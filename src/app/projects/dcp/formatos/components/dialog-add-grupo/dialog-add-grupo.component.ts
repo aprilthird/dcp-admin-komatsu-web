@@ -101,4 +101,8 @@ export class DialogAddGrupoComponent implements OnInit {
 
     return control.hasError("email") ? "Formato de correo incorrecto" : "";
   }
+
+  preventDefault(): boolean {
+    return false;
+  }
 }

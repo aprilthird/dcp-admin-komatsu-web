@@ -85,4 +85,8 @@ export class DialogAddSeccionComponent implements OnInit, AfterViewInit {
 
     return control.hasError("email") ? "Formato de correo incorrecto" : "";
   }
+
+  preventDefault(): boolean {
+    return false;
+  }
 }

@@ -1,4 +1,10 @@
-import { ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from "@angular/core";
+import {
+  ChangeDetectorRef,
+  Component,
+  OnDestroy,
+  OnInit,
+  ViewChild,
+} from "@angular/core";
 import { MatDialog } from "@angular/material/dialog";
 import { MatDrawer } from "@angular/material/sidenav";
 import { ActivatedRoute, NavigationEnd, Router } from "@angular/router";
@@ -88,7 +94,7 @@ export class EditarFormatoComponent implements OnInit, OnDestroy {
   /**
    * On destroy
    */
-   ngOnDestroy(): void {
+  ngOnDestroy(): void {
     // Unsubscribe from all subscriptions
     this._unsubscribeAll.next();
     this._unsubscribeAll.complete();
@@ -110,9 +116,9 @@ export class EditarFormatoComponent implements OnInit, OnDestroy {
       this.loading = false;
 
       if (this.menuData.length > 0)
-      this._router.navigateByUrl(
-        `/admin/formatos/editar/${this._activedRoute.snapshot.params.id}/${this.menuData[0].id}`
-      );
+        this._router.navigateByUrl(
+          `/admin/formatos/editar/${this._activedRoute.snapshot.params.id}/${this.menuData[0].id}`
+        );
     }
   }
 
@@ -130,8 +136,7 @@ export class EditarFormatoComponent implements OnInit, OnDestroy {
           idFormulario: this._activedRoute.snapshot.params.id,
           reload: true,
         })
-        .subscribe(() => {
-        });
+        .subscribe(() => {});
       dialogRef.close();
     });
   }
@@ -155,6 +160,7 @@ export class EditarFormatoComponent implements OnInit, OnDestroy {
 
   clickPrevisualizar() {
     const dialogRef = this.dialog.open(DialogPrevisualizarComponent);
-    dialogRef.componentInstance.idFormato = this._activedRoute.snapshot.params.id;
+    dialogRef.componentInstance.idFormato =
+      this._activedRoute.snapshot.params.id;
   }
 }

@@ -38,6 +38,7 @@ export class EditarFormatoComponent implements OnInit, OnDestroy {
   ceCo$: Observable<Formato>;
   ce$: Observable<Formato>;
   gp$: Observable<Formato>;
+  nombre$: Observable<Formato>;
 
   private _unsubscribeAll: Subject<any> = new Subject<any>();
   idSection: number = 0;
@@ -62,6 +63,9 @@ export class EditarFormatoComponent implements OnInit, OnDestroy {
       takeUntil(this._unsubscribeAll)
     );
     this.gp$ = this._editarFormatoService._gp.pipe(
+      takeUntil(this._unsubscribeAll)
+    );
+    this.nombre$ = this._editarFormatoService.formato$.pipe(
       takeUntil(this._unsubscribeAll)
     );
   }

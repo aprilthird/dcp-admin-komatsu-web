@@ -9,7 +9,9 @@
     >
       <!-- Menu-->
       <div class="flex flex-col p-5 pb-0 form-title">
-        <div class="d-flex items-center font-bold">Evaluación</div>
+        <div class="d-flex items-center font-bold text-2xl capitalize">
+          {{ nombre$ | async }}
+        </div>
         <div class="d-flex items-center">
           <span class="font-bold">CeCo: </span> <span>{{ ceCo$ | async }}</span>
         </div>
@@ -72,18 +74,7 @@
           </div>
           <!-- Header -->
           <div
-            class="
-              flex flex-col
-              sm:flex-row
-              flex-0
-              sm:items-center sm:justify-between
-              p-6
-              sm:py-8 sm:px-10
-              h-30
-              border-b
-              bg-card
-              dark:bg-transparent
-            "
+            class="flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between p-6 sm:py-8 sm:px-10 h-30 border-b bg-card dark:bg-transparent"
             *ngIf="menuData.length > 0 && currentSeccion"
           >
             <ng-container *ngIf="!loading || currentSeccion">
@@ -92,16 +83,7 @@
                 <div class="flex w-full justify-between">
                   <div class="flex flex-wrap items-center font-medium">
                     <h2
-                      class="
-                        text-3xl
-                        md:text-4xl
-                        font-extrabold
-                        tracking-tight
-                        leading-7
-                        sm:leading-10
-                        truncate
-                        max-w-3xl
-                      "
+                      class="text-3xl md:text-4xl font-extrabold tracking-tight leading-7 sm:leading-10 truncate max-w-3xl"
                     >
                       {{ currentSeccion }}
                       <!--button mat-icon-button color="primary">
@@ -142,15 +124,7 @@
             *ngIf="!loading || !currentSeccion"
           >
             <h3
-              class="
-                text-3xl
-                md:text-3xl
-                font-extrabold
-                tracking-tight
-                leading-7
-                sm:leading-10
-                truncate
-              "
+              class="text-3xl md:text-3xl font-extrabold tracking-tight leading-7 sm:leading-10 truncate"
               *ngIf="
                 currentSeccion && grupos.length === 0 && menuData.length > 0
               "
@@ -159,30 +133,14 @@
             </h3>
 
             <h3
-              class="
-                text-3xl
-                md:text-3xl
-                font-extrabold
-                tracking-tight
-                leading-7
-                sm:leading-10
-                truncate
-              "
+              class="text-3xl md:text-3xl font-extrabold tracking-tight leading-7 sm:leading-10 truncate"
               *ngIf="menuData.length === 0 || !validSection"
             >
               No existe contenido, favor seleccionar una inspección
             </h3>
 
             <h3
-              class="
-                text-3xl
-                md:text-3xl
-                font-extrabold
-                tracking-tight
-                leading-7
-                sm:leading-10
-                truncate
-              "
+              class="text-3xl md:text-3xl font-extrabold tracking-tight leading-7 sm:leading-10 truncate"
               *ngIf="!currentSeccion && menuData.length > 0"
             >
               Debe seleccionar una inspección
@@ -196,20 +154,7 @@
           </div>
         </div>
         <div
-          class="
-            absolute
-            flex flex-0
-            items-center
-            justify-end
-            w-full
-            h-16
-            px-4
-            z-49
-            border-t
-            dark:bg-transparent
-            print:hidden
-            bottom-0
-          "
+          class="absolute flex flex-0 items-center justify-end w-full h-16 px-4 z-49 border-t dark:bg-transparent print:hidden bottom-0"
         >
           <span class="font-medium text-secondary">
             <button

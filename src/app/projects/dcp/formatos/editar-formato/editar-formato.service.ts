@@ -78,9 +78,13 @@ export class EditarFormatoService {
       )
       .pipe(
         tap((response) => {
-          this._secciones.next(
-            response.body.filter((section) => section.activo)
-          );
+          if (Number(idFormulario) !== 0) {
+            this._secciones.next(
+              response.body.filter((section) => section.activo)
+            );
+          } else {
+            this._secciones.next([]);
+          }
         })
       );
   }
