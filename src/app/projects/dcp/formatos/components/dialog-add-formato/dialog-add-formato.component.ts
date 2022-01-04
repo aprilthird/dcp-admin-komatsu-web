@@ -110,7 +110,7 @@ export class DialogAddFormatoComponent implements OnInit {
 
   isEdit(): void {
     if (this.data) {
-      const { codCe, codCeco, codGp, idTipoServicio, nombre, descripcion } =
+      const { codCe, codCeco, codGp, idTipoServicio, nombre, documento } =
         this.data;
       this.form.patchValue({
         codCe,
@@ -118,7 +118,7 @@ export class DialogAddFormatoComponent implements OnInit {
         codGp,
         idTipoServicio,
         nombre,
-        descripcion,
+        documento,
       });
       this.form.controls["codCeco"].disable();
       this.form.controls["codGp"].disable();
