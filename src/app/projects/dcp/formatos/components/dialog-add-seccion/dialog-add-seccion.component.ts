@@ -89,4 +89,5 @@ export class DialogAddSeccionComponent implements OnInit, AfterViewInit {
   preventDefault(): boolean {
     return false;
   }
+  //
 }
