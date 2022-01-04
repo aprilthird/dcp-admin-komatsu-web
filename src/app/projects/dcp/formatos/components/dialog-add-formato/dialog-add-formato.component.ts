@@ -27,7 +27,7 @@ export class DialogAddFormatoComponent implements OnInit {
     codCe: ["", Validators.required],
     idTipoServicio: ["", Validators.required],
     nombre: ["", Validators.required],
-    descripcion: [""],
+    documento: [""],
     visible: [true],
     activo: [true],
     estado: [1],

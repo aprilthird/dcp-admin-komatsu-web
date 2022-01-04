@@ -55,21 +55,15 @@
 
       <mat-form-field class="w-full">
         <mat-label class="font-bold">Documento</mat-label>
-        <input maxlength="100" matInput formControlName="descripcion" />
-        <mat-error> {{ getErrorMessage("descripcion") }} </mat-error>
+        <input maxlength="100" matInput formControlName="documento" />
+        <mat-error> {{ getErrorMessage("documento") }} </mat-error>
       </mat-form-field>
     </div>
   </div>
   <div mat-dialog-actions class="flex justify-end px-6 bg-gray-100">
     <button
       mat-button
-      class="
-        ml-4
-        bg-gray-50
-        border-solid border border-accent-300
-        text-gray-700
-        shadow-none
-      "
+      class="ml-4 bg-gray-50 border-solid border border-accent-300 text-gray-700 shadow-none"
       (click)="dialogRef.close()"
     >
       Cancelar
