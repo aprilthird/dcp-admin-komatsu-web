@@ -1,26 +1,9 @@
 <div
-  class="
-    sm:inset-0
-    flex flex-col flex-auto
-    min-w-0
-    sm:overflow-hidden
-    bg-card
-    dark:bg-transparent
-  "
+  class="sm:inset-0 flex flex-col flex-auto min-w-0 sm:overflow-hidden bg-card dark:bg-transparent"
 >
   <!-- Header -->
   <div
-    class="
-      relative
-      flex flex-col
-      sm:flex-row
-      flex-0
-      sm:items-center sm:justify-between
-      py-8
-      px-6
-      md:px-8
-      border-b
-    "
+    class="relative flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between py-8 px-6 md:px-8 border-b"
   >
     <!-- Loader -->
     <div class="absolute inset-x-0 bottom-0" *ngIf="isLoading">
@@ -61,36 +44,14 @@
   <div class="flex flex-auto overflow-hidden">
     <!-- Products list -->
     <div
-      class="
-        flex flex-col flex-auto
-        sm:mb-18
-        overflow-hidden
-        sm:overflow-y-auto
-      "
+      class="flex flex-col flex-auto sm:mb-18 overflow-hidden sm:overflow-y-auto"
     >
       <ng-container *ngIf="formatos$ | async as formatos">
         <ng-container *ngIf="formatos.length > 0; else empty">
           <div class="grid overflow-x-auto">
             <!-- Header -->
             <div
-              class="
-                inventory-grid
-                z-10
-                sticky
-                top-0
-                grid
-                gap-4
-                py-4
-                px-6
-                md:px-8
-                shadow
-                text-md
-                font-semibold
-                text-secondary
-                bg-gray-50
-                dark:bg-black dark:bg-opacity-5
-                justify-between
-              "
+              class="inventory-grid z-10 sticky top-0 grid gap-4 py-4 px-6 md:px-8 shadow text-md font-semibold text-secondary bg-gray-50 dark:bg-black dark:bg-opacity-5 justify-between"
               matSort
               matSortDisableClear
             >
@@ -110,41 +71,31 @@
                 *ngFor="let formato of formatos; trackBy: trackByFn"
               >
                 <div
-                  class="
-                    inventory-grid
-                    grid
-                    items-center
-                    gap-4
-                    py-3
-                    px-6
-                    md:px-8
-                    border-b
-                    justify-between
-                  "
+                  class="inventory-grid grid items-center gap-4 py-3 px-6 md:px-8 border-b justify-between"
                 >
                   <!-- ID -->
-                  <div class="truncate">
+                  <div class="truncate-overflow">
                     {{ formato?.id }}
                   </div>
 
                   <!-- Cliente -->
-                  <div class="truncate">
+                  <div class="truncate-overflow">
                     {{ formato?.codCeco }}
                   </div>
                   <!-- Nombres -->
-                  <div class="truncate">
+                  <div class="truncate-overflow">
                     {{ formato?.codGp }}
                   </div>
                   <!-- ID -->
-                  <div class="truncate">
+                  <div class="truncate-overflow">
                     {{ formato?.codCe }}
                   </div>
                   <!-- Actividad -->
-                  <div class="truncate">
+                  <div class="truncate-overflow">
                     {{ formato?.tipoServicio }}
                   </div>
                   <!-- tipo mtto -->
-                  <div class="truncate">
+                  <div class="truncate-overflow">
                     {{ formato?.nombre }}
                   </div>
 
@@ -185,14 +136,7 @@
             </ng-container>
           </div>
           <mat-paginator
-            class="
-              sm:absolute sm:inset-x-0 sm:bottom-0
-              border-b
-              sm:border-t sm:border-b-0
-              z-10
-              bg-gray-50
-              dark:bg-transparent
-            "
+            class="sm:absolute sm:inset-x-0 sm:bottom-0 border-b sm:border-t sm:border-b-0 z-10 bg-gray-50 dark:bg-transparent"
             [ngClass]="{ 'pointer-events-none': isLoading }"
             [length]="(pagination$ | async).length"
             [pageIndex]="(pagination$ | async).page"
@@ -206,15 +150,7 @@
 
       <ng-template #empty>
         <div
-          class="
-            p-8
-            sm:p-16
-            border-t
-            text-4xl
-            font-semibold
-            tracking-tight
-            text-center
-          "
+          class="p-8 sm:p-16 border-t text-4xl font-semibold tracking-tight text-center"
         >
           No hay formatos registrados
         </div>

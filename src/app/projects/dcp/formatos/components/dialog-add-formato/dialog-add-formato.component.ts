@@ -108,7 +108,7 @@ export class DialogAddFormatoComponent implements OnInit {
     }
   }
 
-  isEdit(): void {
+  private isEdit(): void {
     if (this.data) {
       const { codCe, codCeco, codGp, idTipoServicio, nombre, documento } =
         this.data;
