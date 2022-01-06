@@ -137,7 +137,7 @@
                         >
                           {{ parametro.label }}
                         </p>
-                        <label class="file">
+                        <!--<label class="file">
                           <span>{{ parametro.placeholder }}</span>
                           <input
                             type="file"
@@ -167,7 +167,7 @@
                           (click)="clickOpenFile(form.get(getParametroControl({i, j, k})).value)"
                         >
                           Ver archivo
-                        </p>
+                        </p>-->
                       </div>
 
                       <!-- FECHA -->
@@ -236,7 +236,7 @@
                           *ngIf="parametro.visible"
                           >{{ parametro.label }}</span
                         >
-                        <ui-upload-file
+                        <!-- <ui-upload-file
                           [type]="'firma'"
                           [image]="
                             parametro.dato !== '' && parametro.dato !== null
@@ -245,7 +245,7 @@
                           "
                           [loading]="filesLoading[getParametroControl({i, j, k})]"
                           (sourceFile)="onChageFile($event, getParametroControl({i, j, k}))"
-                        ></ui-upload-file>
+                        ></ui-upload-file>-->
                       </div>
 
                       <!-- LABEL -->
@@ -308,13 +308,7 @@
     <button
       mat-button
       type="button"
-      class="
-        ml-4
-        bg-gray-50
-        border-solid border border-accent-300
-        text-gray-700
-        shadow-none
-      "
+      class="ml-4 bg-gray-50 border-solid border border-accent-300 text-gray-700 shadow-none"
       (click)="_dialogRef.close()"
     >
       Cerrar

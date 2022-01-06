@@ -29,6 +29,7 @@ export class ActaConformidadComponent implements OnInit {
     contacto: [""],
     servicio: [""],
     fecha: [""],
+    fechaActa: [""],
     equipo: ["", Validators.required],
     marca: ["", Validators.required],
     serie: ["", Validators.required],
@@ -87,7 +88,9 @@ export class ActaConformidadComponent implements OnInit {
 
   postActa(): void {
     this.savingData = true;
-    this.form.addControl("fechaActa", new FormControl("2021-12-22T05:00:00"));
+    this.form.controls["fechaActa"].setValue(this.form.controls["fecha"].value);
+    this.form.controls["cliente"].enable();
+    this.form.controls["os"].enable();
     if (this.isEdit) {
       this.form.addControl("idActividadFormato", new FormControl(this.idActa));
     }
@@ -115,18 +118,6 @@ export class ActaConformidadComponent implements OnInit {
     if (data && data?.cliente) {
       this.form.controls["cliente"].disable();
       this.form.controls["os"].disable();
-      this.form.controls["nequipo"].disable();
-      this.form.controls["horasKm"].disable();
-      this.form.controls["placas"].disable();
-      this.form.controls["odometro"].disable();
-      this.form.controls["motorMarca"].disable();
-      this.form.controls["motorSerie"].disable();
-      this.form.controls["motorModelo"].disable();
-      this.form.controls["motorHorasKm"].disable();
-      this.form.controls["motorCpl"].disable();
-      this.form.controls["motorCodEdm"].disable();
-      this.form.controls["motorOdometro"].disable();
-      this.form.controls["trabajos"].disable();
 
       this.isEdit = true;
       const {
@@ -137,6 +128,7 @@ export class ActaConformidadComponent implements OnInit {
         contacto,
         servicio,
         fecha,
+        fechaActa,
         equipo,
         marca,
         serie,
@@ -164,6 +156,7 @@ export class ActaConformidadComponent implements OnInit {
         contacto,
         servicio,
         fecha,
+        fechaActa,
         equipo,
         marca,
         serie,

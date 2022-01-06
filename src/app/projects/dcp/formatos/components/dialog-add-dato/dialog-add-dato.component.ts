@@ -77,9 +77,8 @@ export class DialogAddDatoComponent implements OnInit {
     private _editarFormatoService: EditarFormatoService,
     private _azureService: AzureService
   ) {
-    this.tiposDatos = this._editarFormatoService
-      .datos()
-      .filter((data) => data.id !== 4);
+    this.tiposDatos = this._editarFormatoService.datos(); /*
+      .filter((data) => data.id !== 4);*/
   }
 
   addOption(event: MatChipInputEvent): void {
@@ -335,6 +334,28 @@ export class DialogAddDatoComponent implements OnInit {
         this.form.get("maxCaracteres").disable();
         this.form.get("regex").disable();
         this.form.get("placeholder").setValue("Agregar firma");
+        break;
+
+      case TipoParametro.UPLOAD:
+        this.form.clearValidators();
+        this.form = this.fb.group({
+          idParametro: [values.idParametro, Validators.required],
+          placeholder: [""],
+          label: [values.label, Validators.required],
+          visible: [values.visible],
+          obligatorio: [values.obligatorio],
+          editable: [values.editable],
+          minCaracteres: [null],
+          maxCaracteres: [null],
+          regex: [null],
+          fila: [values.fila, Validators.required],
+          columna: [values.columna, Validators.required],
+        });
+        this.form.get("placeholder").disable();
+        this.form.get("minCaracteres").disable();
+        this.form.get("maxCaracteres").disable();
+        this.form.get("regex").disable();
+        this.form.get("placeholder").setValue("Subir imagen");
         break;
     }
 

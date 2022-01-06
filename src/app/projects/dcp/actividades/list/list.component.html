@@ -56,7 +56,7 @@
               <div class="">Cod. Orden</div>
               <div class="">Cod. Equipo</div>
               <div class="">Correlativo</div>
-              <div class="">Cod. Und Servicio</div>
+              <div class="">Id tipo Servicio</div>
               <div class="">Modificado</div>
               <div class="">Modificado por</div>
               <div>Estado</div>
@@ -92,7 +92,10 @@
                   >
                     {{ actividad?.codEquipo }}
                   </div>
-                  <div class="truncate-overflow">
+                  <div
+                    [matTooltip]="actividad?.correlativo"
+                    class="truncate-overflow"
+                  >
                     {{ actividad?.correlativo }}
                   </div>
                   <div class="truncate">

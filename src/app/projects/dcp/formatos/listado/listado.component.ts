@@ -1,11 +1,13 @@
 import { Component, OnDestroy, OnInit } from "@angular/core";
 import { MatDialog } from "@angular/material/dialog";
 import { ActivatedRoute, Router } from "@angular/router";
+import { FuseConfirmationService } from "@fuse/services/confirmation";
 import { Pagination } from "app/core/types/list.types";
 import { Observable, Subject } from "rxjs";
 import { takeUntil } from "rxjs/operators";
 import { FilterDialogComponent } from "../../actividades/filter/filter-dialog/filter-dialog.component";
 import { DialogAddFormatoComponent } from "../components/dialog-add-formato/dialog-add-formato.component";
+import { DialogAddFormatoService } from "../components/dialog-add-formato/dialog-add-formato.service";
 import { ListadoService } from "./listado.services";
 
 @Component({
@@ -25,7 +27,9 @@ export class ListadoComponent implements OnInit, OnDestroy {
     private _router: Router,
     private _routeActived: ActivatedRoute,
     private _listadoService: ListadoService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private dialogAddFormatoService: DialogAddFormatoService,
+    private _fuseConfirmationService: FuseConfirmationService
   ) {
     this.formatos$ = this._listadoService.formatos$.pipe(
       takeUntil(this._unsubscribeAll)
@@ -57,6 +61,39 @@ export class ListadoComponent implements OnInit, OnDestroy {
       })
       .afterClosed()
       .subscribe(() => this.loadData());
+  }
+
+  deleteFormato(format): void {
+    const dialogRef = this._fuseConfirmationService.open({
+      title: "Eliminar servicio",
+      message: "¿Estás seguro que deseas eliminar este servicio?",
+      icon: {
+        name: "heroicons_outline:trash",
+        color: "primary",
+      },
+      actions: {
+        confirm: {
+          label: "Sí, eliminar",
+          color: "primary",
+        },
+        cancel: {
+          label: "No",
+        },
+      },
+      dismissible: true,
+    });
+
+    dialogRef.beforeClosed().subscribe((result) => {
+      console.log(result);
+      if (result === "confirmed") {
+        this.isLoading = true;
+        this.dialogAddFormatoService
+          .agregarFormato({ ...format, activo: false })
+          .subscribe(() => {
+            this.loadData();
+          });
+      }
+    });
   }
 
   /**
