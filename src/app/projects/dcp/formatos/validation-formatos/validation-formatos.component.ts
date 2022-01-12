@@ -406,6 +406,7 @@ export class ValidationFormatosComponent implements OnInit {
           }
         }
         grupo.parametros.forEach((parametro, k) => {
+          parametro.idActividadFormato = Number(this.currentIdAsignation);
           if (parametro.activo) {
             if (
               parametro.idParametro === TipoParametro.UPLOAD ||
@@ -428,6 +429,7 @@ export class ValidationFormatosComponent implements OnInit {
       idFormato: data[0].grupos[0].parametros[0].idFormato,
       idActividadFormtao: Number(this.currentIdAsignation),
     };
+    console.log("pyload ", payload);
     this.postAssignation(payload);
     //}
     if (typeof paramIdx !== "number") {
