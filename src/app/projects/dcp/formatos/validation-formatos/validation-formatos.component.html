@@ -312,21 +312,42 @@
                                 <!-- UPLOAD (ARCHIVO) -->
 
                                 <div *ngSwitchCase="4" class="w-full">
-                                  <p
-                                    class="text-gray-900 font-medium"
+                                  <span
+                                    class="text-gray-800 font-medium"
                                     *ngIf="parametro.visible"
+                                    >{{ parametro.label }}</span
                                   >
-                                    {{ parametro.label }}
-                                  </p>
-                                  <!--<label class="file">
-                                    <span>{{ parametro.placeholder }}</span>
-                                    <input type="file" />
-                                    <mat-icon
-                                      [color]="'#94a3b8'"
-                                      [svgIcon]="'heroicons_solid:upload'"
-                                    ></mat-icon>
-                                  </label>
-                                  <p>Ver archivo</p>-->
+
+                                  <ui-upload-file
+                                    *ngIf="
+                                      parametro.valor !== '' &&
+                                        parametro.valor !== null;
+                                      else empty
+                                    "
+                                    [required]="parametro.obligatorio"
+                                    [editable]="'false'"
+                                    [type]="'upload'"
+                                    [paramIdx]="j"
+                                    [groupIdx]="k"
+                                    [image]="
+                                      parametro.valor !== '' &&
+                                      parametro.valor !== null
+                                        ? setImage(parametro.valor)
+                                        : setImage(parametro.dato)
+                                    "
+                                    [loading]="filesLoading[getParametroControl({j, k})]"
+                                    (sourceFile)="onChageFile($event, getParametroControl({j, k}))"
+                                    (removeSign)="removeSign($event, j, k)"
+                                  ></ui-upload-file>
+                                  <ng-template #empty>
+                                    <img
+                                      class="w-44"
+                                      matTooltip="No existe un archivo cargado"
+                                      [src]="
+                                        './assets/images/ui/no-image/no-image.svg'
+                                      "
+                                    />
+                                  </ng-template>
                                 </div>
 
                                 <!-- FECHA -->

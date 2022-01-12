@@ -36,7 +36,7 @@
           [ngStyle]="{ 'margin-left': dynamicFitImage, width: dinamycWidth }"
         />
         <button
-          *ngIf="!preview && editable"
+          *ngIf="!preview && editable && type !== 'upload'"
           mat-icon-button
           (click)="removePicture()"
         >
@@ -48,7 +48,7 @@
     </ng-template>
   </ng-container>
 </div>
-<button
+<!--<button
   *ngIf="image !== ''"
   mat-icon-button
   type="button"
@@ -57,4 +57,4 @@
   [matTooltip]="'Rotar a la derecha'"
 >
   <mat-icon svgIcon="rotate_right"></mat-icon>
-</button>
+</button>-->
