@@ -42,24 +42,24 @@ export class DialogAddSeccionComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {}
 
   onSubmit() {
-    if (this.form.valid && !this.loading) {
-      this.loading = true;
-      this.editarFormatoService
-        .createSeccion({
-          ...this.payload,
-          nombre: this.form.controls["nombre"].value,
-          idFormato: Number(this.idFormato),
-        })
-        .subscribe(
-          (response) => {
-            this.loading = false;
-            this.success.emit();
-          },
-          () => {
-            this.loading = false;
-          }
-        );
-    }
+    // if (this.form.valid && !this.loading) {
+    //   this.loading = true;
+    //   this.editarFormatoService
+    //     .createSeccion({
+    //       ...this.payload,
+    //       nombre: this.form.controls["nombre"].value,
+    //       idFormato: Number(this.idFormato),
+    //     })
+    //     .subscribe(
+    //       (response) => {
+    //         this.loading = false;
+    //         this.success.emit();
+    //       },
+    //       () => {
+    //         this.loading = false;
+    //       }
+    //     );
+    // }
   }
 
   ngOnDestroy(): void {

@@ -1,0 +1,64 @@
+<div class="flex flex-col flex-auto min-w-0 bg-gray-50 dark:bg-transparent">
+  <div
+    class="relative flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between py-8 px-6 md:px-8 border-b"
+  >
+    <div class="absolute inset-x-0 bottom-0" *ngIf="isLoading">
+      <mat-progress-bar [mode]="'indeterminate'"></mat-progress-bar>
+    </div>
+    <div class="text-4xl font-extrabold tracking-tight flex items-center">
+      {{ formato }}
+    </div>
+  </div>
+  <div>
+    <div class="flex items-center ml-6 pt-4">
+      <div
+        class="border-t-2 border-l-2 border-r-2 px-4 py-2 rounded-t-xl overflow-hidden bg-card"
+      >
+        <div class="sm:text-lg leading-6 truncate">Datos principales</div>
+      </div>
+    </div>
+
+    <div
+      class="flex flex-auto ml-6 mr-6 pt-4 bg-card py-8 px-6 md:px-8 rounded-b-xl rounded-tr-xl border-2"
+    >
+      <div
+        class="flex flex-col justify-between md:flex-row overflow-hidden sm:overflow-y-auto w-full"
+      >
+        <mat-form-field floatLabel="always" class="w-full md:w-1/4">
+          <mat-label class="font-bold">ceCo</mat-label>
+          <input matInput type="text" disabled [value]="ceCo || ''" />
+        </mat-form-field>
+        <mat-form-field floatLabel="always" class="w-full md:w-1/4">
+          <mat-label class="font-bold">GP</mat-label>
+          <input matInput type="text" disabled [value]="gp || ''" />
+        </mat-form-field>
+        <mat-form-field floatLabel="always" class="w-full md:w-1/4">
+          <mat-label class="font-bold">CE</mat-label>
+          <input matInput type="text" disabled [value]="ce || ''" />
+        </mat-form-field>
+      </div>
+    </div>
+  </div>
+  <ng-container *ngIf="sections">
+    <div cdkDropList class="list-section" (cdkDropListDropped)="drop($event)">
+      <ng-container *ngFor="let section of sections; trackBy: trackByFn">
+        <app-sections
+          *ngIf="section.activo"
+          class="list-box"
+          [sectionData]="section"
+        ></app-sections>
+      </ng-container>
+    </div>
+  </ng-container>
+
+  <div
+    class="flex flex-0 items-center justify-end w-full h-16 px-4 z-49 dark:bg-transparent print:hidden bottom-0"
+  >
+    <span class="font-medium text-secondary">
+      <button mat-button color="primary" (click)="postSection('section')">
+        <mat-icon [svgIcon]="'heroicons_solid:plus'"></mat-icon>
+        Agregar Sección
+      </button>
+    </span>
+  </div>
+</div>

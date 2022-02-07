@@ -1,0 +1,46 @@
+<mat-progress-bar
+  class="progress-add-dato"
+  *ngIf="isLoading"
+  [mode]="'indeterminate'"
+></mat-progress-bar>
+<div
+  class="flex flex-auto ml-6 mr-6 bg-gray-300 py-8 px-6 md:px-8 rounded-b-xl rounded-tr-xl border-2 overflow-auto"
+>
+  <div class="flex flex-col gap-2 justify-between w-full">
+    <div
+      class="flex flex-col flex-0 w-full px-4 z-49 dark:bg-transparent print:hidden bottom-0 h-max items-center"
+      [ngClass]="{
+        'justify-center':
+          (groupData.parametros && groupData.parametros.length) === 0
+      }"
+    >
+      <span
+        class="font-medium text-secondary"
+        [ngClass]="{
+          'right-28 absolute': groupData.parametros.length > 0
+        }"
+      >
+        <button mat-button color="primary" (click)="postParam()">
+          <mat-icon [svgIcon]="'heroicons_solid:plus'"></mat-icon>
+          Agregar campo
+        </button>
+      </span>
+
+      <div
+        cdkDropList
+        class="flex flex-col list-section"
+        (cdkDropListDropped)="drop($event)"
+      >
+        <ng-container
+          *ngFor="let paramData of groupData.parametros; trackBy: trackByFn"
+        >
+          <app-fields
+            class="list-box"
+            [groupData]="groupData"
+            [paramData]="paramData"
+          ></app-fields>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+</div>

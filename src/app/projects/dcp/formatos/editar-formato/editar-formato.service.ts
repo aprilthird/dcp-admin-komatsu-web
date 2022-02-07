@@ -9,7 +9,8 @@ import {
 import { HttpResponse } from "app/core/types/http.types";
 import { environment } from "environments/environment";
 import { BehaviorSubject, Observable, of } from "rxjs";
-import { tap } from "rxjs/operators";
+import { exhaustMap, tap } from "rxjs/operators";
+import { FormatosService } from "../formatos.service";
 
 @Injectable({ providedIn: "root" })
 export class EditarFormatoService {
@@ -22,7 +23,10 @@ export class EditarFormatoService {
     null
   );
 
-  constructor(private _httpClient: HttpClient) {}
+  constructor(
+    private _httpClient: HttpClient,
+    private _formatService: FormatosService
+  ) {}
 
   get secciones$(): Observable<Seccion[]> {
     return this._secciones.asObservable();
@@ -38,10 +42,10 @@ export class EditarFormatoService {
       .pipe(
         tap((response) => {
           if (response && response.body) {
-            this._formato.next(response.body.nombre);
-            this._ceCo.next(response.body.codCeco);
-            this._ce.next(response.body.codCe);
-            this._gp.next(response.body.codGp);
+            this._formato.next(response?.body?.nombre);
+            this._ceCo.next(response?.body?.codCeco);
+            this._ce.next(response?.body?.codCe);
+            this._gp.next(response?.body?.codGp);
           }
         })
       );
@@ -109,11 +113,17 @@ export class EditarFormatoService {
     );
   }
 
-  createSeccion(data): Observable<any> {
-    return this._httpClient.post(
-      environment.apiUrl + "/Core/GuardarSeccion",
-      data
-    );
+  createSeccion(data, reload): Observable<any> {
+    return this._httpClient
+      .post(environment.apiUrl + "/Core/GuardarSeccion", data)
+      .pipe(
+        exhaustMap(() =>
+          this.getSecciones({
+            idFormulario: this._formatService._idFormulario.getValue(),
+            reload: reload,
+          })
+        )
+      );
   }
 
   createGrupo(data): Observable<HttpResponse<Grupo>> {

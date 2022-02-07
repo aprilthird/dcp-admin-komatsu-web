@@ -1,0 +1,82 @@
+<mat-progress-bar
+  class="progress-add-dato"
+  *ngIf="isLoading"
+  [mode]="'indeterminate'"
+></mat-progress-bar>
+<div
+  class="flex flex-auto ml-6 mr-6 bg-gray-300 py-8 px-6 md:px-8 rounded-b-xl rounded-tr-xl border-2 overflow-auto"
+>
+  <div class="flex flex-col gap-2 justify-between w-full">
+    <div
+      class="flex flex-col flex-0 w-full px-4 z-49 dark:bg-transparent print:hidden bottom-0 h-max"
+      [ngClass]="{
+        'justify-center':
+          (groupData.parametros && groupData.parametros.length) === 0
+      }"
+    >
+      <span
+        *ngIf="groupData.parametros && !activeRows() && groupData.pos === 'h'"
+        class="font-medium text-secondary flex justify-center"
+        [ngClass]="{
+          'right-28 absolute': groupData.parametros.length > 0 && activeRows()
+        }"
+      >
+        <button mat-button color="primary" (click)="addParam()">
+          <mat-icon [svgIcon]="'heroicons_solid:plus'"></mat-icon>
+          Agregar campo
+        </button>
+      </span>
+
+      <div
+        *ngFor="let row of rowsOfGrid; let i = index"
+        cdkDropListOrientation="horizontal"
+        cdkDropList
+        class="flex list-section items-center"
+        (cdkDropListDropped)="drop($event, i)"
+      >
+        <ng-container *ngFor="let paramData of row; let j = index">
+          <div class="flex flex-col items-center">
+            <app-fields
+              class="list-box"
+              [groupData]="groupData"
+              [paramData]="paramData"
+              (columnToDelete)="deleteTMP($event, 'column')"
+              (rowToDelete)="deleteTMP($event, 'row')"
+              [lowestColumn]="lowestColumn"
+              [lowestRow]="lowestRow"
+            ></app-fields>
+          </div>
+          <button
+            *ngIf="
+              paramData.columna === highestColumn &&
+              paramData.fila === lowestRow
+            "
+            class="ml-16"
+            mat-button
+            color="primary"
+            matTooltip="Agregar campo a esta fila"
+            (click)="addColumn()"
+          >
+            <mat-icon [svgIcon]="'heroicons_solid:plus'"></mat-icon>
+            Agregar columna
+          </button>
+        </ng-container>
+      </div>
+      <button
+        *ngIf="
+          groupData.parametros &&
+          groupData.parametros.length > 0 &&
+          activeRows() &&
+          groupData.pos === 'h'
+        "
+        mat-button
+        color="primary"
+        (click)="addRow()"
+        class="flex justify-start w-min"
+      >
+        <mat-icon [svgIcon]="'heroicons_solid:plus'"></mat-icon>
+        Agregar Fila
+      </button>
+    </div>
+  </div>
+</div>

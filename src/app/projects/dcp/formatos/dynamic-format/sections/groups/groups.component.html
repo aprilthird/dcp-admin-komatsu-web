@@ -1,0 +1,43 @@
+<div class="w-full">
+  <div class="flex items-center ml-6 pt-4">
+    <div
+      class="border-t-2 border-l-2 border-r-2 px-4 py-2 rounded-t-xl overflow-hidden bg-card flex align-center gap-2"
+    >
+      <span [hidden]="edit" class="sm:text-lg leading-6 truncate">{{
+        groupData.nombre
+      }}</span>
+      <input
+        [hidden]="!edit"
+        #nameInput
+        class="sm:text-lg leading-6 truncate"
+        value="{{ groupData.nombre }}"
+        maxlength="20"
+      />
+      <span
+        *ngIf="!edit"
+        class="mat-button-wrapper cursor-pointer"
+        (click)="editGroup()"
+        matTooltip="Editar nombre de grupo"
+      >
+        <mat-icon [svgIcon]="'heroicons_outline:pencil'"> </mat-icon>
+      </span>
+      <span
+        *ngIf="edit"
+        class="mat-button-wrapper cursor-pointer"
+        (click)="save()"
+        matTooltip="Guardar"
+      >
+        <mat-icon [svgIcon]="'heroicons_outline:save'"> </mat-icon>
+      </span>
+      <span class="mat-button-wrapper cursor-pointer" (click)="deleteGroup()">
+        <mat-icon [svgIcon]="'heroicons_outline:trash'"> </mat-icon>
+      </span>
+    </div>
+  </div>
+  <ng-container *ngIf="groupData.pos === 'v'">
+    <app-vertical-group [groupData]="groupData"></app-vertical-group>
+  </ng-container>
+  <ng-container *ngIf="groupData.pos === 'h'">
+    <app-horizontal-group [groupData]="groupData"></app-horizontal-group>
+  </ng-container>
+</div>

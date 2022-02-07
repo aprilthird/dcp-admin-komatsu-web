@@ -1,0 +1,65 @@
+<div mat-dialog-title class="flex justify-between items-center">
+  <h4>Agregar opción</h4>
+  <button mat-icon-button type="button" (click)="dialogRef.close()">
+    <mat-icon [svgIcon]="'heroicons_outline:x'"></mat-icon>
+  </button>
+</div>
+
+<div mat-dialog-content class="flex gap-4">
+  <mat-form-field class="example-chip-list w-4/5" appearance="fill">
+    <mat-chip-list #chipList aria-label="Option selection">
+      <mat-chip
+        class="flex"
+        *ngFor="let option of options"
+        [selectable]="selectable"
+        [removable]="removable"
+        (removed)="removeOption(option)"
+      >
+        {{ option.name }}
+        <button matChipRemove *ngIf="removable">
+          <mat-icon>cancel</mat-icon>
+        </button>
+      </mat-chip>
+      <input
+        placeholder="Nueva opción"
+        [matChipInputFor]="chipList"
+        [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+        [matChipInputAddOnBlur]="addOnBlur"
+        (matChipInputTokenEnd)="addOption($event)"
+      />
+    </mat-chip-list>
+  </mat-form-field>
+  <div class="w-1/5">
+    <button
+      mat-icon-button
+      type="button"
+      class="remove-chip"
+      matTooltip="Agregar opción"
+    >
+      <mat-icon svgIcon="heroicons_outline:plus-circle"></mat-icon>
+    </button>
+  </div>
+</div>
+
+<div mat-dialog-actions class="flex justify-end px-6 bg-gray-100">
+  <button
+    mat-button
+    (click)="dialogRef.close()"
+    class="ml-4 bg-gray-50 border-solid border border-accent-300 text-gray-700 shadow-none"
+  >
+    Cancelar
+  </button>
+  <button
+    mat-raised-button
+    (click)="onSubmit()"
+    [color]="'primary'"
+    class="w-24"
+  >
+    <span> Agregar </span>
+    <mat-progress-spinner
+      *ngIf="loading"
+      [diameter]="24"
+      [mode]="'indeterminate'"
+    ></mat-progress-spinner>
+  </button>
+</div>

@@ -1,0 +1,42 @@
+<ng-container *ngIf="renderTemplate">
+  <div
+    [disabled]="!editable"
+    [hidden]="edit"
+    class="text-gray-900 font-medium cursor-pointer"
+    style="
+      width: 10rem;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      max-height: 5rem;
+    "
+    [matTooltip]="label"
+  >
+    <label
+      class="label-edit cursor-pointer"
+      [ngStyle]="{
+        visibility: !visible
+          ? 'hidden'
+          : !label || label === ''
+          ? 'hidden'
+          : 'visible'
+      }"
+      >{{ !label || label === "" ? "a" : label }}</label
+    >
+  </div>
+  <div class="flex gap-1" style="width: 10rem">
+    <input
+      [hidden]="!edit"
+      #nameInput
+      class="sm:text-lg leading-6 truncate"
+      [(ngModel)]="label"
+    />
+    <mat-icon
+      class="cursor-pointer"
+      *ngIf="edit"
+      [svgIcon]="'heroicons_outline:save'"
+      matTooltip="'Guardar'"
+      (click)="saveLabelFn()"
+    >
+    </mat-icon>
+  </div>
+</ng-container>

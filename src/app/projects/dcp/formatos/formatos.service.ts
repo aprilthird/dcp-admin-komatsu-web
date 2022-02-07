@@ -1,13 +1,14 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { environment } from "environments/environment";
-import { Observable } from "rxjs";
+import { BehaviorSubject, Observable } from "rxjs";
 import { Response } from "app/shared/models/general-model";
 
 @Injectable({
   providedIn: "root",
 })
 export class FormatosService {
+  _idFormulario: BehaviorSubject<number> = new BehaviorSubject(null);
   constructor(private _httpClient: HttpClient) {}
 
   validateSection(data): Observable<Response> {

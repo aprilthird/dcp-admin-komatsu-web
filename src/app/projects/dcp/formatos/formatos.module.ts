@@ -52,6 +52,17 @@ import { ImagePreviewComponent } from "./fotografia/image-preview/image-preview.
 //CROPER
 import { ImageCropperModule } from "ngx-image-cropper";
 import { AttachDocumentsComponent } from './attach-documents/attach-documents.component';
+import { DynamicFormatComponent } from './dynamic-format/dynamic-format.component';
+import { SectionsComponent } from './dynamic-format/sections/sections.component';
+import { DialogComponentsComponent } from './dynamic-format/dialog-components/dialog-components.component';
+import { GroupsComponent } from './dynamic-format/sections/groups/groups.component';
+import { FieldsComponent } from './dynamic-format/sections/groups/fields/fields.component';
+import { HorizontalGroupComponent } from './dynamic-format/sections/groups/horizontal-group/horizontal-group.component';
+import { VerticalGroupComponent } from './dynamic-format/sections/groups/vertical-group/vertical-group.component';
+import { LabelEditableComponent } from './dynamic-format/sections/groups/fields/label-editable/label-editable.component';
+import { ChipsSelectionComponent } from './dynamic-format/dialog-components/chips-selection/chips-selection.component';
+import { OtherSelectionComponent } from './dynamic-format/dialog-components/other-selection/other-selection.component';
+import { UploadImageComponent } from './dynamic-format/dialog-components/upload-image/upload-image.component';
 
 @NgModule({
   declarations: [
@@ -73,6 +84,17 @@ import { AttachDocumentsComponent } from './attach-documents/attach-documents.co
     FotografiaComponent,
     ImagePreviewComponent,
     AttachDocumentsComponent,
+    DynamicFormatComponent,
+    SectionsComponent,
+    DialogComponentsComponent,
+    GroupsComponent,
+    FieldsComponent,
+    HorizontalGroupComponent,
+    VerticalGroupComponent,
+    LabelEditableComponent,
+    ChipsSelectionComponent,
+    OtherSelectionComponent,
+    UploadImageComponent,
   ],
   imports: [
     CommonModule,
