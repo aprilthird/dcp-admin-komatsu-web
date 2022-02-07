@@ -415,6 +415,10 @@ export class ValidationFormatosComponent implements OnInit {
               this.checkImgParam(parametro, j, k);
             } else if (parametro.idParametro === TipoParametro.FIRMA) {
               this.checkSignParam(paramIdx, parametro, indexGroup, k, j);
+            } else if (parametro.idParametro === TipoParametro.FECHA) {
+              parametro.valor = this.form.get(
+                this.getParametroControl({ j, k })
+              ).value;
             } else {
               parametro.valor = String(
                 this.form.get(this.getParametroControl({ j, k })).value
@@ -458,14 +462,22 @@ export class ValidationFormatosComponent implements OnInit {
   }
 
   checkImgParam(parametro, j, k): void {
-    if (parametro.valor === null || parametro.valor === "") {
+    parametro.valor = String(
+      this.form.get(this.getParametroControl({ j, k })).value
+    );
+    if (!parametro.valor || parametro.valor === "") {
       this.form
         .get(this.getParametroControl({ j, k }))
         .setValue(parametro.dato);
     }
-    parametro.valor = String(
-      this.form.get(this.getParametroControl({ j, k })).value
-    );
+    // if (parametro.valor === null || parametro.valor === "") {
+    //   this.form
+    //     .get(this.getParametroControl({ j, k }))
+    //     .setValue(parametro.dato);
+    // }
+    // parametro.valor = String(
+    //   this.form.get(this.getParametroControl({ j, k })).value
+    // );
   }
 
   postAssignation(payload): void {
