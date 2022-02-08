@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, SimpleChange } from "@angular/core";
 import {
   FormBuilder,
   FormControl,
@@ -57,6 +57,7 @@ export class ActaConformidadComponent implements OnInit {
   private _unsubscribeAll: Subject<any> = new Subject<any>();
   managableData: ParamI[] = [];
   isFieldLoading: boolean;
+  parameters: ParamI[] = [];
 
   constructor(
     private fb: FormBuilder,
@@ -81,8 +82,8 @@ export class ActaConformidadComponent implements OnInit {
   }
 
   ngOnDestroy(): void {
-    this._unsubscribeAll.next();
-    this._unsubscribeAll.complete();
+    //this._unsubscribeAll.next();
+    //this._unsubscribeAll.complete();
   }
 
   private getActa(): void {
@@ -110,6 +111,7 @@ export class ActaConformidadComponent implements OnInit {
     this.activitiesService.postActaConformidad(this.form.value).subscribe(
       (resp) => {
         this.savingData = false;
+        this.saveCurrentParams();
         this.router.navigate(["/admin/informes/list"]);
       },
       (err) => {
@@ -213,5 +215,28 @@ export class ActaConformidadComponent implements OnInit {
         id,
       });
     }
+  }
+
+  getFieldData(e): void {
+    if (this.parameters.some((param) => param.id === e.id)) {
+      this.parameters.map((param) => {
+        if (param.id === e.id) {
+          param.valor = e.valor;
+        }
+      });
+    } else {
+      this.parameters.push(e);
+    }
+  }
+
+  saveCurrentParams(): void {
+    this._editarFormatoService
+      .createDato({
+        parametros: this.parameters,
+      })
+      .pipe(takeUntil(this._unsubscribeAll))
+      .subscribe(() => {
+        //this.getDataActa();
+      });
   }
 }

@@ -1,9 +1,11 @@
 import {
   Component,
   ElementRef,
+  EventEmitter,
   HostListener,
   Input,
   OnInit,
+  Output,
   ViewChild,
 } from "@angular/core";
 import { FormControl, Validators } from "@angular/forms";
@@ -22,6 +24,7 @@ import { ActaConformidadComponent } from "../acta-conformidad.component";
 })
 export class ManagableFieldsComponent implements OnInit {
   @Input() paramData: ParamI;
+  @Output() outputData = new EventEmitter();
 
   fieldData = new FormControl("", Validators.required);
   isLoading: boolean;
@@ -50,6 +53,18 @@ export class ManagableFieldsComponent implements OnInit {
       className === "label-edit cursor-pointer"
     ) {
       this.editLabelFn();
+    }
+  }
+
+  @HostListener("keypress", ["$event.target"])
+  keyPress(classname) {
+    const classNameKeypress = (classname as Element).className;
+    if (
+      classNameKeypress.includes(
+        "mat-input-element mat-form-field-autofill-control auto-save-field"
+      )
+    ) {
+      this.sendOutPut();
     }
   }
 
@@ -115,7 +130,14 @@ export class ManagableFieldsComponent implements OnInit {
     });
   }
 
+  sendOutPut(): void {
+    setTimeout(() => {
+      this.outputData.emit({ ...this.paramData, valor: this.fieldData.value });
+    });
+  }
+
   validateRegex(): void {
+    this.fieldData.setValue(JSON.stringify(this.paramData.valor));
     this.paramData.editable
       ? this.fieldData.enable()
       : this.fieldData.disable();

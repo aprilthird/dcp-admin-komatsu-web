@@ -13,6 +13,7 @@
           floatLabel="always"
         >
           <input
+            class="auto-save-field"
             id="{{ paramData.idGrupo + paramData.id }}"
             matInput
             type="text"
@@ -34,9 +35,11 @@
         </ng-container>
         <mat-form-field floatLabel="always" class="w-40">
           <input
+            class="auto-save-field"
             id="{{ paramData.idGrupo + paramData.id }}"
             matInput
             type="number"
+            [formControl]="fieldData"
             placeholder="{{ paramData.placeholder }}"
           />
           <mat-progress-spinner
@@ -54,7 +57,9 @@
         </ng-container>
         <mat-form-field floatLabel="always" class="w-40">
           <input
+            class="auto-save-field"
             matInput
+            [formControl]="fieldData"
             [matDatepicker]="datepicker"
             placeholder="{{ paramData.placeholder }}"
           />

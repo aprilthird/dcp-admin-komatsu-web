@@ -204,6 +204,7 @@
                     *ngIf="paramData.activo"
                     class="list-box"
                     [paramData]="paramData"
+                    (outputData)="getFieldData($event)"
                   ></app-managable-fields>
                 </ng-container>
               </ng-container>
