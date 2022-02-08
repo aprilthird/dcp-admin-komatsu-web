@@ -75,7 +75,6 @@ export class ActaConformidadComponent implements OnInit {
 
   private getIdAcataConformidad(): void {
     this.activeRoute.params.subscribe((params) => {
-      console.log(params);
       this.idActa = Number(params["idActividad"]);
       this.getActa();
     });
@@ -97,7 +96,6 @@ export class ActaConformidadComponent implements OnInit {
   getDataActa(): void {
     this.activitiesService.getDataActa(this.idActa).subscribe((resp) => {
       this.managableData = resp.body;
-      console.log(this.managableData);
     });
   }
 

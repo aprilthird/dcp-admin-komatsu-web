@@ -1,4 +1,11 @@
-import { Component, ElementRef, Input, OnInit, ViewChild } from "@angular/core";
+import {
+  Component,
+  ElementRef,
+  HostListener,
+  Input,
+  OnInit,
+  ViewChild,
+} from "@angular/core";
 import { FormControl, Validators } from "@angular/forms";
 import { MatDialog } from "@angular/material/dialog";
 import { EditarFormatoService } from "app/projects/dcp/formatos/editar-formato/editar-formato.service";
@@ -33,7 +40,22 @@ export class ManagableFieldsComponent implements OnInit {
     private _actaConformidadComponent: ActaConformidadComponent
   ) {}
 
-  ngOnInit(): void {}
+  @HostListener("click", ["$event.target"])
+  onClick(classname) {
+    const className = (classname as Element).className;
+    if (
+      className ===
+        "mat-tooltip-trigger text-gray-900 font-medium cursor-pointer ng-star-inserted" ||
+      className === "label-edit cursor-pointer ng-star-inserted" ||
+      className === "label-edit cursor-pointer"
+    ) {
+      this.editLabelFn();
+    }
+  }
+
+  ngOnInit(): void {
+    this.validateRegex();
+  }
 
   editField(type: number): void {
     this.isLoading = true;
@@ -51,12 +73,6 @@ export class ManagableFieldsComponent implements OnInit {
         this._actaConformidadComponent.getDataActa();
         this.isLoading = false;
       });
-  }
-
-  saveLabeOutPut(label: string, type: number): void {
-    this.paramData.label = label;
-    this.editField(type);
-    this.edit = !this.edit;
   }
 
   setPlaceholcer(value: string): void {
@@ -86,5 +102,30 @@ export class ManagableFieldsComponent implements OnInit {
   deleteParam(): void {
     this.paramData = { ...this.paramData, activo: false };
     this.editField(this.paramData.idParametro);
+  }
+
+  saveLabelFn(): void {
+    this.editField(this.paramData.idParametro);
+    this.edit = !this.edit;
+  }
+  editLabelFn(): void {
+    this.edit = true;
+    setTimeout(() => {
+      this.el.nativeElement.select();
+    });
+  }
+
+  validateRegex(): void {
+    this.paramData.editable
+      ? this.fieldData.enable()
+      : this.fieldData.disable();
+
+    this.fieldData.setValidators([
+      this.paramData.obligatorio
+        ? Validators.required
+        : Validators.nullValidator,
+      Validators.minLength(this.paramData.minCaracteres),
+      Validators.maxLength(this.paramData.maxCaracteres),
+    ]);
   }
 }
