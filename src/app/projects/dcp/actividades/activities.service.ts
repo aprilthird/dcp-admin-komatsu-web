@@ -170,4 +170,10 @@ export class ActivitiesService {
       environment.apiUrl + "/Administracion/ObtenerEstados/" + type;
     return this.http.get<Response>(endpoint);
   }
+
+  getDataActa(idActa: number): Observable<any> {
+    const endpoint =
+      environment.apiUrl + "/Core/ObtenerParametrosActa/" + idActa;
+    return this.http.get<Response>(endpoint);
+  }
 }

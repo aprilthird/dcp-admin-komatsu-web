@@ -7,8 +7,11 @@ import {
 } from "@angular/forms";
 import { MatDialog } from "@angular/material/dialog";
 import { ActivatedRoute, Router } from "@angular/router";
+import { ParamI } from "app/shared/models/formatos";
 import { UiDialogsComponent } from "app/shared/ui/ui-dialogs/ui-dialogs.component";
 import { Subject } from "rxjs";
+import { takeUntil } from "rxjs/operators";
+import { EditarFormatoService } from "../../formatos/editar-formato/editar-formato.service";
 
 //SERVICES
 import { ActivitiesService } from "../activities.service";
@@ -52,18 +55,23 @@ export class ActaConformidadComponent implements OnInit {
   });
   savingData: boolean;
   private _unsubscribeAll: Subject<any> = new Subject<any>();
+  managableData: ParamI[] = [];
+  isFieldLoading: boolean;
 
   constructor(
     private fb: FormBuilder,
     private activitiesService: ActivitiesService,
     private activeRoute: ActivatedRoute,
     private router: Router,
-    private matDialog: MatDialog
+    private matDialog: MatDialog,
+    private _editarFormatoService: EditarFormatoService
   ) {
     this.getIdAcataConformidad();
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.getDataActa();
+  }
 
   private getIdAcataConformidad(): void {
     this.activeRoute.params.subscribe((params) => {
@@ -83,6 +91,13 @@ export class ActaConformidadComponent implements OnInit {
       this.setFormValues(resp.body);
 
       this.isLoading = false;
+    });
+  }
+
+  getDataActa(): void {
+    this.activitiesService.getDataActa(this.idActa).subscribe((resp) => {
+      this.managableData = resp.body;
+      console.log(this.managableData);
     });
   }
 
@@ -112,6 +127,30 @@ export class ActaConformidadComponent implements OnInit {
         this.savingData = false;
       }
     );
+  }
+
+  postParam(): void {
+    this._editarFormatoService
+      .createDato({
+        parametros: [
+          {
+            id: 0,
+            idParametro: 1,
+            label: "texto 1",
+            editable: true,
+            visible: true,
+            activo: true,
+            maxCaracteres: 100,
+            minCaracteres: 1,
+            placeholder: "Ingrese texto",
+            idActividadFormatoActa: this.idActa,
+          },
+        ],
+      })
+      .pipe(takeUntil(this._unsubscribeAll))
+      .subscribe(() => {
+        this.getDataActa();
+      });
   }
 
   private setFormValues(data): void {

@@ -38,7 +38,8 @@ import {
 import { FilterDialogComponent } from "./filter/filter-dialog/filter-dialog.component";
 
 import { FuseConfirmationModule } from "@fuse/services/confirmation";
-import { ReportFilterDialogComponent } from './filter/report-filter-dialog/report-filter-dialog.component';
+import { ReportFilterDialogComponent } from "./filter/report-filter-dialog/report-filter-dialog.component";
+import { ManagableFieldsComponent } from './acta-conformidad/managable-fields/managable-fields.component';
 
 @NgModule({
   declarations: [
@@ -48,6 +49,7 @@ import { ReportFilterDialogComponent } from './filter/report-filter-dialog/repor
     FilterDialogComponent,
     ActaConformidadComponent,
     ReportFilterDialogComponent,
+    ManagableFieldsComponent,
   ],
   imports: [
     CommonModule,
