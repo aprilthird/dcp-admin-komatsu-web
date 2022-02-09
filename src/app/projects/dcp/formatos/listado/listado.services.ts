@@ -6,6 +6,7 @@ import {
   ParamsPagination,
 } from "app/core/types/http.types";
 import { Pagination } from "app/core/types/list.types";
+import { Response } from "app/shared/models/general-model";
 import { environment } from "environments/environment";
 import moment from "moment";
 import { BehaviorSubject, Observable } from "rxjs";
@@ -95,5 +96,10 @@ export class ListadoService {
           this._formatos.next(response.body.data);
         })
       );
+  }
+
+  setDefaultFormatActa(id: number): Observable<Response> {
+    const endpoint = environment.apiUrl + "/Core/ActivarActa/" + id;
+    return this._httpClient.get<Response>(endpoint);
   }
 }

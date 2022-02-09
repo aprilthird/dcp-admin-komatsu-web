@@ -198,24 +198,31 @@
           </div>
           <div class="flex flex-wrap justify-start gap-10 mb-5">
             <div class="flex flex-wrap gap-5 list-section">
-              <ng-container *ngIf="managableData.length > 0">
-                <ng-container *ngFor="let paramData of managableData">
-                  <app-managable-fields
+              <ng-container *ngIf="parameters.length > 0">
+                <ng-container *ngFor="let paramData of parameters">
+                  <!--<app-managable-fields
                     *ngIf="paramData.activo"
                     class="list-box"
                     [paramData]="paramData"
                     (outputData)="getFieldData($event)"
-                  ></app-managable-fields>
+                  ></app-managable-fields>-->
+                  <app-read-load-data
+                    *ngIf="paramData.activo"
+                    class="list-box"
+                    [parametro]="paramData"
+                    (outputData)="updateDynamicFields($event)"
+                  >
+                  </app-read-load-data>
                 </ng-container>
               </ng-container>
-              <button
+              <!-- <button
                 mat-icon-button
                 class="mt-5"
                 matTooltip="Agregar campo dinámico"
                 (click)="postParam()"
               >
                 <mat-icon [svgIcon]="'heroicons_solid:plus-circle'"></mat-icon>
-              </button>
+              </button> -->
             </div>
           </div>
 

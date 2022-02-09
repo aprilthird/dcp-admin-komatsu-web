@@ -52,12 +52,12 @@ export class ListadoComponent implements OnInit, OnDestroy {
       });
   }
 
-  clickNewFormato(serviceData?) {
+  clickNewFormato(serviceData?, type?) {
     const dialogRef = this.dialog
       .open(DialogAddFormatoComponent, {
         autoFocus: false,
         width: "376px",
-        data: serviceData,
+        data: { data: serviceData, type: type },
       })
       .afterClosed()
       .subscribe(() => this.loadData());
@@ -84,7 +84,6 @@ export class ListadoComponent implements OnInit, OnDestroy {
     });
 
     dialogRef.beforeClosed().subscribe((result) => {
-      console.log(result);
       if (result === "confirmed") {
         this.isLoading = true;
         this.dialogAddFormatoService
@@ -129,5 +128,9 @@ export class ListadoComponent implements OnInit, OnDestroy {
 
   openFilter(): void {
     this.dialog.open(FilterDialogComponent, { width: "370px" });
+  }
+
+  setActa(idFormat: number): void {
+    this._listadoService.setDefaultFormatActa(idFormat).subscribe((resp) => {});
   }
 }

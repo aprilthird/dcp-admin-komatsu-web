@@ -22,12 +22,8 @@ export class DialogAddFormatoComponent implements OnInit {
   loading: boolean = false;
 
   form: FormGroup = this.fb.group({
-    codCeco: ["", Validators.required],
-    codGp: ["", Validators.required],
-    codCe: ["", Validators.required],
-    idTipoServicio: ["", Validators.required],
     nombre: ["", Validators.required],
-    documento: [""],
+    idTipoServicio: ["", Validators.required],
     visible: [true],
     activo: [true],
     estado: [1],
@@ -47,12 +43,29 @@ export class DialogAddFormatoComponent implements OnInit {
     private router: Router,
     private serviceTypes: TiposServiciosService,
     private formatServices: FormatosService
-  ) {}
+  ) {
+    this.createForm();
+  }
 
   ngOnInit(): void {
-    this.getServiceTypes();
-    this.getCombos();
     this.isEdit();
+  }
+
+  createForm(): void {
+    this.getServiceTypes();
+    if (this.data?.type === "format") {
+      this.form.addControl("codCeco", new FormControl("", Validators.required));
+      this.form.addControl("codGp", new FormControl("", Validators.required));
+      this.form.addControl("codCe", new FormControl("", Validators.required));
+      this.form.addControl(
+        "documento",
+        new FormControl("", Validators.required)
+      );
+
+      this.getCombos();
+    } else {
+      this.form.addControl("esActa", new FormControl(true));
+    }
   }
 
   ngOnDestroy(): void {
@@ -85,9 +98,9 @@ export class DialogAddFormatoComponent implements OnInit {
   onSubmit() {
     if (!this.loading && this.form.valid) {
       this.loading = true;
-      if (this.data) {
+      if (this.data?.data) {
         this.dialogAddFormatoService
-          .agregarFormato({ ...this.data, ...this.form.value })
+          .agregarFormato({ ...this.data?.data, ...this.form.value })
           .subscribe(() => {
             this.dialogRef.close();
           });
@@ -109,9 +122,9 @@ export class DialogAddFormatoComponent implements OnInit {
   }
 
   private isEdit(): void {
-    if (this.data) {
+    if (this.data?.data) {
       const { codCe, codCeco, codGp, idTipoServicio, nombre, documento } =
-        this.data;
+        this.data?.data;
       this.form.patchValue({
         codCe,
         codCeco,

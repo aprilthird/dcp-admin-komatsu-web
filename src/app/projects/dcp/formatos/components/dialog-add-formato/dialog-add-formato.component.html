@@ -6,7 +6,7 @@
     </button>
   </div>
   <div mat-dialog-content class="pb-6">
-    <div class="flex flex-col w-full">
+    <div *ngIf="data?.type === 'format'" class="flex flex-col w-full">
       <!-- Nombre -->
       <mat-form-field class="w-full">
         <mat-label class="font-bold">CeCo</mat-label>
@@ -59,6 +59,25 @@
         <mat-error> {{ getErrorMessage("documento") }} </mat-error>
       </mat-form-field>
     </div>
+
+    <div *ngIf="data?.type === 'acta'" class="flex flex-col w-full">
+      <mat-form-field class="w-full">
+        <mat-label class="font-bold">Título</mat-label>
+        <input maxlength="100" matInput formControlName="nombre" />
+        <mat-error> {{ getErrorMessage("nombre") }} </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="w-full">
+        <mat-label class="font-bold">Tipo de servicio</mat-label>
+        <mat-select formControlName="idTipoServicio">
+          <mat-option
+            *ngFor="let service_type of services_type"
+            [value]="service_type.id"
+            >{{ service_type.nombre }}</mat-option
+          >
+        </mat-select>
+      </mat-form-field>
+    </div>
   </div>
   <div mat-dialog-actions class="flex justify-end px-6 bg-gray-100">
     <button
@@ -75,8 +94,8 @@
       (click)="onSubmit()"
       [disabled]="form.invalid"
     >
-      <span *ngIf="!data"> Crear </span>
-      <span *ngIf="data"> Editar </span>
+      <span *ngIf="!data?.data"> Crear </span>
+      <span *ngIf="data?.data"> Editar </span>
       <mat-progress-spinner
         *ngIf="loading"
         [diameter]="24"

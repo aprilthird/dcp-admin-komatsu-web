@@ -171,7 +171,7 @@ export class ActivitiesService {
     return this.http.get<Response>(endpoint);
   }
 
-  getDataActa(idActa: number): Observable<any> {
+  getDataActa(idActa: number = 0): Observable<any> {
     const endpoint =
       environment.apiUrl + "/Core/ObtenerParametrosActa/" + idActa;
     return this.http.get<Response>(endpoint);

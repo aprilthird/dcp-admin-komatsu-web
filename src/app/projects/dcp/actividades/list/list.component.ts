@@ -58,7 +58,6 @@ export class ListComponent implements OnInit {
       .subscribe(() => {
         this.isLoading = false;
       });
-    this.isLoading = false;
   }
 
   daterange(event): void {

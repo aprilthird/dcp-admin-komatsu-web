@@ -33,10 +33,28 @@
         <mat-icon svgIcon="heroicons_outline:document-download"></mat-icon>
         <span class="ml-2 mr-1">Agregar tipo de servicio</span>
       </button>
-      <button mat-raised-button [color]="'primary'" (click)="clickNewFormato()">
+      <button
+        mat-raised-button
+        [color]="'primary'"
+        [matMenuTriggerFor]="createService"
+      >
         <mat-icon [svgIcon]="'heroicons_outline:plus'"></mat-icon>
         <span class="ml-2 mr-1">Crear servicio</span>
       </button>
+
+      <mat-menu
+        #createService="matMenu"
+        xPosition="before"
+        aria-label="Toggle menu"
+      >
+        <button mat-menu-item (click)="clickNewFormato(undefined, 'format')">
+          Para formatos
+        </button>
+
+        <button mat-menu-item (click)="clickNewFormato(undefined, 'acta')">
+          Para actas
+        </button>
+      </mat-menu>
     </div>
   </div>
 
@@ -126,7 +144,18 @@
                         Ver inspecciones
                       </button>
 
-                      <button mat-menu-item (click)="clickNewFormato(formato)">
+                      <button
+                        *ngIf="formato.esActa"
+                        mat-menu-item
+                        (click)="setActa(formato.id)"
+                      >
+                        Habilitar este formato para Actas
+                      </button>
+
+                      <button
+                        mat-menu-item
+                        (click)="clickNewFormato(formato, 'acta')"
+                      >
                         Editar
                       </button>
                       <button mat-menu-item (click)="deleteFormato(formato)">

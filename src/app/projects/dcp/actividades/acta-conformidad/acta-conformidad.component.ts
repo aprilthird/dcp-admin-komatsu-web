@@ -1,4 +1,4 @@
-import { Component, OnInit, SimpleChange } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import {
   FormBuilder,
   FormControl,
@@ -6,12 +6,11 @@ import {
   Validators,
 } from "@angular/forms";
 import { MatDialog } from "@angular/material/dialog";
-import { ActivatedRoute, Router } from "@angular/router";
+import { ActivatedRoute } from "@angular/router";
 import { ParamI } from "app/shared/models/formatos";
 import { UiDialogsComponent } from "app/shared/ui/ui-dialogs/ui-dialogs.component";
 import { Subject } from "rxjs";
 import { takeUntil } from "rxjs/operators";
-import { EditarFormatoService } from "../../formatos/editar-formato/editar-formato.service";
 
 //SERVICES
 import { ActivitiesService } from "../activities.service";
@@ -55,7 +54,6 @@ export class ActaConformidadComponent implements OnInit {
   });
   savingData: boolean;
   private _unsubscribeAll: Subject<any> = new Subject<any>();
-  managableData: ParamI[] = [];
   isFieldLoading: boolean;
   parameters: ParamI[] = [];
 
@@ -63,9 +61,7 @@ export class ActaConformidadComponent implements OnInit {
     private fb: FormBuilder,
     private activitiesService: ActivitiesService,
     private activeRoute: ActivatedRoute,
-    private router: Router,
-    private matDialog: MatDialog,
-    private _editarFormatoService: EditarFormatoService
+    private matDialog: MatDialog
   ) {
     this.getIdAcataConformidad();
   }
@@ -75,29 +71,32 @@ export class ActaConformidadComponent implements OnInit {
   }
 
   private getIdAcataConformidad(): void {
-    this.activeRoute.params.subscribe((params) => {
-      this.idActa = Number(params["idActividad"]);
-      this.getActa();
-    });
-  }
-
-  ngOnDestroy(): void {
-    //this._unsubscribeAll.next();
-    //this._unsubscribeAll.complete();
+    this.activeRoute.params
+      .pipe(takeUntil(this._unsubscribeAll))
+      .subscribe((params) => {
+        this.idActa = Number(params["idActividad"]);
+        this.getActa();
+      });
   }
 
   private getActa(): void {
-    this.activitiesService.getActaConformidad(this.idActa).subscribe((resp) => {
-      this.setFormValues(resp.body);
+    this.activitiesService
+      .getActaConformidad(this.idActa)
+      .pipe(takeUntil(this._unsubscribeAll))
+      .subscribe((resp) => {
+        this.setFormValues(resp.body);
 
-      this.isLoading = false;
-    });
+        this.isLoading = false;
+      });
   }
 
   getDataActa(): void {
-    this.activitiesService.getDataActa(this.idActa).subscribe((resp) => {
-      this.managableData = resp.body;
-    });
+    this.activitiesService
+      .getDataActa(this.idActa)
+      .pipe(takeUntil(this._unsubscribeAll))
+      .subscribe((resp) => {
+        this.parameters = resp.body;
+      });
   }
 
   postActa(): void {
@@ -108,49 +107,27 @@ export class ActaConformidadComponent implements OnInit {
     if (this.isEdit) {
       this.form.addControl("idActividadFormato", new FormControl(this.idActa));
     }
-    this.activitiesService.postActaConformidad(this.form.value).subscribe(
-      (resp) => {
-        this.savingData = false;
-        this.saveCurrentParams();
-        this.router.navigate(["/admin/informes/list"]);
-      },
-      (err) => {
-        this.matDialog.open(UiDialogsComponent, {
-          data: {
-            title: "Error",
-            message: err?.error
-              ? err?.error
-              : "Error al guardar el acta, verifique su conexión a internet!",
-          },
-          width: "500px",
-        });
-        this.savingData = false;
-      }
-    );
-  }
-
-  postParam(): void {
-    this._editarFormatoService
-      .createDato({
-        parametros: [
-          {
-            id: 0,
-            idParametro: 1,
-            label: "texto 1",
-            editable: true,
-            visible: true,
-            activo: true,
-            maxCaracteres: 100,
-            minCaracteres: 1,
-            placeholder: "Ingrese texto",
-            idActividadFormatoActa: this.idActa,
-          },
-        ],
-      })
+    this.activitiesService
+      .postActaConformidad({ ...this.form.value, parametros: this.parameters })
       .pipe(takeUntil(this._unsubscribeAll))
-      .subscribe(() => {
-        this.getDataActa();
-      });
+      .subscribe(
+        () => {
+          this.savingData = false;
+          //this.router.navigate(["/admin/informes/list"]);
+        },
+        (err) => {
+          this.matDialog.open(UiDialogsComponent, {
+            data: {
+              title: "Error",
+              message: err?.error
+                ? err?.error
+                : "Error al guardar el acta, verifique su conexión a internet!",
+            },
+            width: "500px",
+          });
+          this.savingData = false;
+        }
+      );
   }
 
   private setFormValues(data): void {
@@ -217,26 +194,9 @@ export class ActaConformidadComponent implements OnInit {
     }
   }
 
-  getFieldData(e): void {
-    if (this.parameters.some((param) => param.id === e.id)) {
-      this.parameters.map((param) => {
-        if (param.id === e.id) {
-          param.valor = e.valor;
-        }
-      });
-    } else {
-      this.parameters.push(e);
-    }
-  }
-
-  saveCurrentParams(): void {
-    this._editarFormatoService
-      .createDato({
-        parametros: this.parameters,
-      })
-      .pipe(takeUntil(this._unsubscribeAll))
-      .subscribe(() => {
-        //this.getDataActa();
-      });
+  updateDynamicFields(e): void {
+    this.parameters.map((param) => {
+      if (e.id === param.id) param.valor = e.valor;
+    });
   }
 }

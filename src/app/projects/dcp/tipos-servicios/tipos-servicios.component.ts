@@ -63,7 +63,6 @@ export class TiposServiciosComponent implements OnInit {
       .subscribe(() => {
         this.isLoading = false;
       });
-    this.isLoading = false;
   }
 
   changePage(pagination: any): void {
