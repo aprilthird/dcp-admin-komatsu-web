@@ -9,7 +9,12 @@ import { ActivatedRoute } from "@angular/router";
 
 import { ActivityFake } from "../../fake-db/activities/activity-fake-db";
 import { EditarFormatoService } from "../editar-formato/editar-formato.service";
-import { FormBuilder, FormControl, FormGroup } from "@angular/forms";
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  Validators,
+} from "@angular/forms";
 import { TipoParametro } from "app/core/types/formatos.types";
 import { MatCheckbox } from "@angular/material/checkbox";
 import { AzureService } from "app/core/azure/azure.service";
@@ -288,6 +293,8 @@ export class ValidationFormatosComponent implements OnInit {
             );
           }
 
+          this.setParamConfig(parametro, j, k);
+
           /**OBSERVE PARAM */
         }
       });
@@ -378,7 +385,10 @@ export class ValidationFormatosComponent implements OnInit {
         this.groups[j] = !this.groups[j];
         grupo.parametros.forEach((parametro, k) => {
           this.editGroup[`${j}`] = true;
-          if (this.form.controls[`${this.getParametroControl({ j, k })}`]) {
+          if (
+            this.form.controls[`${this.getParametroControl({ j, k })}`] &&
+            parametro.editable
+          ) {
             this.form.get(`${this.getParametroControl({ j, k })}`).enable();
           }
         });
@@ -548,5 +558,22 @@ export class ValidationFormatosComponent implements OnInit {
 
   editable(j): boolean {
     return this.groups[`${j}`];
+  }
+
+  setParamConfig(parametro, j: number, k: number): void {
+    parametro.editable
+      ? this.form.controls[`${this.getParametroControl({ j, k })}`].enable()
+      : this.form.controls[`${this.getParametroControl({ j, k })}`].disable();
+
+    this.form.controls[`${this.getParametroControl({ j, k })}`].setValidators([
+      parametro.obligatorio ? Validators.required : Validators.nullValidator,
+      Validators.minLength(parametro.minCaracteres),
+      Validators.maxLength(parametro.maxCaracteres),
+      !parametro.regex || parametro.regex === ""
+        ? Validators.nullValidator
+        : parametro.regex === "2"
+        ? Validators.email
+        : Validators.pattern(/^\d{8}(?:[-\s]\d{4})?$/),
+    ]);
   }
 }

@@ -196,18 +196,28 @@
                                 ></mat-icon>
                                 <span class="ml-2 mr-1">Editar</span>
                               </button>
-
-                              <button
-                                mat-raised-button
-                                [color]="'secondary'"
-                                *ngIf="groups[j]"
-                                (click)="submit($event, j)"
-                              >
-                                <mat-icon
-                                  svgIcon="heroicons_outline:save"
-                                ></mat-icon>
-                                <span class="ml-2 mr-1">Guardar</span>
-                              </button>
+                              <ng-container>
+                                <div
+                                  [matTooltip]="
+                                    form.invalid
+                                      ? 'Existen campos que no cumplen con el patrón requerido'
+                                      : ''
+                                  "
+                                >
+                                  <button
+                                    mat-raised-button
+                                    [color]="'secondary'"
+                                    *ngIf="groups[j]"
+                                    (click)="submit($event, j)"
+                                    [disabled]="form.invalid"
+                                  >
+                                    <mat-icon
+                                      svgIcon="heroicons_outline:save"
+                                    ></mat-icon>
+                                    <span class="ml-2 mr-1">Guardar</span>
+                                  </button>
+                                </div>
+                              </ng-container>
 
                               <button
                                 mat-raised-button
@@ -280,6 +290,9 @@
                                           parametro.placeholder
                                         }}"
                                       />
+                                      <mat-error
+                                        >{{ getErrorMessage(getParametroControl({j, k})) }}</mat-error
+                                      >
                                     </mat-form-field>
 
                                     <!-- NUMERICO -->
