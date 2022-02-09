@@ -78,6 +78,7 @@
               <div>GP</div>
               <div>CE</div>
               <div>Tipo de servicio</div>
+              <div>Tipo de formato</div>
               <div class="">Titulo</div>
               <div class="">Fecha</div>
               <div></div>
@@ -111,6 +112,26 @@
                   <!-- Actividad -->
                   <div class="truncate-overflow">
                     {{ formato?.tipoServicio }}
+                  </div>
+                  <!-- Tipo formato -->
+                  <div class="truncate-overflow">
+                    <span
+                      class="inline-flex items-center font-bold text-xs px-2.5 py-0.5 rounded-full tracking-wide uppercase"
+                      [ngClass]="{
+                        'bg-yellow-200': formato?.esActa,
+                        'bg-blue-200': !formato?.esActa,
+                        'es-acta-activo': formato?.esActaActivo
+                      }"
+                      [matTooltip]="
+                        formato?.esActaActivo
+                          ? 'Formato habilitado para actas'
+                          : ''
+                      "
+                    >
+                      <span class="leading-relaxed whitespace-nowrap">
+                        {{ formato?.esActa ? "Acta" : "Informe" }}</span
+                      ></span
+                    >
                   </div>
                   <!-- tipo mtto -->
                   <div class="truncate-overflow">

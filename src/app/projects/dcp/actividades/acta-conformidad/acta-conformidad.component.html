@@ -237,6 +237,7 @@
             </button>
 
             <button
+              *ngIf="isEdit"
               mat-raised-button
               [disabled]="form.invalid"
               [color]="'primary'"
@@ -247,8 +248,7 @@
                 [diameter]="24"
                 [mode]="'indeterminate'"
               ></mat-progress-spinner>
-              <span class="ml-2 mr-1" *ngIf="isEdit">Guardar</span>
-              <span class="ml-2 mr-1" *ngIf="!isEdit">Crear</span>
+              <span class="ml-2 mr-1">Guardar</span>
             </button>
           </div>
         </form>

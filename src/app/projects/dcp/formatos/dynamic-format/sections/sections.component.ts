@@ -13,6 +13,7 @@ import { FormatosService } from "../../formatos.service";
 })
 export class SectionsComponent implements OnInit {
   @Input() sectionData: any;
+  @Input() isActa: boolean;
   isLoading: boolean;
   sections$: Observable<any>;
   private _unsubscribeAll: Subject<any> = new Subject<any>();
@@ -60,6 +61,9 @@ export class SectionsComponent implements OnInit {
       .subscribe((response) => {
         this.isLoading = false;
         this.grupos = response.body;
+        if (this.grupos.length === 0 && this.isActa) {
+          this.postGroup("v");
+        }
       });
 
     this.isLoading = false;

@@ -1,19 +1,19 @@
 .inventory-grid {
-  grid-template-columns: 30 30px 30px 50px 50px 50px 50px  20px;
+  grid-template-columns: 30 30px 30px 50px 50px 50px 50px 50px  20px;
   @screen sm {
-    grid-template-columns: 30 30px 30px 50px 50px 50px 50px  20px;
+    grid-template-columns: 30 30px 30px 50px 50px 50px 50px 50px  20px;
   }
 
   @screen md {
-    grid-template-columns: 40px 50px 50px 80px 80px 80px 80px  70px;
+    grid-template-columns: 40px 50px 50px 80px 80px  80px 80px 80px  70px;
   }
 
   @screen lg {
-    grid-template-columns: 50px 100px 50px 60px 100px 120px 100px 100px;
+    grid-template-columns: 50px 100px 50px 60px 100px 100px 120px 100px 100px;
   }
 
   @screen xl {
-    grid-template-columns: 60px 120px 50px 60px 120px 120px 120px 100px;
+    grid-template-columns: 60px 120px 50px 60px 120px 120px 120px 120px 100px;
   }        
 }
 
@@ -34,4 +34,13 @@
   background:inherit;
   bottom:0;
   right:0;
+}
+
+.es-acta-activo {
+  border-top-width: 2px;
+  border-bottom-width: 2px;
+  border-left-width: 3px;
+  border-right-width: 3px;
+  border-color: rgb(217 119 6);
+  font-weight: 900!important;
 }

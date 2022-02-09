@@ -12,6 +12,7 @@ import { SectionsComponent } from "../sections.component";
 })
 export class GroupsComponent implements OnInit {
   @Input() groupData: any;
+  @Input() isActa: boolean;
   isLoading: boolean;
   rowsOfGrid = [];
   edit: boolean;

@@ -29,7 +29,11 @@
       >
         <mat-icon [svgIcon]="'heroicons_outline:save'"> </mat-icon>
       </span>
-      <span class="mat-button-wrapper cursor-pointer" (click)="deleteGroup()">
+      <span
+        *ngIf="!isActa"
+        class="mat-button-wrapper cursor-pointer"
+        (click)="deleteGroup()"
+      >
         <mat-icon [svgIcon]="'heroicons_outline:trash'"> </mat-icon>
       </span>
     </div>

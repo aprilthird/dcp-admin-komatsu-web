@@ -20,6 +20,7 @@ export class DynamicFormatComponent implements OnInit {
   ceCo: Formato;
   ce: Formato;
   gp: Formato;
+  isActa: boolean;
 
   constructor(
     private _formatosService: FormatosService,
@@ -52,6 +53,10 @@ export class DynamicFormatComponent implements OnInit {
     this._activatedRoute.params.subscribe((params) => {
       this.idFormat = Number(params["id"]);
     });
+    if (!this.ceCo && !this.ce && !this.gp) {
+      this.isActa = true;
+      if (this.sections.length === 0) this.postSection();
+    }
   }
 
   private getSections(): void {
@@ -60,7 +65,7 @@ export class DynamicFormatComponent implements OnInit {
     );
   }
 
-  postSection(section): void {
+  postSection(): void {
     const sectionLength =
       this._editarFormatoService._secciones.getValue().length + 1;
     const sectionName = "Sección " + sectionLength;

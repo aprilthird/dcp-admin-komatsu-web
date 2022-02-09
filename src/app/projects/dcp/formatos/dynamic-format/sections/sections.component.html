@@ -31,7 +31,11 @@
         <mat-icon [svgIcon]="'heroicons_outline:save'"> </mat-icon>
       </span>
 
-      <span class="mat-button-wrapper cursor-pointer" (click)="deleteSection()">
+      <span
+        *ngIf="!isActa"
+        class="mat-button-wrapper cursor-pointer"
+        (click)="deleteSection()"
+      >
         <mat-icon [svgIcon]="'heroicons_outline:trash'"> </mat-icon>
       </span>
     </div>
@@ -51,6 +55,7 @@
     >
       <span class="font-medium text-secondary">
         <button
+          *ngIf="!isActa"
           mat-button
           color="primary"
           [matMenuTriggerFor]="menu"
@@ -79,6 +84,7 @@
             *ngIf="group.activo"
             class="list-box w-full"
             [groupData]="group"
+            [isActa]="isActa"
           ></app-groups>
         </ng-container>
       </div>

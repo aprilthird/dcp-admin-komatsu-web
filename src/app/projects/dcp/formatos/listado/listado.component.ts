@@ -131,6 +131,8 @@ export class ListadoComponent implements OnInit, OnDestroy {
   }
 
   setActa(idFormat: number): void {
-    this._listadoService.setDefaultFormatActa(idFormat).subscribe((resp) => {});
+    this._listadoService
+      .setDefaultFormatActa(idFormat)
+      .subscribe((resp) => this.loadData());
   }
 }
