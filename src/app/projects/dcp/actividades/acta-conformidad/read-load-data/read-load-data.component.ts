@@ -51,7 +51,12 @@ export class ReadLoadDataComponent implements OnInit {
     } else if (this.parametro.idParametro === TipoParametro.CHECKBOX) {
       value = value === "true" ? true : false;
     }
-    this.formField.setValue(value);
+
+    if (this.parametro.idParametro === TipoParametro.FECHA) {
+      this.formField.setValue(this.convertDate(value));
+    } else {
+      this.formField.setValue(value);
+    }
   }
 
   setImage(src: string): string {
@@ -122,8 +127,19 @@ export class ReadLoadDataComponent implements OnInit {
   }
 
   dateChange(): void {
-    this.sendOutPut();
+    this.convertDate(this.formField.value);
+    this.formField.setValue(this.convertDate(this.formField.value));
+    setTimeout(() => {
+      this.sendOutPut();
+    }, 250);
   }
 
   submit(e): void {}
+
+  convertDate(str) {
+    var date = new Date(str),
+      mnth = ("0" + (date.getMonth() + 1)).slice(-2),
+      day = ("0" + date.getDate()).slice(-2);
+    return [date.getFullYear(), mnth, day].join("-");
+  }
 }
