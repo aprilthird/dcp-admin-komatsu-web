@@ -52,12 +52,12 @@
             >
               <div class="">ID</div>
               <div class="">Tipo servicio</div>
-              <div class="">ID servicio</div>
               <div class="">ID actividad</div>
               <div class="">Cod. Orden</div>
               <div class="">Cod. Equipo</div>
               <div class="">Correlativo</div>
               <div class="">Id tipo Servicio</div>
+              <div class="">Registro</div>
               <div class="">Modificado</div>
               <div class="">Modificado por</div>
               <div>Estado</div>
@@ -77,10 +77,6 @@
 
                   <div [matTooltip]="actividad?.tipoServicio" class="truncate">
                     {{ actividad?.tipoServicio }}
-                  </div>
-
-                  <div [matTooltip]="actividad?.tipoServicio" class="truncate">
-                    {{ actividad?.idTipoServicio }}
                   </div>
 
                   <div [matTooltip]="actividad?.idActividad" class="truncate">
@@ -103,8 +99,12 @@
                   >
                     {{ actividad?.correlativo }}
                   </div>
-                  <div class="truncate">
-                    {{ actividad?.codUnidadServicio }}
+                  <div [matTooltip]="actividad?.tipoServicio" class="truncate">
+                    {{ actividad?.idTipoServicio }}
+                  </div>
+
+                  <div class="truncate" [matTooltip]="actividad?.fechaReg">
+                    {{ actividad?.fechaReg | date: "dd-MM-yy h:mma" }}
                   </div>
 
                   <div class="truncate">
