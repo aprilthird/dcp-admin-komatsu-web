@@ -45,7 +45,8 @@ export class SectionsComponent implements OnInit {
         idSeccion: this.sectionData.id,
         parametros: [],
         pos: pos,
-        nombre: "Grupo " + long,
+        //nombre: "Grupo " + long,
+        nombre: "Nuevo Grupo",
       })
       .subscribe(() => {
         this.loadGrupos();

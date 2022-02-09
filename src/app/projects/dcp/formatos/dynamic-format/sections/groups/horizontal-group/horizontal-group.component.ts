@@ -74,6 +74,9 @@ export class HorizontalGroupComponent implements OnInit {
         label: x.label,
         placeholder: x.placeholder,
         dato: x.dato,
+        editable: x.editable,
+        visible: x.visible,
+        obligatorio: x.obligatorio,
       };
     });
     this._editarFormatoService
@@ -102,6 +105,9 @@ export class HorizontalGroupComponent implements OnInit {
         label: x.label,
         placeholder: x.placeholder,
         dato: x.dato,
+        editable: x.editable,
+        visible: x.visible,
+        obligatorio: x.obligatorio,
       };
     });
 
