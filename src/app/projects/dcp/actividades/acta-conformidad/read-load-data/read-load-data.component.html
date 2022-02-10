@@ -74,6 +74,7 @@
       <mat-label>{{ parametro.visible ? parametro.label : " " }}</mat-label>
       <input
         class="auto-save-field-output"
+        readonly
         matInput
         [matDatepicker]="datepicker"
         placeholder="{{ parametro.placeholder }}"

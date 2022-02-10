@@ -53,7 +53,9 @@ export class ReadLoadDataComponent implements OnInit {
     }
 
     if (this.parametro.idParametro === TipoParametro.FECHA) {
-      this.formField.setValue(this.convertDate(value));
+      if (value && value !== null && value !== "") {
+        this.formField.setValue(this.convertDate(value));
+      }
     } else {
       this.formField.setValue(value);
     }
