@@ -3,15 +3,17 @@
     <div
       class="border-t-2 border-l-2 border-r-2 px-4 py-2 rounded-t-xl overflow-hidden bg-card flex align-center gap-2"
     >
-      <span [hidden]="edit" class="sm:text-lg leading-6 truncate font-bold">
+      <span
+        [hidden]="edit"
+        class="sm:text-lg leading-6 truncate font-bold w-36"
+      >
         {{ sectionData.nombre }}
       </span>
       <input
         [hidden]="!edit"
         #nameInput
-        class="sm:text-lg leading-6 truncate"
+        class="sm:text-lg leading-6 truncate w-36"
         value="{{ sectionData.nombre }}"
-        maxlength="20"
       />
 
       <span

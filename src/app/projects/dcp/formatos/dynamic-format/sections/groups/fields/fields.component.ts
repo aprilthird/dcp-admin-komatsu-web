@@ -51,7 +51,9 @@ export class FieldsComponent implements OnInit {
     private _azureService: AzureService
   ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.validateRegex();
+  }
 
   ngAfterViewInit(): void {
     this.delete = () => {

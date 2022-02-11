@@ -15,6 +15,7 @@ export class VerticalGroupComponent implements OnInit {
   @Input() groupData: any;
   isLoading: boolean;
   private _unsubscribeAll: Subject<any> = new Subject<any>();
+  absoluteGroupData: any;
 
   constructor(
     private _editarFormatoService: EditarFormatoService,
@@ -25,6 +26,8 @@ export class VerticalGroupComponent implements OnInit {
 
   ngOnChanges(changes: SimpleChanges): void {
     this.groupData = changes.groupData.currentValue;
+    this.absoluteGroupData = { ...this.groupData };
+
     const activeParams = this.groupData.parametros.filter((x) => x.activo);
     this.groupData = { ...this.groupData, parametros: activeParams };
   }
@@ -35,13 +38,19 @@ export class VerticalGroupComponent implements OnInit {
     let row: number;
     let paramProps: any;
 
-    const rows = await this.groupData.parametros
-      .filter((data) => data.activo)
-      .map((data) => data.fila);
+    const rowsActive = await this.groupData.parametros.map((data) => data.fila);
+
+    // const rows = await this.groupData.parametros
+    //   .filter((data) => data.activo)
+    //   .map((data) => data.fila);
+
+    const rows = await this.absoluteGroupData.parametros.map(
+      (data) => data.fila
+    );
     const highestRow = Math.max.apply(null, rows);
     row = highestRow + 1;
     const count = this.groupData.parametros.map((x) => x.activo);
-    const textLength = count.length + 1;
+    //const textLength = count.length + 1;
 
     if (this.groupData.parametros && this.groupData.parametros.length === 0) {
       row = 1;
@@ -49,18 +58,31 @@ export class VerticalGroupComponent implements OnInit {
       paramProps = [
         {
           ...GeneralParams,
-          label: "texto " + textLength,
+          label: "label",
           fila: row,
           columna: column,
           idGrupo: this.groupData.id,
+          editable:
+            this.groupData.editable !== undefined
+              ? this.groupData.editable
+              : true,
+          visible:
+            this.groupData.visible !== undefined
+              ? this.groupData.visible
+              : true,
+          obligatorio:
+            this.groupData.obligatorio !== undefined
+              ? this.groupData.obligatorio
+              : true,
         },
       ];
     } else {
       paramProps = [
         {
-          ...this.groupData.parametros[highestRow - 1],
+          ...this.groupData.parametros[rowsActive.length - 1],
           id: 0,
           fila: row,
+          activo: true,
         },
       ];
     }
