@@ -36,12 +36,17 @@
           <div class="flex flex-row justify-start gap-10 mb-5">
             <mat-form-field class="sm:w-1/6 w-full">
               <mat-label class="font-bold">Cliente</mat-label>
-              <input maxlength="50" matInput formControlName="cliente" />
+              <input
+                maxlength="50"
+                matInput
+                formControlName="cliente"
+                readonly
+              />
             </mat-form-field>
 
             <mat-form-field class="sm:w-1/6 w-full">
               <mat-label class="font-bold">Orden se servicio</mat-label>
-              <input maxlength="50" matInput formControlName="os" />
+              <input maxlength="50" matInput formControlName="os" readonly />
             </mat-form-field>
           </div>
           <hr />
