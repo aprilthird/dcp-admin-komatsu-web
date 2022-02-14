@@ -7,6 +7,7 @@ import {
 } from "@angular/forms";
 import { MatDialog } from "@angular/material/dialog";
 import { ActivatedRoute } from "@angular/router";
+import { FuseAlertType } from "@fuse/components/alert";
 import { AzureService } from "app/core/azure/azure.service";
 import { TipoParametro } from "app/core/types/formatos.types";
 import { ParamI } from "app/shared/models/formatos";
@@ -33,9 +34,10 @@ export class ActaConformidadComponent implements OnInit {
   private _unsubscribeAll: Subject<any> = new Subject<any>();
   isFieldLoading: boolean;
   parameters: ParamI[] = [];
+  alert: { type: FuseAlertType; message: string };
 
   formGroup: FormGroup = this.fb.group({});
-  idActividadFormatoActa: any;
+  idActividadFormatoActa = 0;
   actaData: any;
   cliente: any;
   os: any;
@@ -199,7 +201,6 @@ export class ActaConformidadComponent implements OnInit {
   //postActa(e: MouseEvent, indexGroup: number, paramIdx?: number): void {
   postActa(e: MouseEvent): void {
     //if (this.form.valid) {
-    //console.log("this form ", this.form.value);
     this.actaData.grupos.forEach((grupo, j) => {
       //if (indexGroup === j) {
       //this.groups[j] = false;
@@ -237,7 +238,6 @@ export class ActaConformidadComponent implements OnInit {
       id: this.idActividadFormatoActa,
       os: this.os,
     };
-    console.log("payload ", payload);
     if (!payload.cliente || !payload.os) {
       this.matDialog.open(UiDialogsComponent, {
         data: {
@@ -252,9 +252,12 @@ export class ActaConformidadComponent implements OnInit {
         .postActaConformidad(payload)
         .pipe(takeUntil(this._unsubscribeAll))
         .subscribe(
-          () => {
+          (resp) => {
             this.savingData = false;
-            //this.router.navigate(["/admin/informes/list"]);
+            this.alert = {
+              type: "success",
+              message: `Acta de conformidad ha sido guardada correctamente!`,
+            };
           },
           (err) => {
             this.matDialog.open(UiDialogsComponent, {
@@ -270,8 +273,6 @@ export class ActaConformidadComponent implements OnInit {
           }
         );
     }
-    console.log("this.formGroup ", this.formGroup.errors);
-    console.log("this.formGroup errors ", this.formGroup.errors);
     e.preventDefault();
   }
 

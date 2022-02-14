@@ -38,6 +38,8 @@ export function paramsInfo(type: number, paramData: ParamI): ParamI {
         ...paramData,
         idParametro: 3,
         regex: "",
+        minCaracteres: null,
+        maxCaracteres: null,
       };
 
     case 4:
