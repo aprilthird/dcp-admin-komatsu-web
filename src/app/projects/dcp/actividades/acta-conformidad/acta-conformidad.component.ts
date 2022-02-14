@@ -24,6 +24,7 @@ import { ActivitiesService } from "../activities.service";
   styleUrls: ["./acta-conformidad.component.scss"],
 })
 export class ActaConformidadComponent implements OnInit {
+  isLoaded;
   isLoading = true;
   isEdit = false;
   loadLoading = false;
@@ -59,20 +60,12 @@ export class ActaConformidadComponent implements OnInit {
       .pipe(takeUntil(this._unsubscribeAll))
       .subscribe((params) => {
         this.idActa = Number(params["idActividad"]);
-        this.getActa();
-      });
-  }
-
-  private getActa(): void {
-    this.activitiesService
-      .getActaConformidad(this.idActa)
-      .pipe(takeUntil(this._unsubscribeAll))
-      .subscribe((resp) => {
-        this.isLoading = false;
       });
   }
 
   getDataActa(): void {
+    this.isLoaded = true;
+
     this.activitiesService
       .getDataActa(this.idActa)
       .pipe(takeUntil(this._unsubscribeAll))
@@ -81,10 +74,12 @@ export class ActaConformidadComponent implements OnInit {
         this.actaData.grupos = this.actaData.grupos.filter(
           (group) => group.activo
         );
+
         this.cliente = resp.body.cliente;
         this.os = resp.body.os;
         this.idActividadFormatoActa = resp.body.idActividadFormatoActa;
         this.generateForm();
+        this.isLoading = false;
       });
   }
 
