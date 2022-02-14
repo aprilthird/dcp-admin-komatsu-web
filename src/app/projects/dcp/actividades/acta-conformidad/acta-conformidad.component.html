@@ -32,7 +32,354 @@
         *ngIf="!isLoading"
         class="sm:col-span-2 md:col-span-4 flex flex-col flex-auto p-6 bg-card shadow rounded-2xl overflow-hidden m-5"
       >
-        <form [formGroup]="form">
+        <div class="flex gap-5 items-center justify-end">
+          <ng-container>
+            <div
+              [matTooltip]="
+                formGroup.invalid
+                  ? 'Existen campos que no cumplen con el patrón requerido'
+                  : ''
+              "
+            >
+              <button
+                *ngIf="idActividadFormatoActa !== 0"
+                mat-raised-button
+                [color]="'secondary'"
+                [disabled]="formGroup.invalid"
+                (click)="postActa($event, j)"
+              >
+                <mat-icon svgIcon="heroicons_outline:save"></mat-icon>
+                <span class="ml-2 mr-1">Guardar</span>
+              </button>
+            </div>
+          </ng-container>
+        </div>
+        <form [formGroup]="formGroup" novalidate>
+          <div class="flex flex-col items-center">
+            <div class="min-w-80 w-full p-2" *ngIf="actaData">
+              <ng-container
+                *ngFor="let grupo of actaData.grupos; let j = index"
+                class="sm:col-span-2 md:col-span-4 flex justify-start gap-5 flex-wrap p-6 bg-card shadow rounded-2xl overflow-hidden m-5"
+              >
+                <ng-container *ngIf="grupo.activo">
+                  <div
+                    class="sm:col-span-2 md:col-span-4 flex flex-col justify-start gap-5 flex-wrap p-6 bg-card shadow rounded-2xl overflow-hidden m-5"
+                    *ngIf="grupo.parametros.length > 0"
+                  >
+                    <div class="flex justify-between items-center">
+                      <div class="flex gap-2">
+                        <p class="text-2xl font-medium mb-3 items-center">
+                          {{ grupo?.nombre }}
+                        </p>
+                      </div>
+
+                      <!-- <div class="flex gap-5 items-center justify-end">
+                        <ng-container>
+                          <div
+                            [matTooltip]="
+                              formGroup.invalid
+                                ? 'Existen campos que no cumplen con el patrón requerido'
+                                : ''
+                            "
+                          >
+                            <button
+                              mat-raised-button
+                              [color]="'secondary'"
+                              [disabled]="formGroup.invalid"
+                              (click)="postActa($event, j)"
+                            >
+                              <mat-icon
+                                svgIcon="heroicons_outline:save"
+                              ></mat-icon>
+                              <span class="ml-2 mr-1">Guardar</span>
+                            </button>
+                          </div>
+                        </ng-container>
+                      </div> -->
+                    </div>
+
+                    <div
+                      class="grid flex-row overflow-x-auto overflow-y-hidden w-full each-parametro"
+                    >
+                      <ng-container
+                        *ngFor="
+                          let parametro of grupo.parametros;
+                          let k = index
+                        "
+                      >
+                        <ng-container *ngIf="parametro.activo">
+                          <div
+                            class="flex w-60 min-w-60 items-center"
+                            [ngClass]="{
+                              'mb-3': grupo.pos === 'v',
+                              'mr-3': grupo.pos === 'h'
+                            }"
+                            [ngStyle]="{
+                              'grid-area':
+                                parametro.fila +
+                                ' / ' +
+                                parametro.columna +
+                                ' / ' +
+                                (parametro.fila + 1) +
+                                ' / ' +
+                                (parametro.columna + 1)
+                            }"
+                            *ngIf="parametro.activo"
+                          >
+                            <ng-container [ngSwitch]="parametro.idParametro">
+                              <!-- TEXTO -->
+                              <mat-form-field
+                                *ngSwitchCase="1"
+                                class="w-full font-semibold"
+                                floatLabel="always"
+                              >
+                                <mat-label>{{
+                                  parametro.visible ? parametro.label : " "
+                                }}</mat-label>
+                                <input
+                                  matInput
+                                  type="text"
+                                  formControlName="{{getParametroControl({j, k})}}"
+                                  placeholder="{{ parametro.placeholder }}"
+                                />
+                                <mat-error
+                                  >{{ getErrorMessage(getParametroControl({j, k})) }}</mat-error
+                                >
+                              </mat-form-field>
+
+                              <!-- NUMERICO -->
+
+                              <mat-form-field
+                                *ngSwitchCase="2"
+                                floatLabel="always"
+                                class="w-full"
+                              >
+                                <mat-label>{{
+                                  parametro.visible ? parametro.label : " "
+                                }}</mat-label>
+                                <input
+                                  matInput
+                                  formControlName="{{getParametroControl({j, k})}}"
+                                  type="number"
+                                  placeholder="{{ parametro.placeholder }}"
+                                />
+                              </mat-form-field>
+
+                              <!-- AREA_TEXTO -->
+                              <mat-form-field
+                                *ngSwitchCase="3"
+                                floatLabel="always"
+                                class="w-full"
+                              >
+                                <mat-label>{{
+                                  parametro.visible ? parametro.label : " "
+                                }}</mat-label>
+                                <textarea
+                                  class="resize-none"
+                                  formControlName="{{getParametroControl({j, k})}}"
+                                  matInput
+                                  placeholder="{{ parametro.placeholder }}"
+                                ></textarea>
+                              </mat-form-field>
+
+                              <!-- UPLOAD (ARCHIVO) -->
+
+                              <div *ngSwitchCase="4" class="w-full">
+                                <p class="text-gray-900 font-medium">
+                                  {{
+                                    parametro.visible ? parametro.label : " "
+                                  }}
+                                </p>
+
+                                <ui-upload-file
+                                  *ngIf="
+                                    parametro.valor !== '' &&
+                                      parametro.valor !== null;
+                                    else empty
+                                  "
+                                  [required]="parametro.obligatorio"
+                                  [editable]="'false'"
+                                  [type]="'upload'"
+                                  [paramIdx]="j"
+                                  [groupIdx]="k"
+                                  [image]="
+                                    parametro.valor !== '' &&
+                                    parametro.valor !== null
+                                      ? setImage(parametro.valor)
+                                      : setImage(parametro.dato)
+                                  "
+                                  [loading]="filesLoading[getParametroControl({j, k})]"
+                                  (sourceFile)="onChageFile($event, getParametroControl({j, k}))"
+                                  (removeSign)="removeSign($event, j, k)"
+                                ></ui-upload-file>
+                                <ng-template #empty>
+                                  <img
+                                    class="w-44"
+                                    matTooltip="No existe un archivo cargado"
+                                    [src]="
+                                      './assets/images/ui/no-image/no-image.svg'
+                                    "
+                                  />
+                                </ng-template>
+                              </div>
+
+                              <!-- FECHA -->
+                              <mat-form-field
+                                *ngSwitchCase="5"
+                                floatLabel="always"
+                                class="w-full"
+                              >
+                                <mat-label>{{
+                                  parametro.visible ? parametro.label : " "
+                                }}</mat-label>
+                                <input
+                                  matInput
+                                  formControlName="{{getParametroControl({j, k})}}"
+                                  [matDatepicker]="datepicker"
+                                  placeholder="{{ parametro.placeholder }}"
+                                />
+                                <mat-error>
+                                  {{ getErrorMessage(getParametroControl({j, k})) }}
+                                </mat-error>
+
+                                <mat-datepicker-toggle
+                                  matSuffix
+                                  [for]="datepicker"
+                                ></mat-datepicker-toggle>
+                                <mat-datepicker #datepicker>
+                                  <mat-datepicker-actions>
+                                    <button mat-button matDatepickerCancel>
+                                      Cancel
+                                    </button>
+                                    <button
+                                      mat-raised-button
+                                      color="primary"
+                                      matDatepickerApply
+                                    >
+                                      Aplicar
+                                    </button>
+                                  </mat-datepicker-actions>
+                                </mat-datepicker>
+                              </mat-form-field>
+
+                              <!-- IMAGEN -->
+                              <div *ngSwitchCase="6" class="w-full">
+                                <span class="text-gray-800 font-medium">{{
+                                  parametro.visible ? parametro.label : " "
+                                }}</span>
+                                <ui-upload-file
+                                  [required]="parametro.obligatorio"
+                                  [editable]="parametro.editable"
+                                  [type]="'imagen'"
+                                  [image]="
+                                    parametro.valor !== '' &&
+                                    parametro.valor !== null
+                                      ? setImage(parametro.valor)
+                                      : setImage(parametro.dato)
+                                  "
+                                  (sourceFile)="onChageFile($event, getParametroControl({j, k}))"
+                                ></ui-upload-file>
+                              </div>
+
+                              <!-- FIRMA -->
+                              <div *ngSwitchCase="7" class="w-full">
+                                <span class="text-gray-800 font-medium">{{
+                                  parametro.visible ? parametro.label : " "
+                                }}</span>
+
+                                <ui-upload-file
+                                  *ngIf="
+                                    parametro.valor !== '' &&
+                                      parametro.valor !== null;
+                                    else empty
+                                  "
+                                  [required]="parametro.obligatorio"
+                                  [editable]="'false'"
+                                  [type]="'sign'"
+                                  [paramIdx]="j"
+                                  [groupIdx]="k"
+                                  [image]="
+                                    parametro.valor !== '' &&
+                                    parametro.valor !== null
+                                      ? setImage(parametro.valor)
+                                      : setImage(parametro.dato)
+                                  "
+                                  (sourceFile)="onChageFile($event, getParametroControl({j, k}))"
+                                  (removeSign)="removeSign($event, j, k)"
+                                ></ui-upload-file>
+                                <ng-template #empty>
+                                  <img
+                                    class="w-44"
+                                    matTooltip="No existe una firma cargada"
+                                    [src]="
+                                      './assets/images/ui/no-image/no-image.svg'
+                                    "
+                                  />
+                                </ng-template>
+                              </div>
+
+                              <!-- LABEL -->
+                              <div *ngSwitchCase="8" class="w-full">
+                                <p class="text-gray-900 font-medium">
+                                  {{
+                                    parametro.visible
+                                      ? parametro.label
+                                      : (" " | uppercase)
+                                  }}
+                                </p>
+                              </div>
+
+                              <!--checkbox-->
+                              <div *ngSwitchCase="9" class="w-full">
+                                <div class="flex flex-col">
+                                  <mat-label *ngIf="parametro.visible"
+                                    >{{ parametro.label }}
+                                  </mat-label>
+                                  <mat-slide-toggle
+                                    [color]="'primary'"
+                                  ></mat-slide-toggle>
+                                </div>
+                              </div>
+
+                              <!--SELECT-->
+                              <div *ngSwitchCase="10" class="w-full">
+                                <div class="flex flex-col">
+                                  <mat-form-field floatLabel="always">
+                                    <mat-label>{{
+                                      parametro.visible ? parametro.label : " "
+                                    }}</mat-label>
+                                    <mat-select
+                                      placeholder="{{ parametro.placeholder }}"
+                                      [value]="parametro.valor"
+                                      formControlName="{{getParametroControl({j, k})}}"
+                                    >
+                                      <mat-option
+                                        *ngFor="
+                                          let option of splitOptions(
+                                            parametro.dato
+                                          )
+                                        "
+                                        [value]="option"
+                                        >{{ option }}</mat-option
+                                      >
+                                    </mat-select>
+                                  </mat-form-field>
+                                </div>
+                              </div>
+                              <!--SELECT-->
+                            </ng-container>
+                          </div>
+                        </ng-container>
+                      </ng-container>
+                    </div>
+                  </div>
+                </ng-container>
+              </ng-container>
+            </div>
+          </div>
+        </form>
+
+        <!-- <form [formGroup]="form">
           <div class="flex flex-row justify-start gap-10 mb-5">
             <mat-form-field class="sm:w-1/6 w-full">
               <mat-label class="font-bold">Cliente</mat-label>
@@ -205,12 +552,6 @@
             <div class="flex flex-wrap gap-5 list-section">
               <ng-container *ngIf="parameters.length > 0">
                 <ng-container *ngFor="let paramData of parameters">
-                  <!--<app-managable-fields
-                    *ngIf="paramData.activo"
-                    class="list-box"
-                    [paramData]="paramData"
-                    (outputData)="getFieldData($event)"
-                  ></app-managable-fields>-->
                   <app-read-load-data
                     *ngIf="paramData.activo"
                     class="list-box"
@@ -220,14 +561,6 @@
                   </app-read-load-data>
                 </ng-container>
               </ng-container>
-              <!-- <button
-                mat-icon-button
-                class="mt-5"
-                matTooltip="Agregar campo dinámico"
-                (click)="postParam()"
-              >
-                <mat-icon [svgIcon]="'heroicons_solid:plus-circle'"></mat-icon>
-              </button> -->
             </div>
           </div>
 
@@ -256,7 +589,7 @@
               <span class="ml-2 mr-1">Guardar</span>
             </button>
           </div>
-        </form>
+        </form> -->
       </div>
     </div>
   </div>
