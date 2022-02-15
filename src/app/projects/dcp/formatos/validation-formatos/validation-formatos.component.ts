@@ -567,8 +567,12 @@ export class ValidationFormatosComponent implements OnInit {
 
     this.form.controls[`${this.getParametroControl({ j, k })}`].setValidators([
       parametro.obligatorio ? Validators.required : Validators.nullValidator,
-      Validators.minLength(parametro.minCaracteres),
-      Validators.maxLength(parametro.maxCaracteres),
+      Validators.minLength(
+        parametro.minCaracteres ? parametro.minCaracteres : 0
+      ),
+      Validators.maxLength(
+        parametro.maxCaracteres ? parametro.maxCaracteres : 2000
+      ),
       !parametro.regex || parametro.regex === ""
         ? Validators.nullValidator
         : parametro.regex === "2"

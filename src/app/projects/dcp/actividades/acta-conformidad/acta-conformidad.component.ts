@@ -98,26 +98,17 @@ export class ActaConformidadComponent implements OnInit {
           if (parametro.idParametro === TipoParametro.CHECKBOX) {
             this.formGroup.addControl(
               `${this.getParametroControl({ j, k })}`,
-              new FormControl({
-                value: parametro.valor === "true" ? true : false,
-                disabled: true,
-              })
+              new FormControl(parametro.valor === "true" ? true : false)
             );
           } else if (parametro.idParametro === TipoParametro.FECHA) {
             this.formGroup.addControl(
               `${this.getParametroControl({ j, k })}`,
-              new FormControl({
-                value: this.convertDate(parametro.valor),
-                disabled: true,
-              })
+              new FormControl(this.convertDate(parametro.valor))
             );
           } else {
             this.formGroup.addControl(
               `${this.getParametroControl({ j, k })}`,
-              new FormControl({
-                value: parametro.valor,
-                disabled: true,
-              })
+              new FormControl(parametro.valor)
             );
           }
 
@@ -130,6 +121,7 @@ export class ActaConformidadComponent implements OnInit {
   }
 
   setParamConfig(parametro, j: number, k: number): void {
+    console.log("parametro ", parametro);
     parametro.editable
       ? this.formGroup.controls[
           `${this.getParametroControl({ j, k })}`
@@ -142,8 +134,12 @@ export class ActaConformidadComponent implements OnInit {
       `${this.getParametroControl({ j, k })}`
     ].setValidators([
       parametro.obligatorio ? Validators.required : Validators.nullValidator,
-      Validators.minLength(parametro.minCaracteres),
-      Validators.maxLength(parametro.maxCaracteres),
+      Validators.minLength(
+        parametro.minCaracteres ? parametro.minCaracteres : 0
+      ),
+      Validators.maxLength(
+        parametro.maxCaracteres ? parametro.maxCaracteres : 2000
+      ),
       !parametro.regex || parametro.regex === ""
         ? Validators.nullValidator
         : parametro.regex === "2"
