@@ -42,6 +42,10 @@ export class ActaConformidadComponent implements OnInit {
   cliente: any;
   os: any;
 
+  filesLoading: {
+    [key: string]: boolean;
+  } = {};
+
   constructor(
     private fb: FormBuilder,
     private activitiesService: ActivitiesService,
@@ -94,6 +98,7 @@ export class ActaConformidadComponent implements OnInit {
             parametro.idParametro === TipoParametro.IMAGEN ||
             parametro.idParametro === TipoParametro.FIRMA
           ) {
+            this.filesLoading[`${j}-${k}`] = false;
           }
           if (parametro.idParametro === TipoParametro.CHECKBOX) {
             this.formGroup.addControl(
@@ -121,7 +126,6 @@ export class ActaConformidadComponent implements OnInit {
   }
 
   setParamConfig(parametro, j: number, k: number): void {
-    console.log("parametro ", parametro);
     parametro.editable
       ? this.formGroup.controls[
           `${this.getParametroControl({ j, k })}`
@@ -133,7 +137,12 @@ export class ActaConformidadComponent implements OnInit {
     this.formGroup.controls[
       `${this.getParametroControl({ j, k })}`
     ].setValidators([
-      parametro.obligatorio ? Validators.required : Validators.nullValidator,
+      parametro.obligatorio &&
+      parametro.idParametro !== TipoParametro.UPLOAD &&
+      parametro.idParametro !== TipoParametro.FIRMA &&
+      parametro.idParametro !== TipoParametro.IMAGEN
+        ? Validators.required
+        : Validators.nullValidator,
       Validators.minLength(
         parametro.minCaracteres ? parametro.minCaracteres : 0
       ),
@@ -163,7 +172,21 @@ export class ActaConformidadComponent implements OnInit {
     return this._azureService.getResourceUrlComplete(src);
   }
 
-  async onChageFile(event: any, y: any) {}
+  async onChageFile(event: any, control: string) {
+    if (event) {
+      const { target } = event;
+      const file = target.files[0];
+      const blob = new Blob([file], { type: file.type });
+      this.filesLoading[`${control}`] = true;
+      try {
+        const response = await this._azureService.uploadFile(blob, file.name);
+        this.formGroup.get(control).setValue(response.uuidFileName);
+      } catch (e) {}
+      this.filesLoading[`${control}`] = false;
+    } else {
+      this.formGroup.get(control).setValue("");
+    }
+  }
 
   removeSign(x, y, z): void {}
 
@@ -205,10 +228,7 @@ export class ActaConformidadComponent implements OnInit {
       grupo.parametros.forEach((parametro, k) => {
         parametro.idActividadFormato = Number(this.idActa);
         if (parametro.activo) {
-          if (
-            parametro.idParametro === TipoParametro.UPLOAD ||
-            parametro.idParametro === TipoParametro.IMAGEN
-          ) {
+          if (parametro.idParametro === TipoParametro.IMAGEN) {
             this.checkImgParam(parametro, j, k);
           } else if (parametro.idParametro === TipoParametro.FIRMA) {
             //this.checkSignParam(paramIdx, parametro, indexGroup, k, j);
@@ -216,7 +236,7 @@ export class ActaConformidadComponent implements OnInit {
             parametro.valor = this.formGroup.get(
               this.getParametroControl({ j, k })
             ).value;
-          } else {
+          } else if (parametro.idParametro !== TipoParametro.UPLOAD) {
             parametro.valor = String(
               this.formGroup.get(this.getParametroControl({ j, k })).value
             );
@@ -276,7 +296,7 @@ export class ActaConformidadComponent implements OnInit {
     parametro.valor = String(
       this.formGroup.get(this.getParametroControl({ j, k })).value
     );
-    if (!parametro.valor || parametro.valor === "") {
+    if (!parametro.valor || parametro.valor === "null") {
       this.formGroup
         .get(this.getParametroControl({ j, k }))
         .setValue(parametro.dato);

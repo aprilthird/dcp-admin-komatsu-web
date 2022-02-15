@@ -285,11 +285,12 @@
                                   [editable]="parametro.editable"
                                   [type]="'imagen'"
                                   [image]="
-                                    parametro.valor !== '' &&
-                                    parametro.valor !== null
-                                      ? setImage(parametro.valor)
-                                      : setImage(parametro.dato)
+                                    !parametro.valor ||
+                                    parametro.valor === 'null'
+                                      ? setImage(parametro.dato)
+                                      : setImage(parametro.valor)
                                   "
+                                  [loading]="filesLoading[getParametroControl({j, k})]"
                                   (sourceFile)="onChageFile($event, getParametroControl({j, k}))"
                                 ></ui-upload-file>
                               </div>

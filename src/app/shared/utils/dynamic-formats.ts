@@ -23,8 +23,8 @@ export function paramsInfo(type: number, paramData: ParamI): ParamI {
         idParametro: 1,
         regex: "2",
         placeholder: "Ingrese Correo",
-        minCaracteres: 1,
-        maxCaracteres: 100,
+        minCaracteres: null,
+        maxCaracteres: null,
       };
     case 2:
       return {

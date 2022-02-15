@@ -418,10 +418,7 @@ export class ValidationFormatosComponent implements OnInit {
         grupo.parametros.forEach((parametro, k) => {
           parametro.idActividadFormato = Number(this.currentIdAsignation);
           if (parametro.activo) {
-            if (
-              parametro.idParametro === TipoParametro.UPLOAD ||
-              parametro.idParametro === TipoParametro.IMAGEN
-            ) {
+            if (parametro.idParametro === TipoParametro.IMAGEN) {
               this.checkImgParam(parametro, j, k);
             } else if (parametro.idParametro === TipoParametro.FIRMA) {
               this.checkSignParam(paramIdx, parametro, indexGroup, k, j);
@@ -429,7 +426,7 @@ export class ValidationFormatosComponent implements OnInit {
               parametro.valor = this.form.get(
                 this.getParametroControl({ j, k })
               ).value;
-            } else {
+            } else if (parametro.idParametro !== TipoParametro.UPLOAD) {
               parametro.valor = String(
                 this.form.get(this.getParametroControl({ j, k })).value
               );
@@ -566,7 +563,12 @@ export class ValidationFormatosComponent implements OnInit {
       : this.form.controls[`${this.getParametroControl({ j, k })}`].disable();
 
     this.form.controls[`${this.getParametroControl({ j, k })}`].setValidators([
-      parametro.obligatorio ? Validators.required : Validators.nullValidator,
+      parametro.obligatorio &&
+      parametro.idParametro !== 4 &&
+      parametro.idParametro !== 6 &&
+      parametro.idParametro !== 7
+        ? Validators.required
+        : Validators.nullValidator,
       Validators.minLength(
         parametro.minCaracteres ? parametro.minCaracteres : 0
       ),
