@@ -169,6 +169,9 @@
                                   type="number"
                                   placeholder="{{ parametro.placeholder }}"
                                 />
+                                <mat-error
+                                  >{{ getErrorMessage(getParametroControl({j, k})) }}</mat-error
+                                >
                               </mat-form-field>
 
                               <!-- AREA_TEXTO -->
@@ -186,6 +189,9 @@
                                   matInput
                                   placeholder="{{ parametro.placeholder }}"
                                 ></textarea>
+                                <mat-error
+                                  >{{ getErrorMessage(getParametroControl({j, k})) }}</mat-error
+                                >
                               </mat-form-field>
 
                               <!-- UPLOAD (ARCHIVO) -->
@@ -243,6 +249,7 @@
                                   formControlName="{{getParametroControl({j, k})}}"
                                   [matDatepicker]="datepicker"
                                   placeholder="{{ parametro.placeholder }}"
+                                  readonly
                                 />
                                 <mat-error>
                                   {{ getErrorMessage(getParametroControl({j, k})) }}

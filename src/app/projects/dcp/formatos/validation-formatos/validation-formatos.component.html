@@ -315,6 +315,9 @@
                                           parametro.placeholder
                                         }}"
                                       />
+                                      <mat-error
+                                        >{{ getErrorMessage(getParametroControl({j, k})) }}</mat-error
+                                      >
                                     </mat-form-field>
 
                                     <!-- AREA_TEXTO -->
@@ -336,6 +339,9 @@
                                           parametro.placeholder
                                         }}"
                                       ></textarea>
+                                      <mat-error
+                                        >{{ getErrorMessage(getParametroControl({j, k})) }}</mat-error
+                                      >
                                     </mat-form-field>
 
                                     <!-- UPLOAD (ARCHIVO) -->
@@ -399,6 +405,7 @@
                                           parametro.placeholder
                                         }}"
                                         formControlName="{{ getParametroControl({j, k})}}"
+                                        readonly
                                       />
                                       <mat-error>
                                         {{ getErrorMessage(getParametroControl({j, k})) }}
