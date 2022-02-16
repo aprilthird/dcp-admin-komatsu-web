@@ -58,7 +58,7 @@ export class VerticalGroupComponent implements OnInit {
       paramProps = [
         {
           ...GeneralParams,
-          label: "label",
+          label: "",
           fila: row,
           columna: column,
           idGrupo: this.groupData.id,
