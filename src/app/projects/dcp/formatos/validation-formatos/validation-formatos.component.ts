@@ -64,6 +64,7 @@ export class ValidationFormatosComponent implements OnInit {
   isNotValidationButtonAble: boolean = true;
   allSectionValidates = [];
   idActividadFormato: number;
+  loaded: boolean;
 
   constructor(
     private matDialog: MatDialog,
@@ -94,6 +95,7 @@ export class ValidationFormatosComponent implements OnInit {
 
   private getAsignationId(): void {
     this.routerActive.paramMap.subscribe((params: any) => {
+      this.loaded = false;
       this.currentIdAsignation = params.params["id"];
       this.currentSeccionId = params.params["section"];
       this._activitiesService._idFormat.next(Number(this.currentIdAsignation));
@@ -118,6 +120,7 @@ export class ValidationFormatosComponent implements OnInit {
   }
 
   private setCollapsableNav(): void {
+    const i = this.currentSectionData.id;
     this.menuData = [
       {
         id: "secciones",
@@ -134,6 +137,15 @@ export class ValidationFormatosComponent implements OnInit {
           (parametro) => parametro.seccionValida
         )
       );
+
+      section.grupos.forEach((grupo, j) => {
+        this.groups[j] = false;
+        grupo.parametros.forEach((parametro, k) => {
+          if (this.form.get(`${this.getParametroControl({ i, j, k })}`)) {
+            this.form.get(`${this.getParametroControl({ i, j, k })}`).disable();
+          }
+        });
+      });
 
       this.menuData[0].children.push({
         id: section.id,
@@ -168,6 +180,7 @@ export class ValidationFormatosComponent implements OnInit {
 
     this.validateFormat();
     this.isNotValidationButtonAble = this.isAllSectionvalid();
+    this.loaded = true;
   }
 
   private isAllSectionvalid(): boolean {
@@ -251,55 +264,81 @@ export class ValidationFormatosComponent implements OnInit {
     return options.split(",");
   }
 
-  getParametroControl({ j, k }) {
-    return `${j}-${k}`;
+  getParametroControl({ i, j, k }) {
+    return `${String(i)}-${j}-${k}`;
   }
 
   private generateForm() {
-    this.currentSectionData.grupos.forEach((grupo, j) => {
-      this.observation[`${j}`] = false;
-      grupo.parametros.forEach((parametro, k) => {
-        if (parametro.activo) {
-          if (
-            parametro.idParametro === TipoParametro.UPLOAD ||
-            parametro.idParametro === TipoParametro.IMAGEN ||
-            parametro.idParametro === TipoParametro.FIRMA
-          ) {
-            this.filesLoading[`${j}-${k}`] = false;
-          }
-          if (parametro.idParametro === TipoParametro.CHECKBOX) {
-            this.form.addControl(
-              `${this.getParametroControl({ j, k })}`,
-              new FormControl({
-                value: parametro.valor === "true" ? true : false,
-                disabled: true,
-              })
-            );
-          } else if (parametro.idParametro === TipoParametro.FECHA) {
-            this.form.addControl(
-              `${this.getParametroControl({ j, k })}`,
-              new FormControl({
-                value: this.convertDate(parametro.valor),
-                disabled: true,
-              })
-            );
-          } else {
-            this.form.addControl(
-              `${this.getParametroControl({ j, k })}`,
-              new FormControl({
-                value: parametro.valor,
-                disabled: true,
-              })
-            );
-          }
-
-          this.setParamConfig(parametro, j, k);
-
-          /**OBSERVE PARAM */
-        }
-      });
+    this.form = this.fb.group({});
+    const idx = this.currentSectionData.index - 1;
+    this.sections.forEach((section, i) => {
+      if (i === idx) {
+        section.grupos.forEach((grupo, j) => {
+          this.observation[`${j}`] = false;
+          grupo.parametros.forEach((parametro, k) => {
+            if (parametro.activo) {
+              if (parametro.idParametro === TipoParametro.CHECKBOX) {
+                this.form.addControl(
+                  `${this.getParametroControl({ i, j, k })}`,
+                  new FormControl({
+                    value: parametro.valor === "true" ? true : false,
+                    disabled: true,
+                  })
+                );
+              } else if (parametro.idParametro === TipoParametro.FECHA) {
+                this.form.addControl(
+                  `${this.getParametroControl({ i, j, k })}`,
+                  new FormControl({
+                    value: this.convertDate(parametro.valor),
+                    disabled: true,
+                  })
+                );
+              } else if (
+                parametro.idParametro === TipoParametro.TEXTO ||
+                parametro.idParametro === TipoParametro.AREA_TEXTO ||
+                parametro.idParametro === TipoParametro.NUMERICO ||
+                parametro.idParametro === TipoParametro.FECHA
+              ) {
+                this.form.addControl(
+                  `${this.getParametroControl({ i, j, k })}`,
+                  new FormControl(
+                    {
+                      value: parametro.valor,
+                      disabled: true,
+                    },
+                    [
+                      parametro.obligatorio
+                        ? Validators.required
+                        : Validators.nullValidator,
+                      Validators.minLength(
+                        parametro.minCaracteres ? parametro.minCaracteres : 0
+                      ),
+                      Validators.maxLength(
+                        parametro.maxCaracteres ? parametro.maxCaracteres : 2000
+                      ),
+                      !parametro.regex || parametro.regex === ""
+                        ? Validators.nullValidator
+                        : parametro.regex === "2"
+                        ? Validators.email
+                        : Validators.pattern(/^\d{8}(?:[-\s]\d{4})?$/),
+                    ]
+                  )
+                );
+              } else {
+                this.form.addControl(
+                  `${this.getParametroControl({ i, j, k })}`,
+                  new FormControl({
+                    value: parametro.valor,
+                    disabled: true,
+                  })
+                );
+              }
+            }
+          });
+        });
+        this.setCollapsableNav();
+      }
     });
-    this.setCollapsableNav();
   }
 
   async onChageFile(event: any, control: string) {
@@ -380,16 +419,37 @@ export class ValidationFormatosComponent implements OnInit {
   }
 
   edit(groupIndex: number): void {
+    const i = this.currentSectionData.index - 1;
+
+    this.sections.forEach((section, i) => {
+      section.grupos.forEach((grupo, j) => {
+        grupo.parametros.forEach((parametro, k) => {
+          if (this.form.controls[`${this.getParametroControl({ i, j, k })}`]) {
+            this.form.get(`${this.getParametroControl({ i, j, k })}`).disable();
+          }
+        });
+      });
+    });
+
     this.currentSectionData.grupos.forEach((grupo, j) => {
       if (j === groupIndex) {
-        this.groups[j] = !this.groups[j];
+        this.groups[j] = true;
         grupo.parametros.forEach((parametro, k) => {
-          this.editGroup[`${j}`] = true;
           if (
-            this.form.controls[`${this.getParametroControl({ j, k })}`] &&
+            this.form.controls[`${this.getParametroControl({ i, j, k })}`] &&
             parametro.editable
           ) {
-            this.form.get(`${this.getParametroControl({ j, k })}`).enable();
+            this.form.get(`${this.getParametroControl({ i, j, k })}`).enable();
+          }
+        });
+      } else {
+        this.groups[j] = false;
+        grupo.parametros.forEach((parametro, k) => {
+          if (
+            this.form.controls[`${this.getParametroControl({ i, j, k })}`] &&
+            parametro.editable
+          ) {
+            this.form.get(`${this.getParametroControl({ i, j, k })}`).disable();
           }
         });
       }
@@ -402,45 +462,51 @@ export class ValidationFormatosComponent implements OnInit {
     deleteComment?: boolean,
     paramIdx?: number
   ): void {
-    //if (this.form.valid) {
+    const idx = this.currentSectionData.index - 1;
     const data = [...this.sections];
-    //console.log("this form ", this.form.value);
     data.forEach((seccion, i) => {
-      seccion.grupos.forEach((grupo, j) => {
-        if (indexGroup === j) {
-          this.groups[j] = false;
-        }
-        if (deleteComment) {
-          if (j === indexGroup) {
-            grupo.comentarios = null;
+      if (i === idx) {
+        seccion.grupos.forEach((grupo, j) => {
+          if (indexGroup === j) {
+            this.groups[j] = false;
           }
-        }
-        grupo.parametros.forEach((parametro, k) => {
-          parametro.idActividadFormato = Number(this.currentIdAsignation);
-          if (parametro.activo) {
-            if (parametro.idParametro === TipoParametro.IMAGEN) {
-              this.checkImgParam(parametro, j, k);
-            } else if (parametro.idParametro === TipoParametro.FIRMA) {
-              this.checkSignParam(paramIdx, parametro, indexGroup, k, j);
-            } else if (parametro.idParametro === TipoParametro.FECHA) {
-              parametro.valor = this.form.get(
-                this.getParametroControl({ j, k })
-              ).value;
-            } else if (parametro.idParametro !== TipoParametro.UPLOAD) {
-              parametro.valor = String(
-                this.form.get(this.getParametroControl({ j, k })).value
-              );
+          if (deleteComment) {
+            if (j === indexGroup) {
+              grupo.comentarios = null;
             }
           }
+          grupo.parametros.forEach((parametro, k) => {
+            parametro.idActividadFormato = Number(this.currentIdAsignation);
+            if (parametro.activo) {
+              if (parametro.idParametro === TipoParametro.IMAGEN) {
+                this.checkImgParam(parametro, j, k);
+              } else if (parametro.idParametro === TipoParametro.FIRMA) {
+                this.checkSignParam(paramIdx, parametro, indexGroup, k, j);
+              } else if (parametro.idParametro === TipoParametro.FECHA) {
+                parametro.valor = this.form.get(
+                  this.getParametroControl({ i, j, k })
+                ).value;
+              } else if (
+                parametro.idParametro !== TipoParametro.LABEL &&
+                parametro.idParametro !== TipoParametro.UPLOAD
+              ) {
+                if (this.form.get(this.getParametroControl({ i, j, k }))) {
+                  parametro.valor = String(
+                    this.form.get(this.getParametroControl({ i, j, k })).value
+                  );
+                }
+              }
+            }
+          });
         });
-      });
+      }
     });
+
     const payload = {
       secciones: data,
       idFormato: data[0].grupos[0].parametros[0].idFormato,
       idActividadFormtao: Number(this.currentIdAsignation),
     };
-    console.log("pyload ", payload);
     this.postAssignation(payload);
     //}
     if (typeof paramIdx !== "number") {
@@ -449,42 +515,44 @@ export class ValidationFormatosComponent implements OnInit {
   }
 
   checkSignParam(paramIdx, parametro, indexGroup, k, j): void {
-    if (typeof paramIdx === "number") {
-      if (paramIdx === k && indexGroup === j) {
-        parametro.valor = null;
-        this.form.get(this.getParametroControl({ j, k })).setValue(null);
-      }
-    } else {
-      if (
-        this.form.get(this.getParametroControl({ j, k })).value &&
-        this.form.get(this.getParametroControl({ j, k })).value !== ""
-      ) {
-        parametro.valor = String(
-          this.form.get(this.getParametroControl({ j, k })).value
-        );
+    const i = this.currentSectionData.index - 1;
+    if (this.form.get(this.getParametroControl({ i, j, k }))) {
+      if (typeof paramIdx === "number") {
+        if (paramIdx === k && indexGroup === j) {
+          parametro.valor = null;
+          this.form.get(this.getParametroControl({ i, j, k })).setValue(null);
+        }
       } else {
-        parametro.valor = null;
+        if (
+          this.form.get(this.getParametroControl({ i, j, k })).value &&
+          this.form.get(this.getParametroControl({ i, j, k })).value !== ""
+        ) {
+          parametro.valor = String(
+            this.form.get(this.getParametroControl({ i, j, k })).value
+          );
+        } else {
+          parametro.valor = null;
+        }
       }
     }
   }
 
   checkImgParam(parametro, j, k): void {
-    parametro.valor = String(
-      this.form.get(this.getParametroControl({ j, k })).value
-    );
-    if (!parametro.valor || parametro.valor === "") {
-      this.form
-        .get(this.getParametroControl({ j, k }))
-        .setValue(parametro.dato);
+    const i = this.currentSectionData.index - 1;
+    if (this.form.get(this.getParametroControl({ i, j, k }))) {
+      parametro.valor = String(
+        this.form.get(this.getParametroControl({ i, j, k })).value
+      );
+      if (
+        !parametro.valor ||
+        parametro.valor === "" ||
+        parametro.valor === "null"
+      ) {
+        this.form
+          .get(this.getParametroControl({ i, j, k }))
+          .setValue(parametro.dato);
+      }
     }
-    // if (parametro.valor === null || parametro.valor === "") {
-    //   this.form
-    //     .get(this.getParametroControl({ j, k }))
-    //     .setValue(parametro.dato);
-    // }
-    // parametro.valor = String(
-    //   this.form.get(this.getParametroControl({ j, k })).value
-    // );
   }
 
   postAssignation(payload): void {
@@ -500,18 +568,6 @@ export class ValidationFormatosComponent implements OnInit {
       (parametro) => parametro.seccionValida
     );
   }
-
-  /*validateAllSection() {
-    this.sections.forEach((section) => {
-      section.grupos.forEach((group) => {
-        group.parametros.forEach((parameter) => {
-          if (!parameter.seccionValida) {
-            this.allSectionValidated = false;
-          }
-        });
-      });
-    });
-  }*/
 
   isSectionObserved(): boolean {
     return this.currentSectionData.grupos.some((group) => group.observado);
@@ -533,10 +589,10 @@ export class ValidationFormatosComponent implements OnInit {
   }
 
   cancelEdit(j): void {
-    this.groups[j] = false;
     Object.keys(this.form.controls).forEach((key) => {
       this.form.get(key).disable();
     });
+    this.groups[j] = false;
   }
 
   addComment(groupIdx: number): void {
@@ -555,31 +611,5 @@ export class ValidationFormatosComponent implements OnInit {
 
   editable(j): boolean {
     return this.groups[`${j}`];
-  }
-
-  setParamConfig(parametro, j: number, k: number): void {
-    parametro.editable
-      ? this.form.controls[`${this.getParametroControl({ j, k })}`].enable()
-      : this.form.controls[`${this.getParametroControl({ j, k })}`].disable();
-
-    this.form.controls[`${this.getParametroControl({ j, k })}`].setValidators([
-      parametro.obligatorio &&
-      parametro.idParametro !== 4 &&
-      parametro.idParametro !== 6 &&
-      parametro.idParametro !== 7
-        ? Validators.required
-        : Validators.nullValidator,
-      Validators.minLength(
-        parametro.minCaracteres ? parametro.minCaracteres : 0
-      ),
-      Validators.maxLength(
-        parametro.maxCaracteres ? parametro.maxCaracteres : 2000
-      ),
-      !parametro.regex || parametro.regex === ""
-        ? Validators.nullValidator
-        : parametro.regex === "2"
-        ? Validators.email
-        : Validators.pattern(/^\d{8}(?:[-\s]\d{4})?$/),
-    ]);
   }
 }
