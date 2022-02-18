@@ -1,10 +1,18 @@
 import { HttpErrorResponse } from "@angular/common/http";
-import { Component, OnInit, ViewChild, ViewEncapsulation } from "@angular/core";
+import {
+  Component,
+  Inject,
+  OnInit,
+  ViewChild,
+  ViewEncapsulation,
+} from "@angular/core";
 import { FormBuilder, FormGroup, NgForm, Validators } from "@angular/forms";
 import { Router } from "@angular/router";
+import { MSAL_GUARD_CONFIG, MsalGuardConfiguration } from "@azure/msal-angular";
 import { fuseAnimations } from "@fuse/animations";
 import { FuseAlertType } from "@fuse/components/alert";
 import { AuthService } from "app/core/auth/auth.service";
+import { AzureAuthService } from "app/core/azure/azure-auth.service";
 import { NavigationService } from "app/core/navigation/navigation.service";
 import { environment } from "environments/environment";
 
@@ -25,6 +33,7 @@ export class AuthSignInComponent implements OnInit {
   };
   signInForm: FormGroup;
   showAlert: boolean = false;
+  loadingAzure: boolean;
 
   /**
    * Constructor
@@ -33,7 +42,9 @@ export class AuthSignInComponent implements OnInit {
     private _authService: AuthService,
     private _formBuilder: FormBuilder,
     private _router: Router,
-    private _navigationService: NavigationService
+    private _navigationService: NavigationService,
+    private _azureService: AzureAuthService,
+    @Inject(MSAL_GUARD_CONFIG) private msalGuardConfig: MsalGuardConfiguration
   ) {}
 
   // -----------------------------------------------------------------------------------------------------
@@ -58,7 +69,11 @@ export class AuthSignInComponent implements OnInit {
   /**
    * Sign in
    */
+
   signIn(): void {
+    if (this.msalGuardConfig.authRequest) {
+      //this._azureService.logIn();
+    }
     // Return if the form is invalid
     if (this.signInForm.invalid) {
       return;

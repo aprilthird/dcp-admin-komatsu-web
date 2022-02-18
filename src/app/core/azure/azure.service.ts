@@ -10,17 +10,21 @@ import { environment } from "environments/environment";
 
 @Injectable({ providedIn: "root" })
 export class AzureService {
- 
-  async uploadFile(file: any, filename: any): Promise<{
-      response,
-      uuidFileName
+  constructor() {}
+
+  async uploadFile(
+    file: any,
+    filename: any
+  ): Promise<{
+    response;
+    uuidFileName;
   }> {
-    const extension = '.' + filename.split('.').pop();
+    const extension = "." + filename.split(".").pop();
     const uuidFileName = this.generateUUID();
-    const cn = this.getConnectionURL( uuidFileName + extension);
+    const cn = this.getConnectionURL(uuidFileName + extension);
     const blobBlockClient = new BlockBlobClient(cn);
     const res = await blobBlockClient.uploadBrowserData(file);
-    return { response: res, uuidFileName: uuidFileName + extension};
+    return { response: res, uuidFileName: uuidFileName + extension };
   }
 
   getConnectionURL(resourceName: any): string {
@@ -33,9 +37,8 @@ export class AzureService {
     return `https://${environment.azureAccountName}.blob.core.windows.net/${environment.azureContaineName}/${resourceName}`;
   }
 
-
   getResourceUrlComplete(resourceName) {
-      return this.getResourceUrl(resourceName) +'?' + environment.azureSas;
+    return this.getResourceUrl(resourceName) + "?" + environment.azureSas;
   }
 
   generateUUID(): any {

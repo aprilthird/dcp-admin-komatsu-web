@@ -4,6 +4,7 @@ import { AuthGuard } from "./core/auth/guards/auth.guard";
 import { NoAuthGuard } from "./core/auth/guards/noAuth.guard";
 import { MenuPermissionGuard } from "./core/permission/guards/menu-permission.guard";
 import { LayoutComponent } from "./layout/layout.component";
+import { MsalGuard } from "@azure/msal-angular";
 
 export const commonRoutes = [
   { path: "", pathMatch: "full", redirectTo: "admin/informes/list" },
@@ -70,7 +71,9 @@ export const dcpRoutes: Route[] = [
         path: "admin",
         loadChildren: (): any =>
           import("app/projects/dcp/kmmp.module").then((m) => m.KmmpModule),
+        //canActivate: [MsalGuard],
       },
+
       // 404 & Catch all
       {
         path: "pagina-no-encontrada",

@@ -16,6 +16,15 @@ export const environment = {
     scheme: "light",
     theme: "brand",
   },
+
+  officeTenant: {
+    clientIdAzure: "df3c881e-0c3f-457e-a355-8d8d0d61ea1c",
+    tenantId: "807307b4-6a4c-4b3d-97fd-7c78330bba23",
+    objectIdAzure: "16364095-6d11-41d4-9407-7c179fca1f4a",
+    redirectUrl: "http://localhost:4200/",
+    postLogoutRedirectUri: "https://sib.kmmp.com.pe:446/logout",
+    microsoftUri: "https://login.microsoftonline.com",
+  },
 };
 
 /*
