@@ -23,6 +23,7 @@ import { FormatosService } from "../formatos.service";
 import { UiDialogsComponent } from "app/shared/ui/ui-dialogs/ui-dialogs.component";
 import { ActivitiesService } from "../../actividades/activities.service";
 import { Subject } from "rxjs";
+import { Moment } from "moment";
 
 @Component({
   selector: "app-validation-formatos",
@@ -289,7 +290,8 @@ export class ValidationFormatosComponent implements OnInit {
                 this.form.addControl(
                   `${this.getParametroControl({ i, j, k })}`,
                   new FormControl({
-                    value: this.convertDate(parametro.valor),
+                    //value: this.convertDate(parametro.valor),
+                    value: parametro.valor,
                     disabled: true,
                   })
                 );
@@ -483,9 +485,21 @@ export class ValidationFormatosComponent implements OnInit {
               } else if (parametro.idParametro === TipoParametro.FIRMA) {
                 this.checkSignParam(paramIdx, parametro, indexGroup, k, j);
               } else if (parametro.idParametro === TipoParametro.FECHA) {
-                parametro.valor = this.form.get(
-                  this.getParametroControl({ i, j, k })
-                ).value;
+                // parametro.valor = this.form.get(
+                //   this.getParametroControl({ i, j, k })
+                // ).value;
+
+                if (typeof parametro.valor === "string") {
+                  parametro.valor = this.form.get(
+                    this.getParametroControl({ i, j, k })
+                  ).value;
+                } else {
+                  parametro.valor = this.setNoTouchedDate(
+                    (parametro.valor = this.form.get(
+                      this.getParametroControl({ i, j, k })
+                    ).value)
+                  );
+                }
               } else if (
                 parametro.idParametro !== TipoParametro.LABEL &&
                 parametro.idParametro !== TipoParametro.UPLOAD
@@ -512,6 +526,10 @@ export class ValidationFormatosComponent implements OnInit {
     if (typeof paramIdx !== "number") {
       e.preventDefault();
     }
+  }
+
+  setNoTouchedDate(time: Moment): string {
+    return `${time.year}-${time.month}-${time.day}`;
   }
 
   checkSignParam(paramIdx, parametro, indexGroup, k, j): void {
