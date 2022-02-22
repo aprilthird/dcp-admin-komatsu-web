@@ -1,17 +1,29 @@
 import { CdkDragDrop, moveItemInArray } from "@angular/cdk/drag-drop";
-import { Component, ElementRef, Input, OnInit, ViewChild } from "@angular/core";
+import { I } from "@angular/cdk/keycodes";
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  Input,
+  OnInit,
+  QueryList,
+  ViewChild,
+  ViewChildren,
+} from "@angular/core";
 import { FuseConfirmationService } from "@fuse/services/confirmation";
 import { GroupI } from "app/shared/models/formatos";
 import { Observable, Subject } from "rxjs";
 import { EditarFormatoService } from "../../editar-formato/editar-formato.service";
 import { FormatosService } from "../../formatos.service";
+import { GroupsComponent } from "./groups/groups.component";
+import { HorizontalGroupComponent } from "./groups/horizontal-group/horizontal-group.component";
 
 @Component({
   selector: "app-sections",
   templateUrl: "./sections.component.html",
   styleUrls: ["./sections.component.scss"],
 })
-export class SectionsComponent implements OnInit {
+export class SectionsComponent implements OnInit, AfterViewInit {
   @Input() sectionData: any;
   @Input() isActa: boolean;
   isLoading: boolean;
@@ -20,6 +32,11 @@ export class SectionsComponent implements OnInit {
   grupos: any[] = [];
   edit: boolean;
   @ViewChild("nameInput") el: ElementRef;
+
+  @ViewChild("scrollend") scrollFrame: ElementRef<any>;
+  private scrollContainer: any;
+
+  @ViewChildren(GroupsComponent) myValue: GroupsComponent;
 
   constructor(
     private _editarFormatoService: EditarFormatoService,
@@ -36,6 +53,14 @@ export class SectionsComponent implements OnInit {
     this._unsubscribeAll.complete();
   }
 
+  ngAfterViewInit(): void {
+    // if (this.scrollFrame) {
+    //   this.scrollContainer = this.scrollFrame.nativeElement;
+    // }
+
+    console.log("sections ", this.myValue);
+  }
+
   postGroup(pos?: string): void {
     const long = this.grupos.length + 1;
     this._editarFormatoService
@@ -47,6 +72,7 @@ export class SectionsComponent implements OnInit {
         pos: pos,
         //nombre: "Grupo " + long,
         nombre: "Nuevo Grupo",
+        activo: true,
       })
       .subscribe(() => {
         this.loadGrupos();
@@ -64,6 +90,15 @@ export class SectionsComponent implements OnInit {
         this.grupos = response.body;
         if (this.grupos.length === 0 && this.isActa) {
           this.postGroup("v");
+        }
+        console.log("myValue sections ", this.myValue);
+        if (this.scrollContainer) {
+          this.scrollContainer = this.scrollFrame.nativeElement;
+          console.log(this.scrollContainer);
+          this.scrollContainer.scroll({
+            left: 500,
+            behavior: "auto",
+          });
         }
       });
 

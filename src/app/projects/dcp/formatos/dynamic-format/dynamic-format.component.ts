@@ -66,16 +66,12 @@ export class DynamicFormatComponent implements OnInit {
   }
 
   postSection(): void {
-    const sectionLength =
-      this._editarFormatoService._secciones.getValue().length + 1;
-    //const sectionName = "Sección " + sectionLength;
-    const sectionName = "Nueva Sección";
-
     this._editarFormatoService
       .createSeccion(
         {
           idFormato: this.idFormat,
-          nombre: sectionName,
+          nombre: "Nueva Sección",
+          activo: true,
         },
         true
       )

@@ -1,4 +1,13 @@
-import { Component, Input, OnInit, SimpleChanges } from "@angular/core";
+import {
+  AfterContentInit,
+  AfterViewInit,
+  Component,
+  ElementRef,
+  Input,
+  OnInit,
+  SimpleChanges,
+  ViewChild,
+} from "@angular/core";
 import { EditarFormatoService } from "app/projects/dcp/formatos/editar-formato/editar-formato.service";
 import { GeneralParams } from "app/shared/models/formatos";
 import { Subject } from "rxjs";
@@ -10,7 +19,7 @@ import { SectionsComponent } from "../../sections.component";
   templateUrl: "./horizontal-group.component.html",
   styleUrls: ["./horizontal-group.component.scss"],
 })
-export class HorizontalGroupComponent implements OnInit {
+export class HorizontalGroupComponent implements OnInit, AfterViewInit {
   @Input() groupData: any;
   lowestRow: number;
   lowestColumn: number;
@@ -19,6 +28,8 @@ export class HorizontalGroupComponent implements OnInit {
   rowsOfGrid = [];
   private _unsubscribeAll: Subject<any> = new Subject<any>();
   highestRow: any;
+  @ViewChild("scrollend", { static: false }) scrollFrame: ElementRef<any>;
+  // private scrollContainer: any;
 
   constructor(
     private _editarFormatoService: EditarFormatoService,
@@ -32,6 +43,8 @@ export class HorizontalGroupComponent implements OnInit {
   ngOnChanges(changes: SimpleChanges): void {
     this.groupData = changes.groupData.currentValue;
   }
+
+  ngAfterViewInit(): void {}
 
   firstColumnRow(): void {
     const columns = this.groupData.parametros
@@ -79,6 +92,7 @@ export class HorizontalGroupComponent implements OnInit {
         obligatorio: x.obligatorio,
       };
     });
+
     this._editarFormatoService
       .createDato({
         ...this.groupData,
@@ -86,6 +100,11 @@ export class HorizontalGroupComponent implements OnInit {
       })
       .pipe(takeUntil(this._unsubscribeAll))
       .subscribe(() => {
+        // this.scrollContainer = this.scrollFrame.nativeElement;
+        // this.scrollContainer.scroll({
+        //   left: 500,
+        //   behavior: "auto",
+        // });
         this._groups.loadGrupos();
         this.isLoading = false;
       });

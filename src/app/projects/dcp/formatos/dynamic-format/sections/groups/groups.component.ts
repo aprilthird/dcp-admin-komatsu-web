@@ -1,16 +1,25 @@
-import { Component, ElementRef, Input, OnInit, ViewChild } from "@angular/core";
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  Input,
+  OnInit,
+  ViewChild,
+  ViewChildren,
+} from "@angular/core";
 import { FuseConfirmationService } from "@fuse/services/confirmation";
 import { Subject } from "rxjs";
 import { takeUntil } from "rxjs/operators";
 import { EditarFormatoService } from "../../../editar-formato/editar-formato.service";
 import { SectionsComponent } from "../sections.component";
+import { HorizontalGroupComponent } from "./horizontal-group/horizontal-group.component";
 
 @Component({
   selector: "app-groups",
   templateUrl: "./groups.component.html",
   styleUrls: ["./groups.component.scss"],
 })
-export class GroupsComponent implements OnInit {
+export class GroupsComponent implements OnInit, AfterViewInit {
   @Input() groupData: any;
   @Input() isActa: boolean;
   isLoading: boolean;
@@ -18,6 +27,7 @@ export class GroupsComponent implements OnInit {
   edit: boolean;
   @ViewChild("nameInput") el: ElementRef;
   private _unsubscribeAll: Subject<any> = new Subject<any>();
+  @ViewChildren(HorizontalGroupComponent) myValue: HorizontalGroupComponent;
 
   constructor(
     private _editFormat: EditarFormatoService,
@@ -26,6 +36,10 @@ export class GroupsComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {}
+
+  ngAfterViewInit(): void {
+    console.log("groups ", this.myValue);
+  }
 
   deleteGroup(): void {
     const dialogRef = this._fuseConfirmationService.open({
