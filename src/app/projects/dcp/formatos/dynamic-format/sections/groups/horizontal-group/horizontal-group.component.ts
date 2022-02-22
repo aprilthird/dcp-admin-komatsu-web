@@ -1,12 +1,13 @@
 import {
-  AfterContentInit,
   AfterViewInit,
   Component,
-  ElementRef,
+  EventEmitter,
   Input,
   OnInit,
+  Output,
+  QueryList,
   SimpleChanges,
-  ViewChild,
+  ViewChildren,
 } from "@angular/core";
 import { EditarFormatoService } from "app/projects/dcp/formatos/editar-formato/editar-formato.service";
 import { GeneralParams } from "app/shared/models/formatos";
@@ -21,6 +22,7 @@ import { SectionsComponent } from "../../sections.component";
 })
 export class HorizontalGroupComponent implements OnInit, AfterViewInit {
   @Input() groupData: any;
+  @Output() currentGroupTouched = new EventEmitter(null);
   lowestRow: number;
   lowestColumn: number;
   highestColumn: number;
@@ -28,8 +30,7 @@ export class HorizontalGroupComponent implements OnInit, AfterViewInit {
   rowsOfGrid = [];
   private _unsubscribeAll: Subject<any> = new Subject<any>();
   highestRow: any;
-  @ViewChild("scrollend", { static: false }) scrollFrame: ElementRef<any>;
-  // private scrollContainer: any;
+  @ViewChildren(`scrollend`) scrollFrame: QueryList<HTMLElement>;
 
   constructor(
     private _editarFormatoService: EditarFormatoService,
@@ -60,6 +61,7 @@ export class HorizontalGroupComponent implements OnInit, AfterViewInit {
   }
 
   async addColumn() {
+    this.currentGroupTouched.emit(this.groupData.id);
     this.isLoading = true;
     const columns = [...this.groupData.parametros].map((data) => data.columna);
     //const highestColumn = Math.max.apply(null, columns);
@@ -100,11 +102,6 @@ export class HorizontalGroupComponent implements OnInit, AfterViewInit {
       })
       .pipe(takeUntil(this._unsubscribeAll))
       .subscribe(() => {
-        // this.scrollContainer = this.scrollFrame.nativeElement;
-        // this.scrollContainer.scroll({
-        //   left: 500,
-        //   behavior: "auto",
-        // });
         this._groups.loadGrupos();
         this.isLoading = false;
       });

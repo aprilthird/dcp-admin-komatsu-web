@@ -86,6 +86,7 @@
             class="list-box w-full"
             [groupData]="group"
             [isActa]="isActa"
+            (currentGroupused)="currentGroupused($event)"
           ></app-groups>
         </ng-container>
       </div>

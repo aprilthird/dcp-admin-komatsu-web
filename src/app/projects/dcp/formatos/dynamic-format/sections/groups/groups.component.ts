@@ -1,9 +1,10 @@
 import {
-  AfterViewInit,
   Component,
   ElementRef,
+  EventEmitter,
   Input,
   OnInit,
+  Output,
   ViewChild,
   ViewChildren,
 } from "@angular/core";
@@ -19,9 +20,10 @@ import { HorizontalGroupComponent } from "./horizontal-group/horizontal-group.co
   templateUrl: "./groups.component.html",
   styleUrls: ["./groups.component.scss"],
 })
-export class GroupsComponent implements OnInit, AfterViewInit {
+export class GroupsComponent implements OnInit {
   @Input() groupData: any;
   @Input() isActa: boolean;
+  @Output() currentGroupused = new EventEmitter(null);
   isLoading: boolean;
   rowsOfGrid = [];
   edit: boolean;
@@ -36,10 +38,6 @@ export class GroupsComponent implements OnInit, AfterViewInit {
   ) {}
 
   ngOnInit(): void {}
-
-  ngAfterViewInit(): void {
-    console.log("groups ", this.myValue);
-  }
 
   deleteGroup(): void {
     const dialogRef = this._fuseConfirmationService.open({
@@ -60,7 +58,6 @@ export class GroupsComponent implements OnInit, AfterViewInit {
     });
 
     dialogRef.beforeClosed().subscribe((result) => {
-      console.log(result);
       if (result === "confirmed") {
         this.isLoading = true;
         this._editFormat
@@ -95,5 +92,9 @@ export class GroupsComponent implements OnInit, AfterViewInit {
         this.groupData.nombre = this.el.nativeElement.value;
         this._groups.loadGrupos();
       });
+  }
+
+  currentGroupTouched(event): void {
+    this.currentGroupused.emit(event);
   }
 }

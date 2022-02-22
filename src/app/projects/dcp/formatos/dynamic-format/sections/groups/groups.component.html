@@ -37,6 +37,9 @@
     <app-vertical-group [groupData]="groupData"></app-vertical-group>
   </ng-container>
   <ng-container *ngIf="groupData.pos === 'h'">
-    <app-horizontal-group [groupData]="groupData"></app-horizontal-group>
+    <app-horizontal-group
+      (currentGroupTouched)="currentGroupTouched($event)"
+      [groupData]="groupData"
+    ></app-horizontal-group>
   </ng-container>
 </div>

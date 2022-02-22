@@ -1,12 +1,10 @@
 import { CdkDragDrop, moveItemInArray } from "@angular/cdk/drag-drop";
 import { I } from "@angular/cdk/keycodes";
 import {
-  AfterViewInit,
   Component,
   ElementRef,
   Input,
   OnInit,
-  QueryList,
   ViewChild,
   ViewChildren,
 } from "@angular/core";
@@ -23,7 +21,7 @@ import { HorizontalGroupComponent } from "./groups/horizontal-group/horizontal-g
   templateUrl: "./sections.component.html",
   styleUrls: ["./sections.component.scss"],
 })
-export class SectionsComponent implements OnInit, AfterViewInit {
+export class SectionsComponent implements OnInit {
   @Input() sectionData: any;
   @Input() isActa: boolean;
   isLoading: boolean;
@@ -32,11 +30,11 @@ export class SectionsComponent implements OnInit, AfterViewInit {
   grupos: any[] = [];
   edit: boolean;
   @ViewChild("nameInput") el: ElementRef;
-
-  @ViewChild("scrollend") scrollFrame: ElementRef<any>;
-  private scrollContainer: any;
+  private scrollContainer: HTMLElement;
 
   @ViewChildren(GroupsComponent) myValue: GroupsComponent;
+  rendered: boolean;
+  currentGroupId: number;
 
   constructor(
     private _editarFormatoService: EditarFormatoService,
@@ -53,14 +51,6 @@ export class SectionsComponent implements OnInit, AfterViewInit {
     this._unsubscribeAll.complete();
   }
 
-  ngAfterViewInit(): void {
-    // if (this.scrollFrame) {
-    //   this.scrollContainer = this.scrollFrame.nativeElement;
-    // }
-
-    console.log("sections ", this.myValue);
-  }
-
   postGroup(pos?: string): void {
     const long = this.grupos.length + 1;
     this._editarFormatoService
@@ -70,7 +60,6 @@ export class SectionsComponent implements OnInit, AfterViewInit {
         idSeccion: this.sectionData.id,
         parametros: [],
         pos: pos,
-        //nombre: "Grupo " + long,
         nombre: "Nuevo Grupo",
         activo: true,
       })
@@ -81,7 +70,6 @@ export class SectionsComponent implements OnInit, AfterViewInit {
 
   public loadGrupos() {
     this.isLoading = true;
-    //this.grupos = [];
     this.isLoading = true;
     this._editarFormatoService
       .getGrupos(this.sectionData.id)
@@ -91,15 +79,28 @@ export class SectionsComponent implements OnInit, AfterViewInit {
         if (this.grupos.length === 0 && this.isActa) {
           this.postGroup("v");
         }
-        console.log("myValue sections ", this.myValue);
-        if (this.scrollContainer) {
-          this.scrollContainer = this.scrollFrame.nativeElement;
-          console.log(this.scrollContainer);
-          this.scrollContainer.scroll({
-            left: 500,
-            behavior: "auto",
-          });
-        }
+
+        setTimeout(() => {
+          if (this.rendered) {
+            const element = this.myValue["_results"].find(
+              (group) => group.groupData.id === this.currentGroupId
+            );
+            let el: ElementRef<HTMLElement> =
+              element["myValue"]["_results"][0]["scrollFrame"];
+
+            if (el) {
+              this.scrollContainer = el["_results"][0].nativeElement;
+
+              this.scrollContainer.scroll({
+                left: 20000,
+                behavior: "auto",
+              });
+            }
+          }
+          if (!this.rendered) {
+            this.rendered = true;
+          }
+        });
       });
 
     this.isLoading = false;
@@ -173,5 +174,9 @@ export class SectionsComponent implements OnInit, AfterViewInit {
 
   isActiveGroup(): boolean {
     return this.grupos.some((x) => x.activo);
+  }
+
+  currentGroupused(e: number): void {
+    this.currentGroupId = e;
   }
 }
