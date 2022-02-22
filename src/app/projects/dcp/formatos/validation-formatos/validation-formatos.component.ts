@@ -485,20 +485,23 @@ export class ValidationFormatosComponent implements OnInit {
               } else if (parametro.idParametro === TipoParametro.FIRMA) {
                 this.checkSignParam(paramIdx, parametro, indexGroup, k, j);
               } else if (parametro.idParametro === TipoParametro.FECHA) {
-                // parametro.valor = this.form.get(
-                //   this.getParametroControl({ i, j, k })
-                // ).value;
-
                 if (typeof parametro.valor === "string") {
                   parametro.valor = this.form.get(
                     this.getParametroControl({ i, j, k })
                   ).value;
                 } else {
-                  parametro.valor = this.setNoTouchedDate(
-                    (parametro.valor = this.form.get(
+                  if (
+                    typeof this.form.get(this.getParametroControl({ i, j, k }))
+                      .value === "string"
+                  ) {
+                    parametro.valor = this.setNoTouchedDate(
+                      this.form.get(this.getParametroControl({ i, j, k })).value
+                    );
+                  } else {
+                    parametro.valor = this.form.get(
                       this.getParametroControl({ i, j, k })
-                    ).value)
-                  );
+                    ).value;
+                  }
                 }
               } else if (
                 parametro.idParametro !== TipoParametro.LABEL &&
