@@ -24,6 +24,7 @@ export class GroupsComponent implements OnInit {
   @Input() groupData: any;
   @Input() isActa: boolean;
   @Output() currentGroupused = new EventEmitter(null);
+  @Output() isColumnAdded = new EventEmitter(null);
   isLoading: boolean;
   rowsOfGrid = [];
   edit: boolean;
@@ -96,5 +97,11 @@ export class GroupsComponent implements OnInit {
 
   currentGroupTouched(event): void {
     this.currentGroupused.emit(event);
+  }
+
+  isColumnAddedFn(event): void {
+    setTimeout(() => {
+      this.isColumnAdded.emit(event);
+    });
   }
 }

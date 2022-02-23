@@ -31,6 +31,7 @@ export class SectionsComponent implements OnInit {
   edit: boolean;
   @ViewChild("nameInput") el: ElementRef;
   private scrollContainer: HTMLElement;
+  isColumnAdded: any;
 
   @ViewChildren(GroupsComponent) myValue: GroupsComponent;
   rendered: boolean;
@@ -85,16 +86,18 @@ export class SectionsComponent implements OnInit {
             const element = this.myValue["_results"].find(
               (group) => group.groupData.id === this.currentGroupId
             );
-            let el: ElementRef<HTMLElement> =
-              element["myValue"]["_results"][0]["scrollFrame"];
+            if (element) {
+              let el: ElementRef<HTMLElement> =
+                element["myValue"]["_results"][0]["scrollFrame"];
 
-            if (el) {
-              this.scrollContainer = el["_results"][0].nativeElement;
+              if (el && this.isColumnAdded) {
+                this.scrollContainer = el["_results"][0].nativeElement;
 
-              this.scrollContainer.scroll({
-                left: 20000,
-                behavior: "auto",
-              });
+                this.scrollContainer.scroll({
+                  left: 20000,
+                  behavior: "auto",
+                });
+              }
             }
           }
           if (!this.rendered) {
@@ -178,5 +181,9 @@ export class SectionsComponent implements OnInit {
 
   currentGroupused(e: number): void {
     this.currentGroupId = e;
+  }
+
+  isColumnAddedFn(event): void {
+    this.isColumnAdded = event;
   }
 }

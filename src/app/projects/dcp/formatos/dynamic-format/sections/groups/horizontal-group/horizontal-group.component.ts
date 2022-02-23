@@ -23,6 +23,7 @@ import { SectionsComponent } from "../../sections.component";
 export class HorizontalGroupComponent implements OnInit, AfterViewInit {
   @Input() groupData: any;
   @Output() currentGroupTouched = new EventEmitter(null);
+  @Output() isColumnAdded: EventEmitter<boolean> = new EventEmitter(false);
   lowestRow: number;
   lowestColumn: number;
   highestColumn: number;
@@ -61,6 +62,7 @@ export class HorizontalGroupComponent implements OnInit, AfterViewInit {
   }
 
   async addColumn() {
+    this.isColumnAdded.emit(true);
     this.currentGroupTouched.emit(this.groupData.id);
     this.isLoading = true;
     const columns = [...this.groupData.parametros].map((data) => data.columna);
@@ -108,6 +110,7 @@ export class HorizontalGroupComponent implements OnInit, AfterViewInit {
   }
 
   async addRow() {
+    this.isColumnAdded.emit(false);
     this.isLoading = true;
     const rows = await this.groupData.parametros.map((data) => data.fila);
     //const highestRow = Math.max.apply(null, rows);
@@ -172,6 +175,7 @@ export class HorizontalGroupComponent implements OnInit, AfterViewInit {
   }
 
   async addParam() {
+    this.isColumnAdded.emit(false);
     this.isLoading = true;
 
     this._editarFormatoService
@@ -194,8 +198,13 @@ export class HorizontalGroupComponent implements OnInit, AfterViewInit {
 
   delete(position: number, type: string): void {
     let positionType;
-    if (type === "row") positionType = "fila";
-    else positionType = "columna";
+    if (type === "row") {
+      this.isColumnAdded.emit(false);
+      positionType = "fila";
+    } else {
+      this.isColumnAdded.emit(true);
+      positionType = "columna";
+    }
     this.isLoading = true;
     const posToDelete = this.groupData.parametros.filter((x) => {
       if (x[positionType] === position) {
@@ -218,8 +227,13 @@ export class HorizontalGroupComponent implements OnInit, AfterViewInit {
   /**PROBANDO ELIMINACION DE COLUMNAS Y RESTAR UNA POSICIÓN A LAS SIGUIENTES COLUMNAS */
   deleteTMP(position: number, type: string): void {
     let positionType;
-    if (type === "row") positionType = "fila";
-    else positionType = "columna";
+    if (type === "row") {
+      this.isColumnAdded.emit(false);
+      positionType = "fila";
+    } else {
+      this.isColumnAdded.emit(true);
+      positionType = "columna";
+    }
     this.isLoading = true;
     const posToDelete = this.groupData.parametros.filter((x) => {
       if (x[positionType] === position) {
