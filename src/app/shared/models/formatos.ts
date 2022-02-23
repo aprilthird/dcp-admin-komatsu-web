@@ -99,3 +99,13 @@ export const GeneralParams = {
   idParametroGrupo: 0,
   activo: true,
 };
+
+export interface GalleryImage {
+  id: number;
+  ruta: string;
+  activo: boolean;
+  nombre: string;
+  descripcion: string;
+  fechaReg?: string;
+  fechaMod?: string;
+}

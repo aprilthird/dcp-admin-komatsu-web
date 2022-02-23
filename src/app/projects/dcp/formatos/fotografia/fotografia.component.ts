@@ -14,6 +14,7 @@ import { FormatosService } from "../formatos.service";
 import { AzureService } from "app/core/azure/azure.service";
 import { ActivitiesService } from "../../actividades/activities.service";
 import { Subject } from "rxjs";
+import { GalleryImage } from "app/shared/models/formatos";
 
 @Component({
   selector: "app-fotografia",
@@ -55,7 +56,7 @@ export class FotografiaComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this, this.getGallery();
+    this.getGallery();
   }
 
   ngOnDestroy(): void {
@@ -112,6 +113,8 @@ export class FotografiaComponent implements OnInit, OnDestroy {
     });
   }
 
+  editImage(imageDate: GalleryImage): void {}
+
   getIdFormatActivity(): void {
     this.activeRoute.paramMap.subscribe((params) => {
       this.idFormatActivity = Number(params["params"]["idFormatoActividad"]);
@@ -128,14 +131,4 @@ export class FotografiaComponent implements OnInit, OnDestroy {
   setImage(src: string): string {
     return this._azureService.getResourceUrlComplete(src);
   }
-}
-
-interface GalleryImage {
-  id: number;
-  ruta: string;
-  activo: boolean;
-  nombre: string;
-  descripcion: string;
-  fechaReg?: string;
-  fechaMod?: string;
 }

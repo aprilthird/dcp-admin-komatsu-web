@@ -1,16 +1,6 @@
 <div class="flex flex-col flex-auto min-w-0">
   <div
-    class="
-      flex flex-col
-      sm:flex-row
-      flex-0
-      sm:items-center sm:justify-between
-      p-6
-      sm:py-8 sm:px-10
-      border-b
-      bg-card
-      dark:bg-transparent
-    "
+    class="flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between p-6 sm:py-8 sm:px-10 border-b bg-card dark:bg-transparent"
   >
     <div class="flex-1 min-w-0">
       <div class="flex flex-wrap items-center font-medium">
@@ -38,15 +28,7 @@
       </div>
       <div class="mt-2 flex justify-between w-full">
         <h2
-          class="
-            text-3xl
-            md:text-4xl
-            font-extrabold
-            tracking-tight
-            leading-7
-            sm:leading-10
-            truncate
-          "
+          class="text-3xl md:text-4xl font-extrabold tracking-tight leading-7 sm:leading-10 truncate"
         >
           Galería
         </h2>
@@ -69,14 +51,7 @@
       <router-outlet></router-outlet>
 
       <div
-        class="
-          sm:inset-0
-          flex flex-col flex-auto
-          min-w-0
-          sm:overflow-hidden
-          bg-card
-          dark:bg-transparent
-        "
+        class="sm:inset-0 flex flex-col flex-auto min-w-0 sm:overflow-hidden bg-card dark:bg-transparent"
       >
         <!-- Header -->
 
@@ -92,12 +67,7 @@
                 <div class="flex p-2 gap-2 overflow-hidden">
                   <button
                     mat-icon-button=""
-                    class="
-                      mat-focus-indicator mat-menu-trigger
-                      bg-gray-300
-                      text-black
-                      mat-icon-button mat-button-base
-                    "
+                    class="mat-focus-indicator mat-menu-trigger bg-gray-300 text-black mat-icon-button mat-button-base"
                   >
                     <span class="mat-button-wrapper"
                       ><span class="relative">
@@ -124,11 +94,19 @@
                   ></mat-icon>
 
                   <mat-menu #actionsMenu="matMenu">
-                    <button
+                    <!-- <button
                       mat-menu-item
                       (click)="preview(image?.id, image?.ruta)"
                     >
                       <span>Editar</span>
+                    </button> -->
+                    <!-- <button mat-menu-item (click)="editImage(image)">
+                      <span>Editar</span>
+                    </button> -->
+                    <button mat-menu-item>
+                      <a [href]="setImage(image?.ruta)" target="_blank">
+                        <span>Descargar</span>
+                      </a>
                     </button>
                     <button mat-menu-item (click)="delete(image)">
                       <span>Eliminar</span>
