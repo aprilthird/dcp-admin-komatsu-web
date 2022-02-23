@@ -140,7 +140,8 @@ export class ActaConformidadComponent implements OnInit {
       parametro.obligatorio &&
       parametro.idParametro !== TipoParametro.UPLOAD &&
       parametro.idParametro !== TipoParametro.FIRMA &&
-      parametro.idParametro !== TipoParametro.IMAGEN
+      parametro.idParametro !== TipoParametro.IMAGEN &&
+      parametro.idParametro !== TipoParametro.LABEL
         ? Validators.required
         : Validators.nullValidator,
       Validators.minLength(
@@ -219,6 +220,7 @@ export class ActaConformidadComponent implements OnInit {
 
   //postActa(e: MouseEvent, indexGroup: number, paramIdx?: number): void {
   postActa(e: MouseEvent): void {
+    this.isLoading = true;
     //if (this.form.valid) {
     this.actaData.grupos.forEach((grupo, j) => {
       //if (indexGroup === j) {
@@ -270,6 +272,7 @@ export class ActaConformidadComponent implements OnInit {
         .subscribe(
           (resp) => {
             this.savingData = false;
+            this.isLoading = false;
             this.alert = {
               type: "success",
               message: `Acta de conformidad ha sido guardada correctamente!`,

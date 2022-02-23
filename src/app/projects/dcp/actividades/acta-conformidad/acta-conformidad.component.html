@@ -65,11 +65,20 @@
                 class="w-full"
                 mat-raised-button
                 [color]="'secondary'"
-                [disabled]="formGroup.invalid"
+                [disabled]="formGroup.invalid || isLoading"
                 (click)="postActa($event, j)"
               >
-                <mat-icon svgIcon="heroicons_outline:save"></mat-icon>
-                <span class="ml-2 mr-1">Guardar</span>
+                <mat-progress-spinner
+                  *ngIf="isLoading"
+                  [diameter]="24"
+                  [mode]="'indeterminate'"
+                ></mat-progress-spinner>
+                <mat-icon
+                  *ngIf="!isLoading"
+                  svgIcon="heroicons_outline:save"
+                ></mat-icon>
+                <span *ngIf="!isLoading" class="ml-2 mr-1">Guardar</span>
+                <span *ngIf="isLoading" class="ml-2 mr-1">Guardando..</span>
               </button>
             </div>
           </ng-container>
@@ -351,6 +360,7 @@
                                   </mat-label>
                                   <mat-slide-toggle
                                     [color]="'primary'"
+                                    formControlName="{{getParametroControl({j, k})}}"
                                   ></mat-slide-toggle>
                                 </div>
                               </div>

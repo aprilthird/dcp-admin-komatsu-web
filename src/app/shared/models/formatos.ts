@@ -25,8 +25,8 @@ export interface ParamI {
   tipoNombre?: string;
   valor?: string;
   placeholder?: string;
-  obligatorio?: true;
-  editable?: true;
+  obligatorio?: boolean;
+  editable?: boolean;
   minCaracteres?: number;
   maxCaracteres?: number;
   regex?: string;
