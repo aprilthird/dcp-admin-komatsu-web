@@ -23,10 +23,6 @@ export class PermissionService {
   }
 
   loadLocalStorage(): Observable<Boolean> {
-    console.log(
-      "get nav bar ",
-      JSON.parse(localStorage.getItem("permissions"))
-    );
     this._permissions.next(JSON.parse(localStorage.getItem("permissions")));
     return of(true);
   }

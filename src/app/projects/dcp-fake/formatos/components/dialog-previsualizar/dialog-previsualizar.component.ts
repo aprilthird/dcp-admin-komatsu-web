@@ -7,19 +7,13 @@ import { EditarFormatoService } from "../../editar-formato/editar-formato.servic
   styleUrls: ["./dialog-previsualizar.component.scss"],
 })
 export class DialogPrevisualizarComponent implements OnInit {
+  @Input("idFormato") idFormato;
 
-  @Input('idFormato') idFormato;
-
-  constructor(
-    private _editarFormatoService: EditarFormatoService,
-  ) {}
+  constructor(private _editarFormatoService: EditarFormatoService) {}
 
   ngOnInit(): void {
-
     this._editarFormatoService
       .getObtenerFormatoCompleto(this.idFormato)
-      .subscribe((response) => {
-        console.log(response);
-      });
+      .subscribe((response) => {});
   }
 }

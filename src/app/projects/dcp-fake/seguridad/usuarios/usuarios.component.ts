@@ -48,7 +48,7 @@ export class UsuariosComponent implements OnInit, OnDestroy {
     private _routeActived: ActivatedRoute,
     private _router: Router,
     private _fuseConfirmationService: FuseConfirmationService,
-    public _permissonService:PermissionService
+    public _permissonService: PermissionService
   ) {
     this.usuarios$ = this._usuariosService.usuarios$.pipe(
       takeUntil(this._unsubscribeAll)
@@ -101,7 +101,6 @@ export class UsuariosComponent implements OnInit, OnDestroy {
     });
 
     dialogRef.beforeClosed().subscribe((result) => {
-      console.log(result);
       if (result === "confirmed") {
         this.isLoading = true;
         this._usuariosService.deleteUsuario(usuario.id).subscribe(() => {

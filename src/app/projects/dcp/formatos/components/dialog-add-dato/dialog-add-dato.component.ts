@@ -175,7 +175,6 @@ export class DialogAddDatoComponent implements OnInit {
           }
         },
         (error) => {
-          console.log("error", error);
           this.loading = false;
         }
       );

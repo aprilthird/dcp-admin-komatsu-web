@@ -38,7 +38,6 @@ export class NotificationsService {
    * Get all notifications
    */
   getAll(): Observable<Notification[]> {
-    console.log("notifications-");
     return this._httpClient
 
       .get<Notification[]>(
@@ -50,7 +49,6 @@ export class NotificationsService {
             x["description"] = x.notificacion;
             x["title"] = x.usuario;
           });
-          console.log(notifications["body"]);
           this._notifications.next(notifications["body"]);
         })
       );

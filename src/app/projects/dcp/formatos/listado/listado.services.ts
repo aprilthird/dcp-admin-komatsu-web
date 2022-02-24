@@ -60,7 +60,6 @@ export class ListadoService {
       pageSize: 10,
     }
   ): Observable<PaginationResponse<Formato[]>> {
-    console.log(codCe, codCeco, codGp);
     if ((!codCeco && !codGp && !codCe) || (codCeco && codGp && codCe === ""))
       this._isFilter.next(false);
     else this._isFilter.next(true);

@@ -31,13 +31,12 @@ import { PerfilesService } from "./perfiles.services";
 
         @screen xl {
           grid-template-columns: 300px 300px 220px 220px 150px;
-        }        
+        }
       }
     `,
   ],
 })
 export class PerfilesComponent implements OnInit, OnDestroy {
-  
   isLoading = false;
   perfiles$: Observable<any>;
   pagination$: Observable<Pagination>;
@@ -47,7 +46,7 @@ export class PerfilesComponent implements OnInit, OnDestroy {
   constructor(
     private _perfilesServices: PerfilesService,
     private _routeActived: ActivatedRoute,
-    private _router:Router,
+    private _router: Router,
     private _matDialog: MatDialog,
     private _fuseConfirmationService: FuseConfirmationService
   ) {
@@ -103,18 +102,18 @@ export class PerfilesComponent implements OnInit, OnDestroy {
   /**
    * Delete product
    */
-   deleteUsuario(perfil): void {
+  deleteUsuario(perfil): void {
     const dialogRef = this._fuseConfirmationService.open({
       title: "Eliminar perfil",
       message: "¿Estás seguro que deseas eliminar este perfil?",
       icon: {
         name: "heroicons_outline:trash",
-        color: 'primary'
+        color: "primary",
       },
       actions: {
         confirm: {
           label: "Sí, eliminar",
-          color: 'primary'
+          color: "primary",
         },
         cancel: {
           label: "No",
@@ -124,14 +123,14 @@ export class PerfilesComponent implements OnInit, OnDestroy {
     });
 
     dialogRef.beforeClosed().subscribe((result) => {
-      console.log(result);
       if (result === "confirmed") {
         this.isLoading = true;
-        this._perfilesServices.deletePerfil({id: perfil.id, activo: false }).subscribe(() => {
-          this.loadData();
-        });
+        this._perfilesServices
+          .deletePerfil({ id: perfil.id, activo: false })
+          .subscribe(() => {
+            this.loadData();
+          });
       }
     });
   }
-
 }

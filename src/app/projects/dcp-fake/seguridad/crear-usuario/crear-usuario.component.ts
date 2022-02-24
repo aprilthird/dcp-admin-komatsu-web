@@ -35,7 +35,6 @@ function minSelectedPlataforma() {
     if (!formControl.parent) return null;
     const form = formControl.parent.value;
 
-    console.log(form.web, form.movil);
     return form.web || form.movil ? null : { required: true };
   };
 

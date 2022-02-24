@@ -42,8 +42,6 @@ import { FilterDialogComponent } from "./filter/filter-dialog/filter-dialog.comp
 
 import { FuseConfirmationModule } from "@fuse/services/confirmation";
 import { ReportFilterDialogComponent } from "./filter/report-filter-dialog/report-filter-dialog.component";
-import { ManagableFieldsComponent } from "./acta-conformidad/managable-fields/managable-fields.component";
-import { ReadLoadDataComponent } from "./acta-conformidad/read-load-data/read-load-data.component";
 
 @NgModule({
   declarations: [
@@ -53,8 +51,6 @@ import { ReadLoadDataComponent } from "./acta-conformidad/read-load-data/read-lo
     FilterDialogComponent,
     ActaConformidadComponent,
     ReportFilterDialogComponent,
-    ManagableFieldsComponent,
-    ReadLoadDataComponent,
   ],
   imports: [
     CommonModule,

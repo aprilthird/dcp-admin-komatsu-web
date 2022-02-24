@@ -22,7 +22,6 @@ export class TextFilterPipe implements PipeTransform {
     }
 
     return mainArr.filter((each) => {
-      console.log(each);
       //searchText = searchText.toLocaleLowerCase();
       //return each.name.toLocaleLowerCase().includes(searchText);
       return each.name.includes(searchText);

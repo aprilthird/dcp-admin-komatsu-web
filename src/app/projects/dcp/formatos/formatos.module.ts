@@ -13,7 +13,7 @@ import { MatSortModule } from "@angular/material/sort";
 import { MatSidenavModule } from "@angular/material/sidenav";
 import { MatDividerModule } from "@angular/material/divider";
 import { FuseNavigationModule } from "@fuse/components/navigation";
-import { GruposComponent } from "./editar-formato/grupos/grupos.component";
+//import { GruposComponent } from "./editar-formato/grupos/grupos.component";
 import { MatExpansionModule } from "@angular/material/expansion";
 import { DragDropModule } from "@angular/cdk/drag-drop";
 import { MatDialogModule } from "@angular/material/dialog";
@@ -21,22 +21,22 @@ import { DialogAddFormatoComponent } from "./components/dialog-add-formato/dialo
 import { MatInputModule } from "@angular/material/input";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { SharedModule } from "app/shared/shared.module";
-import { DialogAddSeccionComponent } from "./components/dialog-add-seccion/dialog-add-seccion.component";
-import { DialogAddGrupoComponent } from "./components/dialog-add-grupo/dialog-add-grupo.component";
-import { DialogAddDatoComponent } from "./components/dialog-add-dato/dialog-add-dato.component";
+//import { DialogAddSeccionComponent } from "./components/dialog-add-seccion/dialog-add-seccion.component";
+//import { DialogAddGrupoComponent } from "./components/dialog-add-grupo/dialog-add-grupo.component";
+//import { DialogAddDatoComponent } from "./components/dialog-add-dato/dialog-add-dato.component";
 import { MatSlideToggleModule } from "@angular/material/slide-toggle";
 import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
 import { MatSelectModule } from "@angular/material/select";
-import { AsignarFormatoComponent } from "./asignar-formato/asignar-formato.component";
+//import { AsignarFormatoComponent } from "./asignar-formato/asignar-formato.component";
 import { FuseConfirmationModule } from "@fuse/services/confirmation";
-import { DialogAddAsignarComponent } from "./components/dialog-add-asignar/dialog-add-asignar.component";
+//import { DialogAddAsignarComponent } from "./components/dialog-add-asignar/dialog-add-asignar.component";
 import { FuseAlertModule } from "@fuse/components/alert";
-import { DialogPrevisualizarComponent } from "./components/dialog-previsualizar/dialog-previsualizar.component";
+//import { DialogPrevisualizarComponent } from "./components/dialog-previsualizar/dialog-previsualizar.component";
 import { MatDatepickerModule } from "@angular/material/datepicker";
 import { MAT_DATE_LOCALE } from "@angular/material/core";
-import { AsignacionesComponent } from "./asignaciones/asignaciones.component";
+//import { AsignacionesComponent } from "./asignaciones/asignaciones.component";
 import { MatChipsModule } from "@angular/material/chips";
-import { AperturaAsignacionComponent } from "./asignaciones/apertura-asignacion/apertura-asignacion.component";
+//import { AperturaAsignacionComponent } from "./asignaciones/apertura-asignacion/apertura-asignacion.component";
 import { ValidationFormatosComponent } from "./validation-formatos/validation-formatos.component";
 import { MatCheckboxModule } from "@angular/material/checkbox";
 import { DialogValidateFormatComponent } from "./components/dialog-validate-format/dialog-validate-format.component";
@@ -51,33 +51,33 @@ import { ImagePreviewComponent } from "./fotografia/image-preview/image-preview.
 
 //CROPER
 import { ImageCropperModule } from "ngx-image-cropper";
-import { AttachDocumentsComponent } from './attach-documents/attach-documents.component';
-import { DynamicFormatComponent } from './dynamic-format/dynamic-format.component';
-import { SectionsComponent } from './dynamic-format/sections/sections.component';
-import { DialogComponentsComponent } from './dynamic-format/dialog-components/dialog-components.component';
-import { GroupsComponent } from './dynamic-format/sections/groups/groups.component';
-import { FieldsComponent } from './dynamic-format/sections/groups/fields/fields.component';
-import { HorizontalGroupComponent } from './dynamic-format/sections/groups/horizontal-group/horizontal-group.component';
-import { VerticalGroupComponent } from './dynamic-format/sections/groups/vertical-group/vertical-group.component';
-import { LabelEditableComponent } from './dynamic-format/sections/groups/fields/label-editable/label-editable.component';
-import { ChipsSelectionComponent } from './dynamic-format/dialog-components/chips-selection/chips-selection.component';
-import { OtherSelectionComponent } from './dynamic-format/dialog-components/other-selection/other-selection.component';
-import { UploadImageComponent } from './dynamic-format/dialog-components/upload-image/upload-image.component';
+import { AttachDocumentsComponent } from "./attach-documents/attach-documents.component";
+import { DynamicFormatComponent } from "./dynamic-format/dynamic-format.component";
+import { SectionsComponent } from "./dynamic-format/sections/sections.component";
+import { DialogComponentsComponent } from "./dynamic-format/dialog-components/dialog-components.component";
+import { GroupsComponent } from "./dynamic-format/sections/groups/groups.component";
+import { FieldsComponent } from "./dynamic-format/sections/groups/fields/fields.component";
+import { HorizontalGroupComponent } from "./dynamic-format/sections/groups/horizontal-group/horizontal-group.component";
+import { VerticalGroupComponent } from "./dynamic-format/sections/groups/vertical-group/vertical-group.component";
+import { LabelEditableComponent } from "./dynamic-format/sections/groups/fields/label-editable/label-editable.component";
+import { ChipsSelectionComponent } from "./dynamic-format/dialog-components/chips-selection/chips-selection.component";
+import { OtherSelectionComponent } from "./dynamic-format/dialog-components/other-selection/other-selection.component";
+import { UploadImageComponent } from "./dynamic-format/dialog-components/upload-image/upload-image.component";
 
 @NgModule({
   declarations: [
     ListadoComponent,
     EditarFormatoComponent,
-    GruposComponent,
+    //GruposComponent,
     DialogAddFormatoComponent,
-    DialogAddSeccionComponent,
-    DialogAddGrupoComponent,
-    DialogAddDatoComponent,
-    AsignarFormatoComponent,
-    DialogAddAsignarComponent,
-    DialogPrevisualizarComponent,
-    AsignacionesComponent,
-    AperturaAsignacionComponent,
+    //DialogAddSeccionComponent,
+    //DialogAddGrupoComponent,
+    //DialogAddDatoComponent,
+    //AsignarFormatoComponent,
+    //DialogAddAsignarComponent,
+    //DialogPrevisualizarComponent,
+    //AsignacionesComponent,
+    //AperturaAsignacionComponent,
     ValidationFormatosComponent,
     DialogValidateFormatComponent,
     DialogAddCommentComponent,

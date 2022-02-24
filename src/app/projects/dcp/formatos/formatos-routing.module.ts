@@ -1,16 +1,15 @@
 import { NgModule } from "@angular/core";
 import { RouterModule, Routes } from "@angular/router";
-import { initial } from "lodash";
 
-import { AsignacionesComponent } from "./asignaciones/asignaciones.component";
-import { AsignarFormatoComponent } from "./asignar-formato/asignar-formato.component";
+//import { AsignacionesComponent } from "./asignaciones/asignaciones.component";
+//import { AsignarFormatoComponent } from "./asignar-formato/asignar-formato.component";
 import { EditarFormatoComponent } from "./editar-formato/editar-formato.component";
 import { EditarFormatoResolver } from "./editar-formato/editar-formato.resolver";
 import { GruposComponent } from "./editar-formato/grupos/grupos.component";
 import { ListadoComponent } from "./listado/listado.component";
 
 //APERTUR ASIGNACION
-import { AperturaAsignacionComponent } from "./asignaciones/apertura-asignacion/apertura-asignacion.component";
+//import { AperturaAsignacionComponent } from "./asignaciones/apertura-asignacion/apertura-asignacion.component";
 import { DynamicFormatComponent } from "./dynamic-format/dynamic-format.component";
 import { DynamicResolverResolver } from "./dynamic-format/dynamic-resolver.resolver";
 
@@ -29,21 +28,21 @@ const routes: Routes = [
       initialData: EditarFormatoResolver,
     },
   },
-  {
-    path: "asignar/:id",
-    component: AsignarFormatoComponent,
-    resolve: {
-      initialData: EditarFormatoResolver,
-    },
-  },
-  {
-    path: "asignaciones",
-    component: AsignacionesComponent,
-  },
-  {
-    path: "asignaciones/apertura/:id",
-    component: AperturaAsignacionComponent,
-  },
+  // {
+  //   path: "asignar/:id",
+  //   component: AsignarFormatoComponent,
+  //   resolve: {
+  //     initialData: EditarFormatoResolver,
+  //   },
+  // },
+  // {
+  //   path: "asignaciones",
+  //   component: AsignacionesComponent,
+  // },
+  // {
+  //   path: "asignaciones/apertura/:id",
+  //   component: AperturaAsignacionComponent,
+  // },
   {
     path: "formato-dinamico/:id",
     component: DynamicFormatComponent,
