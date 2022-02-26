@@ -8,13 +8,19 @@ import {
 } from "@angular/core";
 import { FormBuilder, FormGroup, NgForm, Validators } from "@angular/forms";
 import { Router } from "@angular/router";
-import { MSAL_GUARD_CONFIG, MsalGuardConfiguration } from "@azure/msal-angular";
+import {
+  MSAL_GUARD_CONFIG,
+  MsalGuardConfiguration,
+  MsalBroadcastService,
+} from "@azure/msal-angular";
+import { EventMessage, InteractionStatus } from "@azure/msal-browser";
 import { fuseAnimations } from "@fuse/animations";
 import { FuseAlertType } from "@fuse/components/alert";
 import { AuthService } from "app/core/auth/auth.service";
 import { AzureAuthService } from "app/core/azure/azure-auth.service";
 import { NavigationService } from "app/core/navigation/navigation.service";
 import { environment } from "environments/environment";
+import { filter } from "rxjs/operators";
 
 @Component({
   selector: "auth-sign-in",
@@ -44,6 +50,7 @@ export class AuthSignInComponent implements OnInit {
     private _router: Router,
     private _navigationService: NavigationService,
     private _azureService: AzureAuthService,
+    private msalBroadcastService: MsalBroadcastService,
     @Inject(MSAL_GUARD_CONFIG) private msalGuardConfig: MsalGuardConfiguration
   ) {}
 
@@ -60,6 +67,22 @@ export class AuthSignInComponent implements OnInit {
       usr: ["", [Validators.required]],
       psw: ["", Validators.required],
     });
+
+    this.msalBroadcastService.msalSubject$
+      .pipe(
+        filter((msg: EventMessage) => msg.eventType === "msal:loginSuccess")
+      )
+      .subscribe((result: EventMessage) => {
+        console.log(result);
+      });
+
+    this.msalBroadcastService.inProgress$
+      .pipe(
+        filter((status: InteractionStatus) => status === InteractionStatus.None)
+      )
+      .subscribe(() => {
+        //this.setLoginDisplay();
+      });
   }
 
   // -----------------------------------------------------------------------------------------------------
@@ -72,7 +95,7 @@ export class AuthSignInComponent implements OnInit {
 
   signIn(): void {
     if (this.msalGuardConfig.authRequest) {
-      //this._azureService.logIn();
+      this._azureService.logIn();
     }
     // Return if the form is invalid
     if (this.signInForm.invalid) {
@@ -85,7 +108,7 @@ export class AuthSignInComponent implements OnInit {
     // Hide the alert
     this.showAlert = false;
 
-    // Sign in
+    //Sign in
     this._authService.signIn(this.signInForm.value).subscribe(
       () => {
         this._navigationService.get().subscribe((response: any) => {
@@ -97,6 +120,7 @@ export class AuthSignInComponent implements OnInit {
             const permissions = JSON.parse(localStorage.getItem("permissions"));
             const firstURL = Object.keys(permissions)[0];
             //const redirectURL = firstURL || "/signed-in-redirect";
+            //const redirectURL = "/admin/informes/list";
             const redirectURL = "/admin/informes/list";
             // Navigate to the redirect url
             this._router.navigateByUrl(redirectURL);

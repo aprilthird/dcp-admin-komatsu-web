@@ -23,11 +23,11 @@ export function MSALInstanceFactory(): IPublicClientApplication {
 export function MSALGuardConfigFactory(): MsalGuardConfiguration {
   const auth = {
     interactionType: InteractionType.Redirect,
-    //authRequest: "loginRequest",
-    authRequest: {
-      scopes: ["user.read"],
-    },
-    loginFailedRoute: "/",
+    authRequest: "loginRequest",
+    // authRequest: {
+    //   scopes: ["user.read"],
+    // },
+    loginFailedRoute: "/sign-out",
   };
   return auth as MsalGuardConfiguration;
 }
@@ -59,11 +59,11 @@ export function MSALInterceptorConfigFactory(): MsalInterceptorConfiguration {
   };
 }
 
-// function initializerFactory(env: any): any {
-//   // APP_INITIALIZER, except a function return which will return a promise
-//   // APP_INITIALIZER, angular doesnt starts application untill it completes
-//   const promise = env.init().then((value) => {
-//     console.log(env.getSettings("clientIdAzure"));
-//   });
-//   return () => promise;
-// }
+export function initializerFactory(env: any): any {
+  // APP_INITIALIZER, except a function return which will return a promise
+  // APP_INITIALIZER, angular doesnt starts application untill it completes
+  const promise = env.init().then((value) => {
+    console.log(env.getSettings("clientIdAzure"));
+  });
+  return () => promise;
+}

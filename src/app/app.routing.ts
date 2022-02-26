@@ -83,6 +83,17 @@ export const dcpRoutes: Route[] = [
             (m) => m.Error404Module
           ),
       },
+
+      // {
+      //   path: "sign-out",
+      //   pathMatch: "full",
+      //   redirectTo: "admin/informes/list",
+
+      //   loadChildren: () =>
+      //     import("app/modules/auth/sign-out/sign-out.module").then(
+      //       (m) => m.AuthSignOutModule
+      //     ),
+      // },
       { path: "**", redirectTo: "pagina-no-encontrada" },
     ],
   },
