@@ -30,57 +30,12 @@ export class AzureAuthService {
     const isIE =
       window.navigator.userAgent.indexOf("MSIE ") > -1 ||
       window.navigator.userAgent.indexOf("Trident/") > -1;
-
+    const redirectURL = "/admin/informes/list";
+    this._router.navigateByUrl(redirectURL);
     if (!isIE) {
-      this.msalBroadcastService.msalSubject$
-        .pipe(takeUntil(this._unsubscribeAll))
-        .subscribe((resp) => console.log("subject ", resp));
-
-      this.msalBroadcastService.inProgress$
-        .pipe(
-          filter(
-            (status: InteractionStatus) => status === InteractionStatus.None
-          )
-        )
-        .pipe(takeUntil(this._unsubscribeAll))
-        .subscribe(() => {
-          setTimeout(() => {
-            this.authService.loginRedirect();
-          }, 5000);
-        });
+      this.authService.loginRedirect();
     } else {
-      this.msalBroadcastService.inProgress$
-        .pipe(
-          filter(
-            (status: InteractionStatus) => status === InteractionStatus.None
-          )
-        )
-        .subscribe(() => {
-          //this.authService.loginRedirect();
-        });
+      this.authService.loginPopup;
     }
   }
-
-  // private login(): void {
-  //   this._authService.signIn({ usr: "solera", psw: "1234" }).subscribe(
-  //     () => {
-  //       this._navigationService.get().subscribe((response: any) => {
-  //         // Set the redirect url.
-  //         // The '/signed-in-redirect' is a dummy url to catch the request and redirect the user
-  //         // to the correct page after a successful sign in. This way, that url can be set via
-  //         // routing file and we don't have to touch here.
-  //         setTimeout(() => {
-  //           const permissions = JSON.parse(localStorage.getItem("permissions"));
-  //           const firstURL = Object.keys(permissions)[0];
-  //           //const redirectURL = firstURL || "/signed-in-redirect";
-  //           //const redirectURL = "/admin/informes/list";
-  //           const redirectURL = "/sign-out";
-  //           // Navigate to the redirect url
-  //           this._router.navigateByUrl(redirectURL);
-  //         }, 100);
-  //       });
-  //     },
-  //     (error: HttpErrorResponse) => {}
-  //   );
-  // }
 }

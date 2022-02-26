@@ -71,7 +71,7 @@ export const dcpRoutes: Route[] = [
         path: "admin",
         loadChildren: (): any =>
           import("app/projects/dcp/kmmp.module").then((m) => m.KmmpModule),
-        //canActivate: [MsalGuard],
+        canActivate: [MsalGuard],
       },
 
       // 404 & Catch all
@@ -84,16 +84,16 @@ export const dcpRoutes: Route[] = [
           ),
       },
 
-      // {
-      //   path: "sign-out",
-      //   pathMatch: "full",
-      //   redirectTo: "admin/informes/list",
+      {
+        path: "redirecting",
+        pathMatch: "full",
+        //redirectTo: "admin/informes/list",
 
-      //   loadChildren: () =>
-      //     import("app/modules/auth/sign-out/sign-out.module").then(
-      //       (m) => m.AuthSignOutModule
-      //     ),
-      // },
+        loadChildren: () =>
+          import("app/modules/auth/redirecting/redirecting.module").then(
+            (m) => m.AuthRedircetingnModule
+          ),
+      },
       { path: "**", redirectTo: "pagina-no-encontrada" },
     ],
   },

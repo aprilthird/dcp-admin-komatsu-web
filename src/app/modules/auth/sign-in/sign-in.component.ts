@@ -95,7 +95,7 @@ export class AuthSignInComponent implements OnInit {
 
   signIn(): void {
     if (this.msalGuardConfig.authRequest) {
-      this._azureService.logIn();
+      //this._azureService.logIn();
     }
     // Return if the form is invalid
     if (this.signInForm.invalid) {
@@ -121,7 +121,7 @@ export class AuthSignInComponent implements OnInit {
             const firstURL = Object.keys(permissions)[0];
             //const redirectURL = firstURL || "/signed-in-redirect";
             //const redirectURL = "/admin/informes/list";
-            const redirectURL = "/admin/informes/list";
+            const redirectURL = "/redirecting";
             // Navigate to the redirect url
             this._router.navigateByUrl(redirectURL);
           }, 100);
