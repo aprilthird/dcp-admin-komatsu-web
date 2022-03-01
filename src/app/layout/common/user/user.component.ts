@@ -14,6 +14,7 @@ import { takeUntil } from "rxjs/operators";
 import { User } from "app/core/user/user.types";
 import { UserService } from "app/core/user/user.service";
 import { AuthService } from "../../../core/auth/auth.service";
+import { AzureAuthService } from "app/core/azure/azure-auth.service";
 
 @Component({
   selector: "user",
@@ -40,7 +41,8 @@ export class UserComponent implements OnInit, OnDestroy {
     private _changeDetectorRef: ChangeDetectorRef,
     private _router: Router,
     private _userService: UserService,
-    private _authService: AuthService
+    private _authService: AuthService,
+    private _azureAuthService: AzureAuthService
   ) {}
 
   // -----------------------------------------------------------------------------------------------------
@@ -101,7 +103,10 @@ export class UserComponent implements OnInit, OnDestroy {
   signOut(): void {
     this._authService.signOut().subscribe(
       () => {
-        this._router.navigateByUrl("/sign-out");
+        this._azureAuthService.logOut();
+        setTimeout(() => {
+          this._router.navigateByUrl("/");
+        }, 1000);
       },
       (response) => {}
     );

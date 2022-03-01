@@ -21,7 +21,6 @@ export const environment = {
     clientIdAzure: "df3c881e-0c3f-457e-a355-8d8d0d61ea1c",
     tenantId: "807307b4-6a4c-4b3d-97fd-7c78330bba23",
     objectIdAzure: "ad5d0da5-a703-4e32-973e-e9358533a4a8",
-    //redirectUrl: "http://localhost:4200/admin/informes/list",
     redirectUrl: "http://localhost:4200/",
     postLogoutRedirectUri: "http://localhost:4200",
     microsoftUri: "https://login.microsoftonline.com",

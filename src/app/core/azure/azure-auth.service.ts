@@ -1,10 +1,11 @@
+import { A } from "@angular/cdk/keycodes";
 import { HttpErrorResponse } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Router } from "@angular/router";
 import { MsalBroadcastService, MsalService } from "@azure/msal-angular";
 import { EventMessage, InteractionStatus } from "@azure/msal-browser";
-import { Observable, Subject } from "rxjs";
-import { filter, takeUntil } from "rxjs/operators";
+import { forkJoin, Observable, of, pipe, Subject, timer } from "rxjs";
+import { filter } from "rxjs/operators";
 import { AuthService } from "../auth/auth.service";
 import { NavigationService } from "../navigation/navigation.service";
 
@@ -31,11 +32,60 @@ export class AzureAuthService {
       window.navigator.userAgent.indexOf("MSIE ") > -1 ||
       window.navigator.userAgent.indexOf("Trident/") > -1;
     const redirectURL = "/admin/informes/list";
-    this._router.navigateByUrl(redirectURL);
+
     if (!isIE) {
-      this.authService.loginRedirect();
+      //setTimeout(async () => {
+      await this.redirecting().then(async (res: any) => {
+        console.log(res.account.username);
+        await this._authService
+          .signInAD(res.account.username)
+          .toPromise()
+          .then(() => this._navigationService.get().toPromise());
+      });
+      //});
+
+      this.msalBroadcastService.inProgress$
+        .pipe(
+          filter(
+            (status: InteractionStatus) => status === InteractionStatus.None
+          )
+        )
+        .subscribe((resp) => {
+          console.log(resp);
+          this.authService.loginRedirect();
+        });
     } else {
       this.authService.loginPopup;
     }
   }
+
+  private redirecting() {
+    return new Promise<void>(async (res) => {
+      const login = await this.loginPopUp();
+      res(login);
+    });
+  }
+
+  private loginPopUp() {
+    return new Promise<any>((res) => {
+      this.authService.loginPopup().subscribe(async (resp) => res(resp));
+    });
+  }
+
+  // private first(emailAD: string) {
+  //   this._authService
+  //     .signInAD(emailAD)
+  //     .pipe(take(1))
+  //     .toPromise()
+  //     .then(() => this.second())
+  //     .finally(() => alert("start"));
+  // }
+
+  // private second() {
+  //   this._navigationService
+  //     .get()
+  //     .pipe(take(1))
+  //     .toPromise()
+  //     .then(() => alert("end"));
+  // }
 }

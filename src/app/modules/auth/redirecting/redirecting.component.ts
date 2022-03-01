@@ -26,19 +26,31 @@ export class RedirectingComponent implements OnInit {
     @Inject(MSAL_GUARD_CONFIG) private msalGuardConfig: MsalGuardConfiguration
   ) {}
 
-  ngOnInit(): void {
-    this._azureService.logIn();
-    this.msalBroadcastService.msalSubject$
-      .pipe(
-        takeUntil(this._unsubscribeAll),
-        filter((msg: EventMessage) => msg.eventType === "msal:loginSuccess")
-      )
-      .subscribe((result: EventMessage) => {});
-    this.msalBroadcastService.inProgress$
-      .pipe(
-        takeUntil(this._unsubscribeAll),
-        filter((status: InteractionStatus) => status === InteractionStatus.None)
-      )
-      .subscribe(() => {});
+  async ngOnInit() {
+    if (
+      localStorage.getItem("permissions") &&
+      localStorage.getItem("permissions") !== null
+    ) {
+      this._router.navigate(["admin/informes/list"]);
+    } else {
+      this._azureService.logIn();
+      this.msalBroadcastService.msalSubject$
+        .pipe(
+          filter((msg: EventMessage) => msg.eventType === "msal:loginSuccess")
+        )
+        .subscribe((result: EventMessage) => {
+          console.log("msalSubject ", result);
+          this._azureService.logIn();
+        });
+      this.msalBroadcastService.inProgress$
+        .pipe(
+          filter(
+            (status: InteractionStatus) => status === InteractionStatus.None
+          )
+        )
+        .subscribe((resp) => {
+          console.log("inProgress$ ", resp);
+        });
+    }
   }
 }

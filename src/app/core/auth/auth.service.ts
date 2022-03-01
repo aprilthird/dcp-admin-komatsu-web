@@ -1,14 +1,12 @@
 import { Injectable } from "@angular/core";
-import {
-  HttpClient,
-  HttpErrorResponse,
-  HttpHeaders,
-} from "@angular/common/http";
-import { Observable, of, throwError } from "rxjs";
-import { catchError, switchMap, tap } from "rxjs/operators";
+import { HttpClient } from "@angular/common/http";
+import { Observable, of, pipe, throwError } from "rxjs";
+import { catchError, concatMap, delay, switchMap, tap } from "rxjs/operators";
 import { AuthUtils } from "app/core/auth/auth.utils";
 import { UserService } from "app/core/user/user.service";
 import { environment } from "environments/environment";
+import { Response } from "app/shared/models/general-model";
+import { NavigationService } from "../navigation/navigation.service";
 
 @Injectable()
 export class AuthService {
@@ -19,7 +17,8 @@ export class AuthService {
    */
   constructor(
     private _httpClient: HttpClient,
-    private _userService: UserService
+    private _userService: UserService,
+    private NavigationService: NavigationService
   ) {}
 
   // -----------------------------------------------------------------------------------------------------
@@ -77,6 +76,34 @@ export class AuthService {
       )
       .pipe(
         switchMap((response: any) => {
+          // Store the access token in the local storage
+          this.accessToken = response.body;
+
+          // Set the authenticated flag to true
+          this._authenticated = true;
+
+          // Store the user on the user service
+          this._userService.user = JSON.parse(
+            AuthUtils._decodeToken(response.body).data
+          );
+          // Return a new observable with the response
+          return of(response);
+        })
+      );
+  }
+
+  signInAD(emailAD: string): Observable<Response> {
+    // Throw error, if the user is already logged in
+    if (this._authenticated) {
+      return throwError("User is already logged in.");
+    }
+
+    return this._httpClient
+      .get(environment.apiUrl + `/Seguridad/ActiveDirectory?req=${emailAD}`)
+      .pipe(
+        switchMap((response: any) => {
+          this.NavigationService.get();
+
           // Store the access token in the local storage
           this.accessToken = response.body;
 

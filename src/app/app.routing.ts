@@ -56,6 +56,16 @@ export const commonRoutes = [
 export const dcpRoutes: Route[] = [
   ...commonRoutes,
   {
+    path: "redirecting",
+    pathMatch: "full",
+    //redirectTo: "admin/informes/list",
+
+    loadChildren: () =>
+      import("app/modules/auth/redirecting/redirecting.module").then(
+        (m) => m.AuthRedircetingnModule
+      ),
+  },
+  {
     path: "",
     component: LayoutComponent,
     canActivate: [AuthGuard],
@@ -84,16 +94,16 @@ export const dcpRoutes: Route[] = [
           ),
       },
 
-      {
-        path: "redirecting",
-        pathMatch: "full",
-        //redirectTo: "admin/informes/list",
+      // {
+      //   path: "redirecting",
+      //   pathMatch: "full",
+      //   //redirectTo: "admin/informes/list",
 
-        loadChildren: () =>
-          import("app/modules/auth/redirecting/redirecting.module").then(
-            (m) => m.AuthRedircetingnModule
-          ),
-      },
+      //   loadChildren: () =>
+      //     import("app/modules/auth/redirecting/redirecting.module").then(
+      //       (m) => m.AuthRedircetingnModule
+      //     ),
+      // },
       { path: "**", redirectTo: "pagina-no-encontrada" },
     ],
   },

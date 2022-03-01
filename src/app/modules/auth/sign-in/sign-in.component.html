@@ -37,64 +37,18 @@
       </fuse-alert>
 
       <!-- Sign in form -->
-      <form class="mt-8" [formGroup]="signInForm" #signInNgForm="ngForm">
-        <!-- Email field -->
-        <mat-form-field class="w-full">
-          <mat-label>Usuario</mat-label>
-          <input id="email" matInput [formControlName]="'usr'" />
-          <mat-error *ngIf="signInForm.get('usr').hasError('required')">
-            Campo requerido
-          </mat-error>
-        </mat-form-field>
-
-        <!-- Password field -->
-        <mat-form-field class="w-full">
-          <mat-label>Contraseña</mat-label>
-          <input
-            id="psw"
-            matInput
-            type="password"
-            [formControlName]="'psw'"
-            #passwordField
-          />
-          <button
-            mat-icon-button
-            type="button"
-            (click)="
-              passwordField.type === 'password'
-                ? (passwordField.type = 'text')
-                : (passwordField.type = 'password')
-            "
-            matSuffix
-          >
-            <mat-icon
-              class="icon-size-5"
-              *ngIf="passwordField.type === 'password'"
-              [svgIcon]="'heroicons_solid:eye'"
-            ></mat-icon>
-            <mat-icon
-              class="icon-size-5"
-              *ngIf="passwordField.type === 'text'"
-              [svgIcon]="'heroicons_solid:eye-off'"
-            ></mat-icon>
-          </button>
-          <mat-error> Campo requerido </mat-error>
-        </mat-form-field>
-
-        <!-- Submit button -->
+      <form class="mt-8">
         <button
           class="fuse-mat-button-large w-full mt-6"
           mat-flat-button
           [color]="'primary'"
-          [disabled]="signInForm.disabled"
           (click)="signIn()"
         >
-          <span *ngIf="!signInForm.disabled"> Ingresar </span>
-          <mat-progress-spinner
-            *ngIf="signInForm.disabled"
-            [diameter]="24"
-            [mode]="'indeterminate'"
-          ></mat-progress-spinner>
+          <span> Ingresar </span>
+          <mat-icon
+            svgIcon="iconsmind:windows_microsoft"
+            class="ml-5"
+          ></mat-icon>
         </button>
         <div class="flex justify-center mt-2 w-full">
           <a

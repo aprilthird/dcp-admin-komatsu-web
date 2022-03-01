@@ -30,7 +30,7 @@ import { filter } from "rxjs/operators";
   animations: fuseAnimations,
 })
 export class AuthSignInComponent implements OnInit {
-  @ViewChild("signInNgForm") signInNgForm: NgForm;
+  // @ViewChild("signInNgForm") signInNgForm: NgForm;
   environment = environment;
 
   alert: { type: FuseAlertType; message: string } = {
@@ -40,6 +40,7 @@ export class AuthSignInComponent implements OnInit {
   signInForm: FormGroup;
   showAlert: boolean = false;
   loadingAzure: boolean;
+  loading: boolean;
 
   /**
    * Constructor
@@ -62,18 +63,12 @@ export class AuthSignInComponent implements OnInit {
    * On init
    */
   ngOnInit(): void {
-    // Create the form
-    this.signInForm = this._formBuilder.group({
-      usr: ["", [Validators.required]],
-      psw: ["", Validators.required],
-    });
-
     this.msalBroadcastService.msalSubject$
       .pipe(
         filter((msg: EventMessage) => msg.eventType === "msal:loginSuccess")
       )
       .subscribe((result: EventMessage) => {
-        console.log(result);
+        console.log("inProgress$ ", result);
       });
 
     this.msalBroadcastService.inProgress$
@@ -93,60 +88,17 @@ export class AuthSignInComponent implements OnInit {
    * Sign in
    */
 
-  signIn(): void {
-    if (this.msalGuardConfig.authRequest) {
-      //this._azureService.logIn();
-    }
-    // Return if the form is invalid
-    if (this.signInForm.invalid) {
-      return;
-    }
+  async signIn() {
+    await this.redirecting();
+  }
 
-    // Disable the form
-    this.signInForm.disable();
-
-    // Hide the alert
-    this.showAlert = false;
-
-    //Sign in
-    this._authService.signIn(this.signInForm.value).subscribe(
-      () => {
-        this._navigationService.get().subscribe((response: any) => {
-          // Set the redirect url.
-          // The '/signed-in-redirect' is a dummy url to catch the request and redirect the user
-          // to the correct page after a successful sign in. This way, that url can be set via
-          // routing file and we don't have to touch here.
-          setTimeout(() => {
-            const permissions = JSON.parse(localStorage.getItem("permissions"));
-            const firstURL = Object.keys(permissions)[0];
-            //const redirectURL = firstURL || "/signed-in-redirect";
-            //const redirectURL = "/admin/informes/list";
-            const redirectURL = "/redirecting";
-            // Navigate to the redirect url
-            this._router.navigateByUrl(redirectURL);
-          }, 100);
-        });
-      },
-      (error: HttpErrorResponse) => {
-        // Re-enable the form
-        this.signInForm.enable();
-
-        // Reset the form
-        this.signInNgForm.resetForm();
-
-        // Set the alert
-        this.alert = {
-          type: "error",
-          message: error.error["message"]
-            ? error.error["message"]
-            : error.error["code"]
-            ? error.error["code"]
-            : "Por favor, revisa tu conexión a internet y vuelve a intentarlo",
-        };
-
-        // Show the alert
-        this.showAlert = true;
-      }
-    );
+  redirecting(): Promise<any> {
+    return new Promise(() => {
+      this.loading = false;
+      const redirectURL = "/redirecting";
+      setTimeout(() => {
+        this._router.navigateByUrl(redirectURL);
+      });
+    });
   }
 }
