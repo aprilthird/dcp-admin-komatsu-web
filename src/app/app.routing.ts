@@ -7,12 +7,17 @@ import { LayoutComponent } from "./layout/layout.component";
 import { MsalGuard } from "@azure/msal-angular";
 
 export const commonRoutes = [
-  { path: "", pathMatch: "full", redirectTo: "admin/informes/list" },
+  {
+    path: "",
+    pathMatch: "full",
+    redirectTo: "admin/informes/list",
+  },
   {
     path: "signed-in-redirect",
     pathMatch: "full",
     redirectTo: "admin/informes/list",
   },
+
   {
     path: "",
     canActivate: [NoAuthGuard],

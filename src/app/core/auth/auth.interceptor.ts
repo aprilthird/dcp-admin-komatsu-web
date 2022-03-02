@@ -66,7 +66,7 @@ export class AuthInterceptor implements HttpInterceptor {
           !location.pathname.includes("sign-in")
         ) {
           localStorage.clear();
-          //sessionStorage.clear();
+          sessionStorage.clear();
           location.reload();
           // Sign out
           this._authService.signOut().subscribe(() => {});

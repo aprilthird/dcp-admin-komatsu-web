@@ -6,6 +6,8 @@ import {
   MSAL_GUARD_CONFIG,
 } from "@azure/msal-angular";
 import { EventMessage, InteractionStatus } from "@azure/msal-browser";
+import { AuthService } from "app/core/auth/auth.service";
+import { AuthUtils } from "app/core/auth/auth.utils";
 import { AzureAuthService } from "app/core/azure/azure-auth.service";
 import { Subject } from "rxjs";
 import { filter, takeUntil } from "rxjs/operators";
@@ -23,16 +25,25 @@ export class RedirectingComponent implements OnInit {
     private _router: Router,
     private msalBroadcastService: MsalBroadcastService,
     private _azureService: AzureAuthService,
+    private _authService: AuthService,
     @Inject(MSAL_GUARD_CONFIG) private msalGuardConfig: MsalGuardConfiguration
   ) {}
 
   async ngOnInit() {
     if (
       localStorage.getItem("permissions") &&
+      localStorage.getItem("accessToken") &&
       localStorage.getItem("permissions") !== null &&
-      this.checkSessionAzure()
+      this.checkSessionAzure
     ) {
-      this._router.navigate(["signed-in-redirect"]);
+      if (AuthUtils.isTokenExpired(this._authService.accessToken)) {
+        localStorage.clear();
+        setTimeout(() => {
+          this._azureService.logIn();
+        }, 500);
+      } else {
+        this._router.navigate(["signed-in-redirect"]);
+      }
     } else {
       this._azureService.logIn();
       this.msalBroadcastService.msalSubject$
@@ -59,12 +70,16 @@ export class RedirectingComponent implements OnInit {
     for (let i = 0; i < 15; i++) {
       const sessionKey = sessionStorage.key(i);
       if (sessionKey) {
-        if (
-          Object.keys(JSON.parse(sessionStorage.getItem(sessionKey))).find(
-            (key) => key === "clientId"
-          )
-        ) {
-          return true;
+        try {
+          if (
+            Object.keys(JSON.parse(sessionStorage.getItem(sessionKey))).find(
+              (key) => key === "clientId"
+            )
+          ) {
+            return true;
+          }
+        } catch {
+          return false;
         }
       }
     }
