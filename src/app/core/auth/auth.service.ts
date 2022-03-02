@@ -129,6 +129,7 @@ export class AuthService {
         localStorage.removeItem("accessToken");
         localStorage.removeItem("permissions");
         localStorage.removeItem("navigation");
+        //sessionStorage.clear();
         this._authenticated = false;
         return of(true);
       })

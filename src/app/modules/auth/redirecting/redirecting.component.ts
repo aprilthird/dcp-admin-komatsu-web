@@ -29,9 +29,10 @@ export class RedirectingComponent implements OnInit {
   async ngOnInit() {
     if (
       localStorage.getItem("permissions") &&
-      localStorage.getItem("permissions") !== null
+      localStorage.getItem("permissions") !== null &&
+      this.checkSessionAzure()
     ) {
-      this._router.navigate(["admin/informes/list"]);
+      this._router.navigate(["signed-in-redirect"]);
     } else {
       this._azureService.logIn();
       this.msalBroadcastService.msalSubject$
@@ -51,6 +52,21 @@ export class RedirectingComponent implements OnInit {
         .subscribe((resp) => {
           console.log("inProgress$ ", resp);
         });
+    }
+  }
+
+  private checkSessionAzure(): boolean {
+    for (let i = 0; i < 15; i++) {
+      const sessionKey = sessionStorage.key(i);
+      if (sessionKey) {
+        if (
+          Object.keys(JSON.parse(sessionStorage.getItem(sessionKey))).find(
+            (key) => key === "clientId"
+          )
+        ) {
+          return true;
+        }
+      }
     }
   }
 }
