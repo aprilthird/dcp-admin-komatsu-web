@@ -134,7 +134,7 @@ export class SectionsComponent implements OnInit {
   deleteSection(): void {
     const dialogRef = this._fuseConfirmationService.open({
       title: "Eliminar Sección",
-      message: "¿Estás seguro que deseas eliminar ésta Sección?",
+      message: "¿Estás seguro que deseas eliminar esta Sección?",
       icon: {
         name: "heroicons_outline:trash",
       },
