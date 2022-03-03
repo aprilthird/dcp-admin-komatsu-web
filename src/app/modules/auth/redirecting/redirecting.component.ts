@@ -51,8 +51,7 @@ export class RedirectingComponent implements OnInit {
           filter((msg: EventMessage) => msg.eventType === "msal:loginSuccess")
         )
         .subscribe((result: EventMessage) => {
-          console.log("msalSubject ", result);
-          this._azureService.logIn();
+          //this._azureService.logIn();
         });
       this.msalBroadcastService.inProgress$
         .pipe(
@@ -60,9 +59,7 @@ export class RedirectingComponent implements OnInit {
             (status: InteractionStatus) => status === InteractionStatus.None
           )
         )
-        .subscribe((resp) => {
-          console.log("inProgress$ ", resp);
-        });
+        .subscribe((resp) => {});
     }
   }
 

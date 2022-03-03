@@ -67,9 +67,7 @@ export class AuthSignInComponent implements OnInit {
       .pipe(
         filter((msg: EventMessage) => msg.eventType === "msal:loginSuccess")
       )
-      .subscribe((result: EventMessage) => {
-        console.log("inProgress$ ", result);
-      });
+      .subscribe((result: EventMessage) => {});
 
     this.msalBroadcastService.inProgress$
       .pipe(
