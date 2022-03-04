@@ -46,7 +46,8 @@ export class CrearUsuarioComponent implements OnInit {
 
   perfiles: Perfil[] = [];
   form: FormGroup = this.fb.group({
-    usr: ["", [Validators.required, Validators.pattern("[a-zA-Z0-9s.]+")]],
+    //usr: ["", [Validators.required, Validators.pattern("[a-zA-Z0-9s.]+")]],
+    usr: ["", Validators.required],
     psw: [
       /*
       "",
@@ -103,6 +104,7 @@ export class CrearUsuarioComponent implements OnInit {
 
     if (this.activatedRoute.snapshot.params.id) {
       this.isEdit = true;
+
       this.crearUsuarioService
         .getUsuario(this.activatedRoute.snapshot.params.id)
         .pipe(takeUntil(this._unsubscribeAll))
@@ -135,11 +137,14 @@ export class CrearUsuarioComponent implements OnInit {
             new FormControl(this.activatedRoute.snapshot.params.id)
           );
         });
+    } else {
+      this.form.controls["psw"].setValidators(Validators.required);
     }
   }
 
   ngOnInit(): void {
-    this.passwordPattern();
+    this.usrField();
+    //this.passwordPattern();
   }
 
   /**
@@ -152,17 +157,25 @@ export class CrearUsuarioComponent implements OnInit {
     this._unsubscribeAll.complete();
   }
 
-  passwordPattern(): void {
+  usrField(): void {
     if (!this.isEdit) {
       this.form.controls["usr"].enable();
-      this.form.controls["psw"].setValidators([
-        Validators.required,
-        Validators.pattern(/(?=[^a-z]*[a-z])(?=[^A-Z]*[A-Z]).{6,20}/),
-      ]);
     } else {
       this.form.controls["usr"].disable();
     }
   }
+
+  // passwordPattern(): void {
+  //   if (!this.isEdit) {
+  //     this.form.controls["usr"].enable();
+  //     this.form.controls["psw"].setValidators([
+  //       Validators.required,
+  //       Validators.pattern(/(?=[^a-z]*[a-z])(?=[^A-Z]*[A-Z]).{6,20}/),
+  //     ]);
+  //   } else {
+  //     this.form.controls["usr"].disable();
+  //   }
+  // }
 
   generateRoles(roles) {
     const response = Array(this.perfiles.length).fill(false);
@@ -177,7 +190,11 @@ export class CrearUsuarioComponent implements OnInit {
   }
 
   async onSubmit() {
-    let validUsr = await this.validateUsr(this.form.controls["usr"].value);
+    let validUsr = true;
+    if (!this.isEdit) {
+      validUsr = await this.validateUsr(this.form.controls["usr"].value);
+    }
+
     if (validUsr) {
       this.form.controls["usr"].enable();
       //if (this.form.valid) {
