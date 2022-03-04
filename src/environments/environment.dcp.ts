@@ -10,7 +10,8 @@ export const environment = {
   azureAccountName: "appinformes",
   azureContaineName: "dcp",
   azureSas:
-    "sv=2020-08-04&ss=bfqt&srt=sco&sp=rwdlacupitfx&se=2022-03-03T23:39:46Z&st=2022-01-03T15:39:46Z&spr=https&sig=BU4Y9BHhsNT4EbY%2FM2eJZ7X9EYdNE4NUC9nbcSwFuc8%3D",
+    //"sv=2020-08-04&ss=bfqt&srt=sco&sp=rwdlacupitfx&se=2022-03-03T23:39:46Z&st=2022-01-03T15:39:46Z&spr=https&sig=BU4Y9BHhsNT4EbY%2FM2eJZ7X9EYdNE4NUC9nbcSwFuc8%3D",
+    "sv=2020-08-04&ss=bfqt&srt=sco&sp=rwdlacupitfx&se=2023-02-02T02:21:05Z&st=2022-03-04T18:21:05Z&spr=https&sig=Caxkk4vUhpZkJMo9R9SvKq1BHdNwOOsjunR%2BCeBKlFg%3D",
 
   officeTenant: {
     clientIdAzure: "df3c881e-0c3f-457e-a355-8d8d0d61ea1c",
