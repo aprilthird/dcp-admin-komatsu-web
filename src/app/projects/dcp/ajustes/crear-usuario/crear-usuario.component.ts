@@ -137,8 +137,6 @@ export class CrearUsuarioComponent implements OnInit {
             new FormControl(this.activatedRoute.snapshot.params.id)
           );
         });
-    } else {
-      this.form.controls["psw"].setValidators(Validators.required);
     }
   }
 
