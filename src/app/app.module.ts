@@ -83,11 +83,6 @@ const routerConfig: ExtraOptions = {
       provide: MSAL_INTERCEPTOR_CONFIG,
       useFactory: MSALInterceptorConfigFactory,
     },
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: MsalInterceptor,
-      multi: true,
-    },
     //{ provide: APP_INITIALIZER, useFactory: initializerFactory, multi: true },
     MsalGuard,
     MsalService,

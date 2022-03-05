@@ -5,17 +5,20 @@ import { NoAuthGuard } from "./core/auth/guards/noAuth.guard";
 import { MenuPermissionGuard } from "./core/permission/guards/menu-permission.guard";
 import { LayoutComponent } from "./layout/layout.component";
 import { MsalGuard } from "@azure/msal-angular";
+import { initPath } from "./shared/utils/initPath";
 
 export const commonRoutes = [
   {
     path: "",
     pathMatch: "full",
-    redirectTo: "admin/informes/list",
+    //redirectTo: "admin/informes/list",
+    redirectTo: initPath(),
   },
   {
     path: "signed-in-redirect",
     pathMatch: "full",
-    redirectTo: "admin/informes/list",
+    //redirectTo: "admin/informes/list",
+    redirectTo: initPath(),
   },
 
   {

@@ -7,6 +7,7 @@ import {
   ViewEncapsulation,
 } from "@angular/core";
 import { FormBuilder, FormGroup, NgForm, Validators } from "@angular/forms";
+import { MatDialog } from "@angular/material/dialog";
 import { Router } from "@angular/router";
 import {
   MSAL_GUARD_CONFIG,
@@ -19,6 +20,7 @@ import { FuseAlertType } from "@fuse/components/alert";
 import { AuthService } from "app/core/auth/auth.service";
 import { AzureAuthService } from "app/core/azure/azure-auth.service";
 import { NavigationService } from "app/core/navigation/navigation.service";
+import { UiDialogsComponent } from "app/shared/ui/ui-dialogs/ui-dialogs.component";
 import { environment } from "environments/environment";
 import { filter } from "rxjs/operators";
 
@@ -52,7 +54,7 @@ export class AuthSignInComponent implements OnInit {
     private _navigationService: NavigationService,
     private _azureService: AzureAuthService,
     private msalBroadcastService: MsalBroadcastService,
-    @Inject(MSAL_GUARD_CONFIG) private msalGuardConfig: MsalGuardConfiguration
+    private _matDialog: MatDialog //@Inject(MSAL_GUARD_CONFIG) private msalGuardConfig: MsalGuardConfiguration
   ) {}
 
   // -----------------------------------------------------------------------------------------------------

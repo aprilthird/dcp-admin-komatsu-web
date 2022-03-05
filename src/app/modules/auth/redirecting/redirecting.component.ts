@@ -38,9 +38,7 @@ export class RedirectingComponent implements OnInit {
     ) {
       if (AuthUtils.isTokenExpired(this._authService.accessToken)) {
         localStorage.clear();
-        setTimeout(() => {
-          this._azureService.logIn();
-        }, 500);
+        this._azureService.logIn();
       } else {
         this._router.navigate(["signed-in-redirect"]);
       }
