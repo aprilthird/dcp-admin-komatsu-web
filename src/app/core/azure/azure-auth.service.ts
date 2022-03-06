@@ -53,18 +53,16 @@ export class AzureAuthService {
     // if (this.userDoesNot) {
     //   await this.openDialog(this.userDoesNot, "err");
     // } else {
-    this.redirecting().then(async (res: any) => {
+    await this.redirecting().then(async (res: any) => {
       console.log(res.account.username);
       await this._authService
         .signInAD(res.account.username)
         .toPromise()
         .then(async () => {
-          await this._navigationService
-            .get()
-            .toPromise()
-            .then(() => {
-              this.successAzureConnection();
-            });
+          await this._navigationService.get().toPromise();
+          // .then(() => {
+          //   this.successAzureConnection();
+          // });
         })
         .catch(async (err) => {
           // localStorage.setItem("userDoesNotExist", res.account.username);
@@ -73,7 +71,16 @@ export class AzureAuthService {
           //    .logout()
           //    .toPromise()
           //    .then(() => this._router.navigate(["sign-out"]));
-          await this.openDialog(res.account.username, err);
+          //this._router.navigate(["sign-out"]);
+
+          localStorage.setItem("userDoesNotExist", res.account.username);
+          //await this.openDialog(res.account.username, err);
+
+          // this.authService
+          //   .logout()
+          //   .toPromise()
+          //   .then(() => this._router.navigate(["sign-out"]));
+          //await this.openDialog(res.account.username, err);
         });
     });
     //}
@@ -141,13 +148,15 @@ export class AzureAuthService {
         },
       });
 
-      await dialog
-        .afterClosed()
-        .toPromise()
-        .then(async (e) => {
-          this.authService.logout();
-          this._router.navigate(["sign-out"]);
-        });
+      //this.authService.logout().toPromise();
+
+      // await dialog
+      //   .afterClosed()
+      //   .toPromise()
+      //   .then(async (e) => {
+      //     this.authService.logout().toPromise();
+      //     //this._router.navigate(["sign-in"]);
+      //   });
     }
   }
 }
