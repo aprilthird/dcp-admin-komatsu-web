@@ -55,7 +55,7 @@ export class RedirectingComponent implements OnInit {
           width: "600px",
           data: {
             title: "Error",
-            message: `Usuario ${this.userDoesNot} no existe en el sistema, al cerrar éste mensaje, favor cierre sesión de éste ususrio en la siguiente ventana de Windows, e inicie sesión con un usuario existente, de lo contrario contacte al administrador del sistema`,
+            message: `Usuario ${this.userDoesNot} no puede conectarse al sistema, al cerrar éste mensaje, favor cierre sesión de éste ususrio en la siguiente ventana de Windows y contacte al administrador del sistema`,
           },
         });
 
