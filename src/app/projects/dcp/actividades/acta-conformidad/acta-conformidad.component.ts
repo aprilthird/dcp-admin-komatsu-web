@@ -230,7 +230,10 @@ export class ActaConformidadComponent implements OnInit {
       grupo.parametros.forEach((parametro, k) => {
         parametro.idActividadFormato = Number(this.idActa);
         if (parametro.activo) {
-          if (parametro.idParametro === TipoParametro.IMAGEN) {
+          if (
+            parametro.idParametro === TipoParametro.IMAGEN ||
+            parametro.idParametro === TipoParametro.UPLOAD
+          ) {
             this.checkImgParam(parametro, j, k);
           } else if (parametro.idParametro === TipoParametro.FIRMA) {
             //this.checkSignParam(paramIdx, parametro, indexGroup, k, j);
@@ -238,11 +241,12 @@ export class ActaConformidadComponent implements OnInit {
             parametro.valor = this.formGroup.get(
               this.getParametroControl({ j, k })
             ).value;
-          } else if (parametro.idParametro !== TipoParametro.UPLOAD) {
-            parametro.valor = String(
-              this.formGroup.get(this.getParametroControl({ j, k })).value
-            );
           }
+          // else if (parametro.idParametro !== TipoParametro.UPLOAD) {
+          //   parametro.valor = String(
+          //     this.formGroup.get(this.getParametroControl({ j, k })).value
+          //   );
+          // }
         }
       });
     });

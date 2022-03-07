@@ -480,7 +480,11 @@ export class ValidationFormatosComponent implements OnInit {
           grupo.parametros.forEach((parametro, k) => {
             parametro.idActividadFormato = Number(this.currentIdAsignation);
             if (parametro.activo) {
-              if (parametro.idParametro === TipoParametro.IMAGEN) {
+              //if (parametro.idParametro === TipoParametro.IMAGEN) {
+              if (
+                parametro.idParametro === TipoParametro.IMAGEN ||
+                parametro.idParametro === TipoParametro.UPLOAD
+              ) {
                 this.checkImgParam(parametro, j, k);
               } else if (parametro.idParametro === TipoParametro.FIRMA) {
                 this.checkSignParam(paramIdx, parametro, indexGroup, k, j);
@@ -549,10 +553,7 @@ export class ValidationFormatosComponent implements OnInit {
                 //     ).value;
                 //   }
                 // }
-              } else if (
-                parametro.idParametro !== TipoParametro.LABEL &&
-                parametro.idParametro !== TipoParametro.UPLOAD
-              ) {
+              } else if (parametro.idParametro !== TipoParametro.LABEL) {
                 if (this.form.get(this.getParametroControl({ i, j, k }))) {
                   parametro.valor = String(
                     this.form.get(this.getParametroControl({ i, j, k })).value

@@ -361,6 +361,42 @@
                                         <!-- UPLOAD (ARCHIVO) -->
 
                                         <div *ngSwitchCase="4" class="w-full">
+                                          <span
+                                            class="text-gray-800 font-medium"
+                                            >{{
+                                              parametro.visible
+                                                ? parametro.label
+                                                : " "
+                                            }}</span
+                                          >
+                                          <ui-upload-file
+                                            [required]="parametro.obligatorio"
+                                            [editable]="editable(j)"
+                                            [type]="'imagen'"
+                                            [image]="
+                                              parametro.valor !== '' &&
+                                              parametro.valor !== null
+                                                ? setImage(parametro.valor)
+                                                : parametro.dato !== '' &&
+                                                  parametro.dato !== null
+                                                ? setImage(parametro.dato)
+                                                : './assets/images/ui/no-image/no-image.svg'
+                                            "
+                                            [loading]="filesLoading[getParametroControl({ i,j, k})]"
+                                            (sourceFile)="onChageFile($event, getParametroControl({ i,j, k}))"
+                                          ></ui-upload-file>
+                                          <!-- <ng-template #empty>
+                                            <img
+                                              class="w-44"
+                                              matTooltip="No existe un archivo cargado"
+                                              [src]="
+                                                './assets/images/ui/no-image/no-image.svg'
+                                              "
+                                            />
+                                          </ng-template> -->
+                                        </div>
+
+                                        <!-- <div *ngSwitchCase="4" class="w-full">
                                           <p class="text-gray-900 font-medium">
                                             {{
                                               parametro.visible
@@ -401,7 +437,7 @@
                                               "
                                             />
                                           </ng-template>
-                                        </div>
+                                        </div> -->
 
                                         <!-- FECHA -->
                                         <mat-form-field
