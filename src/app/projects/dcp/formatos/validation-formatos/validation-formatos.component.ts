@@ -572,7 +572,7 @@ export class ValidationFormatosComponent implements OnInit {
     const payload = {
       secciones: data,
       idFormato: data[0].grupos[0].parametros[0].idFormato,
-      idActividadFormtao: Number(this.currentIdAsignation),
+      idActividadFormato: Number(this.currentIdAsignation),
     };
 
     this.postAssignation(payload);

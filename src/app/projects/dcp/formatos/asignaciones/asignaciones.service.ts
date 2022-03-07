@@ -1,15 +1,16 @@
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { Pagination } from 'app/core/types/list.types';
-import { PaginationResponse, ParamsPagination } from 'app/core/types/http.types';
-import { environment } from 'environments/environment';
-import { tap } from 'rxjs/operators';
+import { Injectable } from "@angular/core";
+import { HttpClient } from "@angular/common/http";
+import { BehaviorSubject, Observable } from "rxjs";
+import { Pagination } from "app/core/types/list.types";
+import {
+  PaginationResponse,
+  ParamsPagination,
+} from "app/core/types/http.types";
+import { environment } from "environments/environment";
+import { tap } from "rxjs/operators";
 
-@Injectable({providedIn: 'root'})
+@Injectable({ providedIn: "root" })
 export class ListadoAsignacionesService {
-  
-
   _asignaciones: BehaviorSubject<any[]> = new BehaviorSubject(null);
   _pagination: BehaviorSubject<any> = new BehaviorSubject({
     length: 0,
@@ -43,9 +44,9 @@ export class ListadoAsignacionesService {
       .post<PaginationResponse<any[]>>(
         environment.apiUrl + "/Mantenimiento/BandejaAsignacionesPaginado",
         {
-            page,
-            pageSize,
-            filter,
+          page,
+          pageSize,
+          filter,
         }
       )
       .pipe(
@@ -64,7 +65,12 @@ export class ListadoAsignacionesService {
       );
   }
 
-  editAsignacion(data):Observable<any>{
-    return this._httpClient.post<any>(environment.apiUrl + '/Mantenimiento/GuardarAsignacion', data);
+  editAsignacion(data): Observable<any> {
+    return this._httpClient.post<any>(
+      environment.apiUrl +
+        "/Mantenimiento/GuardarAsignacion/" +
+        data.idActividadFormato,
+      data
+    );
   }
 }

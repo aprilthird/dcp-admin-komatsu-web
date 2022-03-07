@@ -142,7 +142,9 @@ export class EditarFormatoService {
 
   saveAssignation(data): Observable<any> {
     return this._httpClient.post<any>(
-      environment.apiUrl + "/Mantenimiento/GuardarAsignacion",
+      environment.apiUrl +
+        "/Mantenimiento/GuardarAsignacion/" +
+        data.idActividadFormato,
       data
     );
   }
