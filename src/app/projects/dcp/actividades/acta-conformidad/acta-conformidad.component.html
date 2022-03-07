@@ -55,7 +55,7 @@
             <div
               class="w-10/12 sm:w-auto"
               [matTooltip]="
-                formGroup.invalid
+                formGroup?.invalid
                   ? 'Existen campos que no cumplen con el patrón requerido'
                   : ''
               "
@@ -65,7 +65,7 @@
                 class="w-full"
                 mat-raised-button
                 [color]="'secondary'"
-                [disabled]="formGroup.invalid || isLoading"
+                [disabled]="formGroup?.invalid || isLoading"
                 (click)="postActa($event, j)"
               >
                 <mat-progress-spinner

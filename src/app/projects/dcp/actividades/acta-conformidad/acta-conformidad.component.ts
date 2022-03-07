@@ -108,7 +108,8 @@ export class ActaConformidadComponent implements OnInit {
           } else if (parametro.idParametro === TipoParametro.FECHA) {
             this.formGroup.addControl(
               `${this.getParametroControl({ j, k })}`,
-              new FormControl(this.convertDate(parametro.valor))
+              //new FormControl(this.convertDate(parametro.valor))
+              new FormControl(parametro.valor)
             );
           } else {
             this.formGroup.addControl(
@@ -162,11 +163,33 @@ export class ActaConformidadComponent implements OnInit {
     return `${j}-${k}`;
   }
 
-  convertDate(str) {
+  private convertDate(str) {
     var date = new Date(str),
       mnth = ("0" + (date.getMonth() + 1)).slice(-2),
       day = ("0" + date.getDate()).slice(-2);
-    return [date.getFullYear(), mnth, day].join("-");
+    if (
+      [date.getFullYear(), mnth, day].join("-").indexOf("NaN") > -1 ||
+      [date.getFullYear(), mnth, day].join("-").indexOf("aN") > -1
+    ) {
+      return "";
+    } else {
+      return [date.getFullYear(), mnth, day].join("-");
+    }
+  }
+
+  private isDate(date: any) {
+    const parsedDate = Date.parse(date);
+    alert(parsedDate);
+    if (
+      !date ||
+      date === null ||
+      date === "" ||
+      (isNaN(date) && !isNaN(parsedDate))
+    ) {
+      alert("valid date");
+    } else {
+      alert("not valid date");
+    }
   }
 
   setImage(src: string): string {
@@ -244,6 +267,10 @@ export class ActaConformidadComponent implements OnInit {
             parametro.valor = this.formGroup.get(
               this.getParametroControl({ j, k })
             ).value;
+          } else {
+            parametro.valor = String(
+              this.formGroup.get(this.getParametroControl({ j, k })).value
+            );
           }
           // else if (parametro.idParametro !== TipoParametro.UPLOAD) {
           //   parametro.valor = String(
