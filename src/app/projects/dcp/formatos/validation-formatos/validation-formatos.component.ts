@@ -586,7 +586,7 @@ export class ValidationFormatosComponent implements OnInit {
     return `${time.year}-${time.month}-${time.day}`;
   }
 
-  checkSignParam(paramIdx, parametro, indexGroup, k, j): void {
+  private checkSignParam(paramIdx, parametro, indexGroup, k, j): void {
     const i = this.currentSectionData.index - 1;
     if (this.form.get(this.getParametroControl({ i, j, k }))) {
       if (typeof paramIdx === "number") {
@@ -620,9 +620,15 @@ export class ValidationFormatosComponent implements OnInit {
         parametro.valor === "" ||
         parametro.valor === "null"
       ) {
-        this.form
-          .get(this.getParametroControl({ i, j, k }))
-          .setValue(parametro.dato);
+        if (parametro.dato) {
+          this.form
+            .get(this.getParametroControl({ i, j, k }))
+            .setValue(parametro.dato);
+        } else {
+          this.form
+            .get(this.getParametroControl({ i, j, k }))
+            .setValue(undefined);
+        }
       }
     }
   }

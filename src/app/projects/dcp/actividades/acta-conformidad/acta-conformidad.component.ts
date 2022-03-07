@@ -333,10 +333,20 @@ export class ActaConformidadComponent implements OnInit {
     parametro.valor = String(
       this.formGroup.get(this.getParametroControl({ j, k })).value
     );
-    if (!parametro.valor || parametro.valor === "null") {
-      this.formGroup
-        .get(this.getParametroControl({ j, k }))
-        .setValue(parametro.dato);
+    if (
+      !parametro.valor ||
+      parametro.valor === "" ||
+      parametro.valor === "null"
+    ) {
+      if (parametro.dato) {
+        this.formGroup
+          .get(this.getParametroControl({ j, k }))
+          .setValue(parametro.dato);
+      } else {
+        this.formGroup
+          .get(this.getParametroControl({ j, k }))
+          .setValue(undefined);
+      }
     }
   }
 
