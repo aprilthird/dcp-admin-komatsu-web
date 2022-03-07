@@ -232,12 +232,15 @@ export class ActaConformidadComponent implements OnInit {
         if (parametro.activo) {
           if (
             parametro.idParametro === TipoParametro.IMAGEN ||
-            parametro.idParametro === TipoParametro.UPLOAD
+            parametro.idParametro === TipoParametro.UPLOAD ||
+            parametro.idParametro === TipoParametro.FIRMA
           ) {
             this.checkImgParam(parametro, j, k);
-          } else if (parametro.idParametro === TipoParametro.FIRMA) {
-            //this.checkSignParam(paramIdx, parametro, indexGroup, k, j);
-          } else if (parametro.idParametro === TipoParametro.FECHA) {
+          }
+          // else if (parametro.idParametro === TipoParametro.FIRMA) {
+          //   //this.checkSignParam(paramIdx, parametro, indexGroup, k, j);
+          // }
+          else if (parametro.idParametro === TipoParametro.FECHA) {
             parametro.valor = this.formGroup.get(
               this.getParametroControl({ j, k })
             ).value;

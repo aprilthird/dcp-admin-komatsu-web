@@ -297,7 +297,7 @@
                               </div>
 
                               <!-- FIRMA -->
-                              <div *ngSwitchCase="7" class="w-full">
+                              <!-- <div *ngSwitchCase="7" class="w-full">
                                 <span class="text-gray-800 font-medium">{{
                                   parametro.visible ? parametro.label : " "
                                 }}</span>
@@ -331,6 +331,28 @@
                                     "
                                   />
                                 </ng-template>
+                              </div> -->
+
+                              <div *ngSwitchCase="7" class="w-full">
+                                <span class="text-gray-800 font-medium">{{
+                                  parametro.visible ? parametro.label : " "
+                                }}</span>
+                                <ui-upload-file
+                                  [required]="parametro.obligatorio"
+                                  [editable]="parametro.editable"
+                                  [type]="'imagen'"
+                                  [image]="
+                                    parametro.valor !== '' &&
+                                    parametro.valor !== null
+                                      ? setImage(parametro.valor)
+                                      : parametro.dato !== '' &&
+                                        parametro.dato !== null
+                                      ? setImage(parametro.dato)
+                                      : './assets/images/ui/no-image/no-image.svg'
+                                  "
+                                  [loading]="filesLoading[getParametroControl({ i,j, k})]"
+                                  (sourceFile)="onChageFile($event, getParametroControl({ i,j, k}))"
+                                ></ui-upload-file>
                               </div>
 
                               <!-- LABEL -->

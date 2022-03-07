@@ -483,12 +483,15 @@ export class ValidationFormatosComponent implements OnInit {
               //if (parametro.idParametro === TipoParametro.IMAGEN) {
               if (
                 parametro.idParametro === TipoParametro.IMAGEN ||
-                parametro.idParametro === TipoParametro.UPLOAD
+                parametro.idParametro === TipoParametro.UPLOAD ||
+                parametro.idParametro === TipoParametro.FIRMA
               ) {
                 this.checkImgParam(parametro, j, k);
-              } else if (parametro.idParametro === TipoParametro.FIRMA) {
-                this.checkSignParam(paramIdx, parametro, indexGroup, k, j);
-              } else if (parametro.idParametro === TipoParametro.FECHA) {
+              }
+              // else if (parametro.idParametro === TipoParametro.FIRMA) {
+              //   this.checkSignParam(paramIdx, parametro, indexGroup, k, j);
+              // }
+              else if (parametro.idParametro === TipoParametro.FECHA) {
                 if (
                   typeof this.form.get(this.getParametroControl({ i, j, k }))
                     .value === "object"
