@@ -1,27 +1,10 @@
 <form [formGroup]="form" (submit)="onSubmit()" #ngForm="ngForm">
   <div
-    class="
-      sm:absolute sm:inset-0
-      flex flex-col flex-auto
-      min-w-0
-      sm:overflow-hidden
-      bg-card
-      w-full
-    "
+    class="sm:absolute sm:inset-0 flex flex-col flex-auto min-w-0 sm:overflow-hidden bg-card w-full"
   >
     <!-- Header -->
     <div
-      class="
-        relative
-        flex flex-col
-        sm:flex-row
-        flex-0
-        sm:items-center sm:justify-between
-        py-8
-        px-6
-        md:px-8
-        border-b
-      "
+      class="relative flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between py-8 px-6 md:px-8 border-b"
     >
       <!-- Loader -->
       <div class="absolute inset-x-0 bottom-0" *ngIf="loading$ | async">
@@ -37,26 +20,10 @@
     <div class="flex flex-auto overflow-hidden bg-gray-100 py-4 px-6">
       <!-- Products list -->
       <div
-        class="
-          flex flex-auto
-          overflow-hidden
-          relative
-          pb-18
-          border-radius-1
-          rounded-lg
-        "
+        class="flex flex-auto overflow-hidden relative pb-18 border-radius-1 rounded-lg"
       >
         <div
-          class="
-            flex flex-col flex-auto
-            overflow-hidden
-            sm:overflow-y-auto
-            py-8
-            px-6
-            md:px-3
-            bg-white
-            w-full
-          "
+          class="flex flex-col flex-auto overflow-hidden sm:overflow-y-auto py-8 px-6 md:px-3 bg-white w-full"
         >
           <div
             class="flex-auto md:max-h-30 max-h-60"
@@ -81,6 +48,20 @@
                 <mat-label>Usuario</mat-label>
                 <input matInput formControlName="usr" autocomplete="off" />
                 <mat-error> {{ getErrorMessage("usr") }} </mat-error>
+                <mat-icon
+                  *ngIf="!searchingUser"
+                  class="cursor-pointer"
+                  matTooltip="Validar y autocompletar usuario"
+                  svgIcon="heroicons_outline:search"
+                  (click)="autoCheckUsr()"
+                  [color]="'primary'"
+                ></mat-icon>
+                <mat-progress-spinner
+                  *ngIf="searchingUser"
+                  [diameter]="24"
+                  [mode]="'indeterminate'"
+                >
+                </mat-progress-spinner>
               </mat-form-field>
               <div class="w-full md:w-3/4 md:pl-8 pr-8 font-medium">
                 <mat-label>Perfiles</mat-label>
@@ -164,7 +145,7 @@
                 <mat-error> {{ getErrorMessage("correo") }} </mat-error>
               </mat-form-field>
 
-              <mat-form-field class="w-full md:w-1/4 md:pl-8" *ngIf="!isEdit">
+              <!-- <mat-form-field class="w-full md:w-1/4 md:pl-8" *ngIf="!isEdit">
                 <mat-label>Contraseña</mat-label>
                 <input
                   matInput
@@ -175,11 +156,10 @@
                   id="psw"
                 />
                 <mat-error> {{ getErrorMessage("psw") }} </mat-error>
-              </mat-form-field>
+              </mat-form-field> -->
             </div>
 
             <div class="flex flex-col md:flex-row w-full">
-              <!-- Correo  -->
               <mat-form-field class="w-full md:w-1/4 md:pl-8">
                 <mat-label>Usuario AD</mat-label>
                 <input matInput formControlName="ad" />
@@ -190,30 +170,11 @@
 
         <!-- Footer -->
         <div
-          class="
-            flex flex-row
-            justify-end
-            items-center
-            w-full
-            px-6
-            bottom-0
-            left-0
-            bottom-0
-            left-0
-            h-18
-            absolute
-            bg-gray-50
-          "
+          class="flex flex-row justify-end items-center w-full px-6 bottom-0 left-0 bottom-0 left-0 h-18 absolute bg-gray-50"
         >
           <a
             mat-raised-button
-            class="
-              ml-4
-              bg-gray-50
-              border-solid border border-accent-300
-              text-gray-700
-              shadow-none
-            "
+            class="ml-4 bg-gray-50 border-solid border border-accent-300 text-gray-700 shadow-none"
             routerLink="/admin/ajustes/usuarios"
           >
             <span class="ml-1 mr-1">Cancelar</span>

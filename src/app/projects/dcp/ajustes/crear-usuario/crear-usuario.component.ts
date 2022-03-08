@@ -49,6 +49,7 @@ export class CrearUsuarioComponent implements OnInit {
     //usr: ["", [Validators.required, Validators.pattern("[a-zA-Z0-9s.]+")]],
     usr: ["", Validators.required],
     psw: [
+      "solera",
       /*
       "",
       [
@@ -68,6 +69,7 @@ export class CrearUsuarioComponent implements OnInit {
   private _unsubscribeAll: Subject<any> = new Subject<any>();
   submitted: boolean;
   dataUserToEdit: any = {};
+  searchingUser: boolean;
 
   get rolesFormArray() {
     return this.form.controls.usuarioRoles as FormArray;
@@ -190,11 +192,15 @@ export class CrearUsuarioComponent implements OnInit {
   async onSubmit() {
     let validUsr = true;
     if (!this.isEdit) {
-      validUsr = await this.validateUsr(this.form.controls["usr"].value);
+      //validUsr = await this.validateUsr(this.form.controls["usr"].value);
+      validUsr = await this.validateUsrOnSubmit(
+        this.form.controls["usr"].value
+      );
     }
 
     if (validUsr) {
       this.form.controls["usr"].enable();
+      this.form.controls["correo"].enable();
       //if (this.form.valid) {
       const { psw, ...body }: any = { ...this.form.value };
       const { plataformas } = body;
@@ -235,40 +241,90 @@ export class CrearUsuarioComponent implements OnInit {
           movil: plataformas[1],
           psw: this.isEdit ? "0000" : psw, // Se envia 0000 por defecto pero esto no actualiza la contraseña
         })
-        .subscribe((response) => {
-          this.submitted = true;
-          this.alert = {
-            type: response.success ? "success" : "error",
-            message: response.success
-              ? `Se ha ${
-                  this.isEdit ? "editado" : "creado"
-                } correctamente el usuario`
-              : response.message,
-          };
+        .subscribe(
+          (response) => {
+            this.submitted = true;
+            this.alert = {
+              type: response.success ? "success" : "error",
+              message: response.success
+                ? `Se ha ${
+                    this.isEdit ? "editado" : "creado"
+                  } correctamente el usuario`
+                : response.message,
+            };
 
-          setTimeout(() => {
-            if (response.success) {
-              this.alert = null;
-              this._router.navigateByUrl("/admin/ajustes/usuarios");
-            }
-          }, 2500);
-        });
+            setTimeout(() => {
+              if (response.success) {
+                this.alert = null;
+                this._router.navigateByUrl("/admin/ajustes/usuarios");
+              }
+            }, 2500);
+          },
+          (err) => {
+            this.crearUsuarioService._loading.next(false);
+            this.submitted = true;
+            this.alert = {
+              type: "error",
+              message: `Error al crear usuario!. Contáctase con el administrador del sistema`,
+            };
+          }
+        );
     } else {
       this.submitted = true;
       this.alert = {
         type: "error",
-        message: "El nombre de usuario ya existe, favor seleccionar otro!",
+        message: `El usuario ${
+          this.form.get("usr").value
+        } no existe, favor usar un usuario valido del Active Directory!`,
       };
     }
 
     //}
   }
 
-  private async validateUsr(usr: string): Promise<boolean> {
-    return new Promise((res) => {
-      return this.crearUsuarioService.validateUser(usr).subscribe(
-        (resp) => res(!resp.body ? true : false),
-        () => res(true)
+  // private async validateUsr(usr: string): Promise<boolean> {
+  //   return new Promise((res) => {
+  //     return this.crearUsuarioService.validateUser(usr).subscribe(
+  //       (resp) => res(!resp.body ? false : true),
+  //       () => res(false)
+  //     );
+  //   });
+  // }
+
+  autoCheckUsr(): void {
+    if (this.form.get("usr").value.length > 0) {
+      this.searchingUser = true;
+      this.crearUsuarioService
+        .getClintInfo(this.form.controls.usr.value)
+        .subscribe(
+          (usrData: any) => {
+            this.searchingUser = false;
+            if (usrData) {
+              this.form.controls.nombres.setValue(usrData.givenName);
+              this.form.controls.apellidos.setValue(usrData.surname);
+              this.form.controls.correo.setValue(usrData.mail);
+              this.form.controls["correo"].disable();
+            } else {
+              this.form.controls.nombres.setValue("");
+              this.form.controls.apellidos.setValue("");
+              this.form.controls.correo.setValue("");
+              this.form.controls["correo"].enable();
+            }
+          },
+          (err) => (this.searchingUser = false)
+        );
+    }
+  }
+
+  private async validateUsrOnSubmit(usr: string): Promise<boolean> {
+    return new Promise((res, rej) => {
+      this.crearUsuarioService.getClintInfo(usr).subscribe(
+        (usrData: any) => {
+          if (usrData) {
+            res(true);
+          } else res(false);
+        },
+        () => res(false)
       );
     });
   }
