@@ -60,6 +60,11 @@ export class ValidationFormatosComponent implements OnInit {
   filesLoading: {
     [key: string]: boolean;
   } = {};
+
+  submitEditGroup: {
+    [key: string]: boolean;
+  } = {};
+
   data: any;
   private _unsubscribeAll: Subject<any> = new Subject<any>();
   isNotValidationButtonAble: boolean = true;
@@ -464,6 +469,7 @@ export class ValidationFormatosComponent implements OnInit {
     deleteComment?: boolean,
     paramIdx?: number
   ): void {
+    this.submitEditGroup[`${indexGroup}`] = true;
     const idx = this.currentSectionData.index - 1;
     const data = [...this.sections];
     data.forEach((seccion, i) => {
@@ -575,7 +581,7 @@ export class ValidationFormatosComponent implements OnInit {
       idActividadFormato: Number(this.currentIdAsignation),
     };
 
-    this.postAssignation(payload);
+    this.postAssignation(payload, indexGroup);
     //}
     if (typeof paramIdx !== "number") {
       e.preventDefault();
@@ -633,8 +639,9 @@ export class ValidationFormatosComponent implements OnInit {
     }
   }
 
-  postAssignation(payload): void {
+  postAssignation(payload, idxGroup): void {
     this._editarFormatoService.saveAssignation(payload).subscribe(() => {
+      this.submitEditGroup[`${idxGroup}`] = false;
       Object.keys(this.form.controls).forEach((key) => {
         this.form.get(key).disable();
       });

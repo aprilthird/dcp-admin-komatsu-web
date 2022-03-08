@@ -181,6 +181,10 @@
                               class="sm:col-span-2 md:col-span-4 flex flex-col justify-start gap-5 flex-wrap p-6 bg-card shadow rounded-2xl overflow-hidden m-5"
                               *ngIf="grupo.parametros.length > 0"
                             >
+                              <mat-progress-bar
+                                [mode]="'indeterminate'"
+                                *ngIf="submitEditGroup[j]"
+                              ></mat-progress-bar>
                               <div class="flex justify-between items-center">
                                 <div class="flex gap-2">
                                   <p
@@ -203,6 +207,7 @@
                                     mat-raised-button
                                     [color]="'secondary'"
                                     *ngIf="!groups[j]"
+                                    [disabled]="submitEditGroup[j]"
                                     (click)="edit(j)"
                                   >
                                     <mat-icon
@@ -223,6 +228,7 @@
                                         [color]="'secondary'"
                                         *ngIf="groups[j]"
                                         (click)="submit($event, j)"
+                                        [disabled]="submitEditGroup[j]"
                                         [disabled]="form.invalid"
                                       >
                                         <mat-icon
