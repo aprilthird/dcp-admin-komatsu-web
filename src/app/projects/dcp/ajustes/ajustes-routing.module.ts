@@ -22,10 +22,10 @@ const routes: Routes = [
   {
     path: "usuarios/crear",
     component: CrearUsuarioComponent,
-    /*data: {
+    data: {
       rutaPermisson: "/admin/ajustes/usuarios",
-    },*/
-    /*canActivate: [MenuPermissionGuard],*/
+    },
+    canActivate: [MenuPermissionGuard],
     resolve: {
       initialData: CrearUsuarioResolver,
     },
@@ -37,7 +37,7 @@ const routes: Routes = [
     data: {
       rutaPermisson: "/admin/ajustes/usuarios",
     },
-    //canActivate: [MenuPermissionGuard],
+    canActivate: [MenuPermissionGuard],
     resolve: {
       initialData: CrearUsuarioResolver,
     },
@@ -49,7 +49,7 @@ const routes: Routes = [
       {
         path: "usuarios",
         component: UsuariosComponent,
-        //canActivate: [MenuPermissionGuard],
+        canActivate: [MenuPermissionGuard],
       },
     ],
   },
