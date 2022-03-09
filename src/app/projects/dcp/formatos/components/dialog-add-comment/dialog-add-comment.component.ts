@@ -53,6 +53,7 @@ export class DialogAddCommentComponent implements OnInit {
     const payload = {
       secciones: this.data.data,
       idFormato: this.data.idFormato,
+      idActividadFormato: this.data.idActividadFormato,
     };
     this.matDialog.close();
     this._editarFormatoService
