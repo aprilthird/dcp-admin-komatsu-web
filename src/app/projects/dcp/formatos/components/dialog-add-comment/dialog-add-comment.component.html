@@ -22,8 +22,15 @@
       mat-raised-button
       [color]="'primary'"
       (click)="submit()"
+      [disabled]="loading"
     >
-      <span class="ml-2 mr-1">Enviar</span>
+      <span *ngIf="!loading" class="ml-2 mr-1">Enviar</span>
+      <span *ngIf="loading" class="ml-2 mr-1">Enviando..</span>
+      <mat-progress-spinner
+        *ngIf="loading"
+        [diameter]="24"
+        [mode]="'indeterminate'"
+      ></mat-progress-spinner>
     </button>
 
     <button

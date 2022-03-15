@@ -681,6 +681,7 @@ export class ValidationFormatosComponent implements OnInit {
   }
 
   addComment(groupIdx: number): void {
+    this.submitEditGroup[`${groupIdx}`] = true;
     const data = {
       data: this.sections,
       groupIndex: groupIdx,
@@ -688,10 +689,17 @@ export class ValidationFormatosComponent implements OnInit {
       idActividadFormato: this.idActividadFormato,
       idFormato: this.sections[0].grupos[0].parametros[0].idFormato,
     };
-    this.matDialog.open(DialogAddCommentComponent, {
+    const dialog = this.matDialog.open(DialogAddCommentComponent, {
       width: "500px",
       data: data,
     });
+    dialog.componentInstance.respCommetRequest.subscribe((resp) => {
+      this.submitEditGroup[`${groupIdx}`] = false;
+    });
+
+    dialog
+      .afterClosed()
+      .subscribe(() => (this.submitEditGroup[`${groupIdx}`] = false));
   }
 
   editable(j): boolean {
