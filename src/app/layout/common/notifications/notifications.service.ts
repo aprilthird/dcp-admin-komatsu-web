@@ -3,6 +3,7 @@ import { HttpClient } from "@angular/common/http";
 import { Observable, ReplaySubject } from "rxjs";
 import { Notification } from "app/layout/common/notifications/notifications.types";
 import { map, switchMap, take, tap } from "rxjs/operators";
+import { environment } from "environments/environment";
 
 @Injectable({
   providedIn: "root",
@@ -41,7 +42,7 @@ export class NotificationsService {
     return this._httpClient
 
       .get<Notification[]>(
-        "https://development-dcp.ws.solera.pe/api/Administracion/ObtenerNotificaciones"
+        environment.apiUrl + "/Administracion/ObtenerNotificaciones"
       )
       .pipe(
         tap((notifications) => {
