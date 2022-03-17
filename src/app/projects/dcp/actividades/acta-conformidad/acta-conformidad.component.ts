@@ -374,7 +374,7 @@ export class ActaConformidadComponent implements OnInit {
 
   printPdf(): void {
     this.loadingReport = true;
-    fetch(environment.apiUrl + "/Reportes/GenerarActa/" + this.actaData.id)
+    fetch(environment.apiUrl + "/Reportes/GenerarActa/" + this.idActa)
       .then((resp) => resp.blob())
       .then((blob) => {
         let url = window.URL.createObjectURL(blob);
