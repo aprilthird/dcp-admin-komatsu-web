@@ -53,13 +53,35 @@
             </div>
 
             <div
-              class="w-10/12 sm:w-auto"
+              class="w-10/12 sm:w-auto flex gap-2"
               [matTooltip]="
                 formGroup?.invalid
                   ? 'Existen campos que no cumplen con el patrón requerido'
                   : ''
               "
             >
+              <button
+                *ngIf="idActividadFormatoActa !== 0"
+                class="w-full"
+                mat-raised-button
+                [color]="'primary'"
+                (click)="printPdf()"
+                [disabled]="loadingReport"
+              >
+                <mat-icon
+                  *ngIf="!loadingReport"
+                  class="text-white mr-1"
+                  svgIcon="heroicons_outline:document-report"
+                ></mat-icon>
+                <mat-progress-spinner
+                  *ngIf="loadingReport"
+                  [diameter]="24"
+                  [mode]="'indeterminate'"
+                >
+                </mat-progress-spinner>
+                <a *ngIf="!loadingReport">Descargar reporte</a>
+                <a *ngIf="loadingReport">Descargando....</a>
+              </button>
               <button
                 *ngIf="idActividadFormatoActa !== 0"
                 class="w-full"

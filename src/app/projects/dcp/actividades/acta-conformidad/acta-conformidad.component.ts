@@ -12,6 +12,7 @@ import { AzureService } from "app/core/azure/azure.service";
 import { TipoParametro } from "app/core/types/formatos.types";
 import { ParamI } from "app/shared/models/formatos";
 import { UiDialogsComponent } from "app/shared/ui/ui-dialogs/ui-dialogs.component";
+import { environment } from "environments/environment";
 import { Subject } from "rxjs";
 import { takeUntil } from "rxjs/operators";
 import { EditarFormatoService } from "../../formatos/editar-formato/editar-formato.service";
@@ -45,6 +46,7 @@ export class ActaConformidadComponent implements OnInit {
   filesLoading: {
     [key: string]: boolean;
   } = {};
+  loadingReport: boolean;
 
   constructor(
     private fb: FormBuilder,
@@ -368,5 +370,21 @@ export class ActaConformidadComponent implements OnInit {
         parametro.valor = null;
       }
     }
+  }
+
+  printPdf(): void {
+    this.loadingReport = true;
+    fetch(environment.apiUrl + "/Reportes/GenerarActa/" + this.actaData.id)
+      .then((resp) => resp.blob())
+      .then((blob) => {
+        let url = window.URL.createObjectURL(blob);
+        let a = document.createElement("a");
+        a.href = url;
+        a.download = this.actaData.nombre + ".pdf";
+        this.loadingReport = false;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+      });
   }
 }
