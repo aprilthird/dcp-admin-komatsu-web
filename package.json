@@ -11,8 +11,8 @@
         "start:dev": "ng serve --configuration=local",
         "start:dcp": "ng serve --configuration=dcp",
         "start:kmmp": "ng serve --configuration=kmmp",
-        "build:dcp": "ng build --configuration=production --output-path=./dist/dcp",
-        "build:kmmp": "ng build --configuration=production --output-path=./dist/kmmp",
+        "build:dcp": "ng build --configuration=dcp-production --output-path=./dist/dcp",
+        "build:kmmp": "ng build --configuration=kmmp-production --output-path=./dist/kmmp",
         "test": "ng test",
         "lint": "ng lint"
     },

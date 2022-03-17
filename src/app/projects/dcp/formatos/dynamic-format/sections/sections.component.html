@@ -5,9 +5,10 @@
     >
       <span
         [hidden]="edit"
-        class="sm:text-lg leading-6 truncate font-bold w-36"
+        class="sm:text-lg leading-6 truncate font-bold w-60"
+        [matTooltip]="sectionData?.nombre"
       >
-        {{ sectionData.nombre }}
+        {{ sectionData?.nombre }}
       </span>
       <input
         [hidden]="!edit"
