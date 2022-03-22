@@ -151,7 +151,7 @@ export class ActaConformidadComponent implements OnInit {
         parametro.minCaracteres ? parametro.minCaracteres : 0
       ),
       Validators.maxLength(
-        parametro.maxCaracteres ? parametro.maxCaracteres : 2000
+        parametro.maxCaracteres ? parametro.maxCaracteres : undefined
       ),
       !parametro.regex || parametro.regex === ""
         ? Validators.nullValidator
