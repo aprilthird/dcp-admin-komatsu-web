@@ -71,6 +71,7 @@ export class ValidationFormatosComponent implements OnInit {
   allSectionValidates = [];
   idActividadFormato: number;
   loaded: boolean;
+  rendered: any;
 
   constructor(
     private matDialog: MatDialog,
@@ -105,7 +106,20 @@ export class ValidationFormatosComponent implements OnInit {
       this.currentIdAsignation = params.params["id"];
       this.currentSeccionId = params.params["section"];
       this._activitiesService._idFormat.next(Number(this.currentIdAsignation));
-      this.getAsignation();
+      //this.getAsignation();
+
+      if (!this.rendered) {
+        this.getAsignation();
+        this.rendered = true;
+      } else {
+        this.currentSectionData = [...this.sections].find(
+          (section: any) => Number(this.currentSeccionId) === section.id
+        );
+        this.generateForm();
+        setTimeout(() => {
+          this.setCollapsableNav();
+        }, 500);
+      }
     });
   }
 
@@ -113,15 +127,42 @@ export class ValidationFormatosComponent implements OnInit {
     this.asignationService
       .getAbrirAsignacion(this.currentIdAsignation)
       .subscribe(async (resp) => {
-        this.sections = await resp.body.secciones;
+        this.sections = await resp.body.secciones.filter(
+          (section) => section.activo
+        );
         this.idActividadFormato = resp.body.id;
 
-        if (this.currentSeccionId) {
+        // if (this.currentSeccionId) {
+        //   this.currentSectionData = await [...this.sections].find(
+        //     (section: any) => Number(this.currentSeccionId) === section.id
+        //   );
+        //   this.generateForm();
+        // }
+
+        if (
+          this.sections[0].grupos &&
+          this.sections[0].grupos.length > 0 &&
+          this.currentSeccionId
+        ) {
           this.currentSectionData = await [...this.sections].find(
             (section: any) => Number(this.currentSeccionId) === section.id
           );
-          this.generateForm();
+        } else {
+          this.matDialog.open(UiDialogsComponent, {
+            width: "500px",
+            data: {
+              message: "No existe información en el actual formato!",
+              title: "Error",
+              action: "redirect",
+              url: "admin/informes/list",
+            },
+          });
         }
+
+        this.generateForm();
+        setTimeout(() => {
+          this.setCollapsableNav();
+        }, 500);
       });
   }
 
@@ -139,7 +180,7 @@ export class ValidationFormatosComponent implements OnInit {
     this.sections.forEach((section) => {
       this.allSectionValidates = [];
       this.allSectionValidates.push(
-        section.grupos[0].parametros.some(
+        section.grupos[0]?.parametros.some(
           (parametro) => parametro.seccionValida
         )
       );
@@ -161,11 +202,11 @@ export class ValidationFormatosComponent implements OnInit {
         children: [],
         badge: {
           title:
-            !section.grupos[0].parametros.some(
+            !section.grupos[0]?.parametros.some(
               (parametro) => parametro.seccionValida
             ) && section.grupos.some((group) => group.observado)
               ? "warning_amber"
-              : section.grupos[0].parametros.some(
+              : section.grupos[0]?.parametros.some(
                   (parametro) => parametro.seccionValida
                 )
               ? "heroicons_outline:check-circle"
@@ -403,24 +444,25 @@ export class ValidationFormatosComponent implements OnInit {
 
   getErrorMessage(input: string) {
     const control = this.form.get(input);
+    if (control && control !== null) {
+      if (control.hasError("required")) {
+        return "Campo requerido";
+      }
 
-    if (control.hasError("required")) {
-      return "Campo requerido";
+      if (control.hasError("minlength")) {
+        return `Debe tener mínimo ${control.errors.minlength.requiredLength}`;
+      }
+
+      if (control.hasError("maxlength")) {
+        return `Debe tener máximo ${control.errors.maxlength.requiredLength}`;
+      }
+
+      if (control.hasError("pattern")) {
+        return `Formato incorrecto`;
+      }
+
+      return control.hasError("email") ? "Formato de correo incorrecto" : "";
     }
-
-    if (control.hasError("minlength")) {
-      return `Debe tener mínimo ${control.errors.minlength.requiredLength}`;
-    }
-
-    if (control.hasError("maxlength")) {
-      return `Debe tener máximo ${control.errors.maxlength.requiredLength}`;
-    }
-
-    if (control.hasError("pattern")) {
-      return `Formato incorrecto`;
-    }
-
-    return control.hasError("email") ? "Formato de correo incorrecto" : "";
   }
 
   observateGroup(j: number, event: MatCheckbox) {
@@ -651,7 +693,7 @@ export class ValidationFormatosComponent implements OnInit {
   }
 
   validateSection(): boolean {
-    return this.currentSectionData.grupos[0].parametros.some(
+    return this.currentSectionData.grupos[0]?.parametros.some(
       (parametro) => parametro.seccionValida
     );
   }
@@ -666,8 +708,8 @@ export class ValidationFormatosComponent implements OnInit {
 
   validateFormat() {
     for (let i = 0; i < this.sections.length; i++) {
-      for (let j = 0; j < this.sections[i].grupos[0].parametros.length; j++) {
-        if (this.sections[i].grupos[0].parametros[j].formatoValido) {
+      for (let j = 0; j < this.sections[i]?.grupos[0]?.parametros.length; j++) {
+        if (this.sections[i]?.grupos[0]?.parametros[j].formatoValido) {
           return true;
         }
       }

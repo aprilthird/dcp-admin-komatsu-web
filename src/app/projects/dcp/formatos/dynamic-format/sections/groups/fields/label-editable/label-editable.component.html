@@ -3,12 +3,8 @@
     [disabled]="!editable"
     [hidden]="edit"
     class="text-gray-900 font-medium cursor-pointer"
-    style="
-      width: 10rem;
-      text-overflow: ellipsis;
-      overflow: hidden;
-      max-height: 5rem;
-    "
+    [ngStyle]="{ width: position === 'h' ? '10rem' : '23rem' }"
+    style="text-overflow: ellipsis; overflow: hidden; max-height: 4rem"
     [matTooltip]="label"
   >
     <label
@@ -23,13 +19,22 @@
       >{{ !label || label === "" ? "a" : label }}</label
     >
   </div>
-  <div class="flex gap-1" style="width: 10rem">
+  <div
+    class="flex gap-1"
+    [ngStyle]="{ width: position === 'h' ? '10rem' : '23rem' }"
+  >
     <input
       [hidden]="!edit"
       #nameInput
       class="sm:text-lg leading-6 truncate"
+      [ngStyle]="{ width: position === 'h' ? '10rem' : '23rem' }"
       [(ngModel)]="label"
     />
+    <mat-progress-spinner
+      *ngIf="loadinglabel"
+      [mode]="'indeterminate'"
+      [diameter]="16"
+    ></mat-progress-spinner>
     <mat-icon
       class="cursor-pointer"
       *ngIf="edit"

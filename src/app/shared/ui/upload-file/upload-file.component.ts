@@ -50,6 +50,7 @@ export class UploadFileComponent implements OnInit, OnChanges {
   @Input() preview: string;
   @Input() paramIdx: number;
   @Input() groupIdx: number;
+  @Input() position: string;
 
   _file: any = "";
   state = "default";

@@ -28,12 +28,16 @@
       />
     </div>
     <ng-template #placeholder>
-      <div class="img-container">
+      <div
+        class="img-container"
+        [ngStyle]="{ height: !position || position === 'h' ? '120px' : '' }"
+      >
         <img
           [src]="image"
           alt="image"
           [@rotatedState]="state"
-          [ngStyle]="{ 'margin-left': dynamicFitImage, width: dinamycWidth }"
+          style="width: 100%"
+          [ngStyle]="{ height: !position || position === 'h' ? '120px' : '' }"
         />
         <button
           *ngIf="!preview && editable && type !== 'upload'"

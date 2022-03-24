@@ -10,11 +10,16 @@
               [edit]="edit"
               [visible]="paramData.visible"
               [editable]="paramData.editable"
+              [position]="groupData.pos"
             ></app-label-editable>
             <mat-form-field
               *ngSwitchCase="1"
               class="font-semibold w-40"
               floatLabel="always"
+              [ngClass]="{
+                'w-96': groupData.pos === 'v',
+                'w-40': groupData.pos === 'h'
+              }"
             >
               <input
                 id="{{ paramData.idGrupo + paramData.id }}"
@@ -39,8 +44,16 @@
               [edit]="edit"
               [visible]="paramData.visible"
               [editable]="paramData.editable"
+              [position]="groupData.pos"
             ></app-label-editable>
-            <mat-form-field floatLabel="always" class="w-40">
+            <mat-form-field
+              floatLabel="always"
+              class="w-40"
+              [ngClass]="{
+                'w-96': groupData.pos === 'v',
+                'w-40': groupData.pos === 'h'
+              }"
+            >
               <input
                 id="{{ paramData.idGrupo + paramData.id }}"
                 matInput
@@ -62,8 +75,16 @@
               [edit]="edit"
               [visible]="paramData.visible"
               [editable]="paramData.editable"
+              [position]="groupData.pos"
             ></app-label-editable>
-            <mat-form-field floatLabel="always" class="w-40">
+            <mat-form-field
+              floatLabel="always"
+              class="w-40"
+              [ngClass]="{
+                'w-96': groupData.pos === 'v',
+                'w-40': groupData.pos === 'h'
+              }"
+            >
               <textarea
                 class="resize-none"
                 matInput
@@ -84,8 +105,16 @@
               [edit]="edit"
               [visible]="paramData.visible"
               [editable]="paramData.editable"
+              [position]="groupData.pos"
             ></app-label-editable>
-            <mat-form-field floatLabel="always" class="w-40">
+            <mat-form-field
+              floatLabel="always"
+              class="w-40"
+              [ngClass]="{
+                'w-96': groupData.pos === 'v',
+                'w-40': groupData.pos === 'h'
+              }"
+            >
               <input
                 matInput
                 [matDatepicker]="datepicker"
@@ -112,23 +141,39 @@
             </mat-form-field>
           </ng-container>
 
-          <div *ngSwitchCase="8" class="w-40">
+          <div
+            *ngSwitchCase="8"
+            class="w-40"
+            [ngClass]="{
+              'w-96': groupData.pos === 'v',
+              'w-40': groupData.pos === 'h'
+            }"
+          >
             <app-label-editable
               (saveLabel)="saveLabeOutPut($event, 8)"
               [label]="paramData.label"
               [edit]="edit"
               [visible]="paramData.visible"
               [editable]="paramData.editable"
+              [position]="groupData.pos"
             ></app-label-editable>
           </div>
 
-          <div *ngSwitchCase="9" class="w-40">
+          <div
+            *ngSwitchCase="9"
+            class="w-40"
+            [ngClass]="{
+              'w-96': groupData.pos === 'v',
+              'w-40': groupData.pos === 'h'
+            }"
+          >
             <app-label-editable
               (saveLabel)="saveLabeOutPut($event, 9)"
               [label]="paramData.label"
               [edit]="edit"
               [visible]="paramData.visible"
               [editable]="paramData.editable"
+              [position]="groupData.pos"
             ></app-label-editable>
 
             <div class="flex flex-col">
@@ -145,13 +190,21 @@
             ></mat-progress-spinner>
           </div>
 
-          <div *ngSwitchCase="4" class="w-40">
+          <div
+            *ngSwitchCase="4"
+            class="w-40"
+            [ngClass]="{
+              'w-96': groupData.pos === 'v',
+              'w-40': groupData.pos === 'h'
+            }"
+          >
             <app-label-editable
               (saveLabel)="saveLabeOutPut($event, 4)"
               [label]="paramData.label"
               [edit]="edit"
               [visible]="paramData.visible"
               [editable]="paramData.editable"
+              [position]="groupData.pos"
             ></app-label-editable>
 
             <mat-progress-spinner
@@ -161,13 +214,21 @@
             ></mat-progress-spinner>
           </div>
 
-          <div *ngSwitchCase="6" class="w-40">
+          <div
+            *ngSwitchCase="6"
+            class="w-40"
+            [ngClass]="{
+              'w-96': groupData.pos === 'v',
+              'w-40': groupData.pos === 'h'
+            }"
+          >
             <app-label-editable
               (saveLabel)="saveLabeOutPut($event, 6)"
               [label]="paramData.label"
               [edit]="edit"
               [visible]="paramData.visible"
               [editable]="paramData.editable"
+              [position]="groupData.pos"
             ></app-label-editable>
 
             <ui-upload-file
@@ -179,16 +240,25 @@
               "
               [loading]="filesLoading"
               (sourceFile)="onChageFile($event)"
+              [position]="groupData.pos"
             ></ui-upload-file>
           </div>
 
-          <div *ngSwitchCase="7" class="w-40">
+          <div
+            *ngSwitchCase="7"
+            class="w-40"
+            [ngClass]="{
+              'w-96': groupData.pos === 'v',
+              'w-40': groupData.pos === 'h'
+            }"
+          >
             <app-label-editable
               (saveLabel)="saveLabeOutPut($event, 7)"
               [label]="paramData.label"
               [edit]="edit"
               [visible]="paramData.visible"
               [editable]="paramData.editable"
+              [position]="groupData.pos"
             ></app-label-editable>
 
             <mat-progress-spinner
@@ -198,7 +268,14 @@
             ></mat-progress-spinner>
           </div>
 
-          <div *ngSwitchCase="10" class="w-40">
+          <div
+            *ngSwitchCase="10"
+            class="w-40"
+            [ngClass]="{
+              'w-96': groupData.pos === 'v',
+              'w-40': groupData.pos === 'h'
+            }"
+          >
             <div class="flex flex-col">
               <app-label-editable
                 (saveLabel)="saveLabeOutPut($event, 10)"
@@ -206,6 +283,7 @@
                 [edit]="edit"
                 [visible]="paramData.visible"
                 [editable]="paramData.editable"
+                [position]="groupData.pos"
               ></app-label-editable>
 
               <mat-form-field floatLabel="always">

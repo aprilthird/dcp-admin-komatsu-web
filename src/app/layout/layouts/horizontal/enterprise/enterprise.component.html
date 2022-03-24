@@ -27,44 +27,15 @@
 
 <!-- Wrapper -->
 <div
-  class="
-    flex flex-col flex-auto
-    items-center
-    w-full
-    min-w-0
-    bg-gray-200
-    dark:bg-card
-  "
+  class="flex flex-col flex-auto items-center w-full min-w-0 bg-gray-200 dark:bg-card"
 >
   <!-- Header -->
   <div
-    class="
-      relative
-      flex flex-col flex-0
-      justify-center
-      w-full
-      h-16
-      sm:h-20
-      md:h-36
-      overflow-hidden
-      z-49
-      shadow
-      dark:shadow-none
-      print:hidden
-    "
+    class="relative flex flex-col flex-0 justify-center w-full h-16 sm:h-20 md:h-36 overflow-hidden z-49 shadow dark:shadow-none print:hidden"
   >
     <!-- Top bar -->
     <div
-      class="
-        relative
-        dark
-        flex flex-auto
-        justify-center
-        w-full
-        px-4
-        md:px-8
-        dark:bg-gray-900
-      "
+      class="relative dark flex flex-auto justify-center w-full px-4 md:px-8 dark:bg-gray-900"
       [ngClass]="'bg-' + environment.project"
     >
       <div class="flex items-center w-full max-w-360 h-16 sm:h-20">
@@ -95,7 +66,7 @@
                     <shortcuts></shortcuts>
                     <messages></messages>
                     <notifications></notifications> -->
-          <notifications></notifications>
+          <!-- <notifications></notifications> -->
           <user></user>
         </div>
       </div>
@@ -103,14 +74,7 @@
     <!-- Bottom bar -->
     <ng-container *ngIf="!isScreenSmall">
       <div
-        class="
-          flex flex-auto
-          justify-center
-          px-4
-          md:px-8
-          bg-card
-          dark:bg-gray-700
-        "
+        class="flex flex-auto justify-center px-4 md:px-8 bg-card dark:bg-gray-700"
       >
         <div class="relative flex items-center w-full max-w-360 h-16">
           <fuse-horizontal-navigation
@@ -126,12 +90,7 @@
   <!-- Content -->
   <div class="flex flex-auto justify-center w-full sm:p-6 md:p-8">
     <div
-      class="
-        flex flex-col flex-auto
-        w-full
-        sm:max-w-360 sm:shadow-lg sm:rounded-lg sm:overflow-hidden
-        bg-default
-      "
+      class="flex flex-col flex-auto w-full sm:max-w-360 sm:shadow-lg sm:rounded-lg sm:overflow-hidden bg-default"
     >
       <!-- *ngIf="true" hack is required here for router-outlet to work correctly.
                  Otherwise, layout changes won't be registered and the view won't be updated! -->

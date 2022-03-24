@@ -1,7 +1,7 @@
 .inventory-grid {
-  grid-template-columns: 30 30px 30px 50px 50px 50px 50px 50px  20px;
+  grid-template-columns: 30px 30px 30px 50px 50px 50px 50px 50px  20px;
   @screen sm {
-    grid-template-columns: 30 30px 30px 50px 50px 50px 50px 50px  20px;
+    grid-template-columns: 30px 30px 30px 50px 50px 50px 50px 50px  20px;
   }
 
   @screen md {

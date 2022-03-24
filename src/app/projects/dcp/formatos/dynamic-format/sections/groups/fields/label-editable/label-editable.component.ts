@@ -6,6 +6,7 @@ import {
   Input,
   OnInit,
   Output,
+  SimpleChanges,
   ViewChild,
 } from "@angular/core";
 
@@ -21,7 +22,9 @@ export class LabelEditableComponent implements OnInit {
   @Input() label: string;
   @Output() saveLabel: EventEmitter<any> = new EventEmitter(null);
   @ViewChild("nameInput") el: ElementRef;
+  @Input() position: string;
   renderTemplate: boolean = false;
+  loadinglabel: boolean;
 
   constructor() {}
 
@@ -44,6 +47,12 @@ export class LabelEditableComponent implements OnInit {
 
   ngAfterViewInit(): void {}
 
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.edit) {
+      this.edit = this.loadinglabel = changes.edit?.currentValue;
+    }
+  }
+
   editLabelFn(): void {
     this.edit = true;
     setTimeout(() => {
@@ -52,6 +61,7 @@ export class LabelEditableComponent implements OnInit {
   }
 
   saveLabelFn(): void {
+    this.loadinglabel = true;
     this.saveLabel.emit(this.label);
   }
 }
