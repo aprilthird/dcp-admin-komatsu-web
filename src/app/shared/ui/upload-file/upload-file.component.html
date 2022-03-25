@@ -21,6 +21,7 @@
       <input
         [disabled]="preview"
         type="file"
+        accept="image/*"
         class="image"
         #fileInput
         hidden
@@ -29,6 +30,7 @@
     </div>
     <ng-template #placeholder>
       <div
+        #imgcontainer
         class="img-container"
         [ngStyle]="{ height: !position || position === 'h' ? '120px' : '' }"
       >
@@ -42,6 +44,10 @@
         <button
           *ngIf="!preview && editable && type !== 'upload'"
           mat-icon-button
+          [ngStyle]="{
+            top: !position || position === 'h' ? '-120px' : heightImgPx,
+            right: !position || position === 'h' ? '-200px' : '-350px'
+          }"
           (click)="removePicture()"
         >
           <span class="mat-button-wrapper">

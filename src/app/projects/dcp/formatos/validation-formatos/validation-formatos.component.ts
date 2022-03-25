@@ -566,7 +566,18 @@ export class ValidationFormatosComponent implements OnInit {
                             .value
                         );
                       } else {
-                        parametro.valor = null;
+                        if (
+                          typeof this.form.get(
+                            this.getParametroControl({ i, j, k })
+                          ).value === "object"
+                        ) {
+                          parametro.valor = this.convertDate(
+                            this.form.get(this.getParametroControl({ i, j, k }))
+                              .value
+                          );
+                        } else {
+                          parametro.valor = null;
+                        }
                       }
                     }
                   } else {
